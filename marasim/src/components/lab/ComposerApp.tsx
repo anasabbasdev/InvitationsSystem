@@ -144,6 +144,12 @@ export default function ComposerApp() {
               Advanced
             </button>
           </div>
+          <a
+            href="/lab/composer/userguide"
+            className="rounded border border-zinc-600 px-3 py-1.5 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-amber-300"
+          >
+            دليل الاستخدام
+          </a>
           <div className="flex-1" />
           <select
             value={slug}
