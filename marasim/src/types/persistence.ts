@@ -40,6 +40,7 @@ export type DbInvitationRow = {
   invitation_data_json: InvitationData;
   status: DbInvitationStatus;
   published_snapshot_id: string | null;
+  preview_token_hash: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -93,4 +94,5 @@ export type UpsertInvitationInput = {
   presetVersion: string;
   data: InvitationData;
   status?: DbInvitationStatus;
+  previewTokenHash?: string | null;
 };

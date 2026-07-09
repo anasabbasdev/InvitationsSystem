@@ -1,5 +1,4 @@
-import { getSupabaseServer } from "@/lib/supabase/server";
-import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import { createSupabaseAdminClient } from "@/lib/supabase/create-admin-client";
 import type { DbInvitationRow, UpsertInvitationInput } from "@/types/persistence";
 
 const TABLE = "invitations";
@@ -7,7 +6,7 @@ const TABLE = "invitations";
 export async function fetchInvitationBySlug(
   slug: string
 ): Promise<DbInvitationRow | null> {
-  const { data, error } = await getSupabaseServer()
+  const { data, error } = await createSupabaseAdminClient()
     .from(TABLE)
     .select("*")
     .eq("slug", slug)
@@ -17,8 +16,21 @@ export async function fetchInvitationBySlug(
   return data as DbInvitationRow | null;
 }
 
+export async function fetchInvitationById(
+  id: string
+): Promise<DbInvitationRow | null> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data as DbInvitationRow | null;
+}
+
 export async function fetchAllInvitationSlugs(): Promise<string[]> {
-  const { data, error } = await getSupabaseServer()
+  const { data, error } = await createSupabaseAdminClient()
     .from(TABLE)
     .select("slug")
     .neq("status", "archived");
@@ -27,11 +39,18 @@ export async function fetchAllInvitationSlugs(): Promise<string[]> {
   return (data ?? []).map((row) => row.slug as string);
 }
 
+export type UpsertInvitationResult = {
+  row: DbInvitationRow;
+  action: "created" | "updated";
+};
+
 export async function upsertInvitation(
   input: UpsertInvitationInput
-): Promise<DbInvitationRow> {
-  const admin = getSupabaseAdmin();
-  const payload = {
+): Promise<UpsertInvitationResult> {
+  const admin = createSupabaseAdminClient();
+  const existing = await fetchInvitationBySlug(input.slug);
+
+  const payload: Record<string, unknown> = {
     slug: input.slug,
     event_id: input.eventId ?? null,
     blueprint_id: input.blueprintId,
@@ -42,6 +61,10 @@ export async function upsertInvitation(
     status: input.status ?? "draft",
   };
 
+  if (input.previewTokenHash !== undefined) {
+    payload.preview_token_hash = input.previewTokenHash;
+  }
+
   const { data, error } = await admin
     .from(TABLE)
     .upsert(payload, { onConflict: "slug" })
@@ -49,20 +72,46 @@ export async function upsertInvitation(
     .single();
 
   if (error) throw error;
-  return data as DbInvitationRow;
+  return {
+    row: data as DbInvitationRow,
+    action: existing ? "updated" : "created",
+  };
+}
+
+export async function setInvitationPreviewTokenHash(
+  invitationId: string,
+  previewTokenHash: string
+): Promise<void> {
+  const { error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .update({ preview_token_hash: previewTokenHash })
+    .eq("id", invitationId);
+
+  if (error) throw error;
 }
 
 export async function setInvitationPublishedSnapshot(
   invitationId: string,
   snapshotId: string
 ): Promise<void> {
-  const admin = getSupabaseAdmin();
-  const { error } = await admin
+  const { error } = await createSupabaseAdminClient()
     .from(TABLE)
     .update({
       status: "published",
       published_snapshot_id: snapshotId,
     })
+    .eq("id", invitationId);
+
+  if (error) throw error;
+}
+
+export async function updateInvitationDataJson(
+  invitationId: string,
+  data: UpsertInvitationInput["data"]
+): Promise<void> {
+  const { error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .update({ invitation_data_json: data })
     .eq("id", invitationId);
 
   if (error) throw error;

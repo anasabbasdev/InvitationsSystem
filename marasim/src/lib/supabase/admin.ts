@@ -1,28 +1,21 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import {
-  getSupabaseServiceRoleKey,
-  getSupabaseUrl,
-  isSupabaseAdminConfigured,
-} from "@/lib/supabase/env";
+import "server-only";
+
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { createSupabaseAdminClient } from "@/lib/supabase/create-admin-client";
 
 let adminClient: SupabaseClient | null = null;
 
 /**
- * Service-role client for seed scripts and server-only writes.
- * Never import from client components.
+ * Service-role client — server-only reads and writes.
+ * Never import from Client Components.
  */
 export function getSupabaseAdmin(): SupabaseClient {
-  if (!isSupabaseAdminConfigured()) {
-    throw new Error(
-      "Supabase admin is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
-    );
-  }
-
   if (!adminClient) {
-    adminClient = createClient(getSupabaseUrl(), getSupabaseServiceRoleKey(), {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
+    adminClient = createSupabaseAdminClient();
   }
-
   return adminClient;
+}
+
+export function resetSupabaseAdminClient(): void {
+  adminClient = null;
 }

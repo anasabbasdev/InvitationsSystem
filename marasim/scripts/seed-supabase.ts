@@ -2,12 +2,18 @@
  * Seed Supabase with local V2 blueprints, presets, and ws-* demo invitations.
  *
  * Prerequisites:
- *   1. Run migration: supabase/migrations/20260709120000_phase_3a_persistence.sql
- *   2. Set NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
+ *   1. Apply migrations in supabase/migrations/
+ *   2. Copy .env.local.example → .env.local with Supabase keys
  *
- * Usage: npm run db:seed
+ * Usage:
+ *   cd marasim && npm run db:seed
+ *
+ * Idempotent: safe to run multiple times.
  */
 
+import { appendFileSync, existsSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { loadProjectEnv } from "@/lib/env/load-dotenv";
 import { weddingStandardBlueprint } from "@/data/blueprints/wedding-standard.blueprint";
 import { weddingShortBlueprint } from "@/data/blueprints/wedding-short.blueprint";
 import { galleryRepeatAcceptanceBlueprint } from "@/data/blueprints/gallery-repeat-acceptance.blueprint";
@@ -21,15 +27,22 @@ import { wsMinimalDemoData } from "@/data/invitations/ws-minimal-demo";
 import { wsShortDemoData } from "@/data/invitations/ws-short-demo";
 import { wsGalleryRepeatDemoData } from "@/data/invitations/ws-gallery-repeat-demo";
 import { buildInvitationConfigV2, createPublishedSnapshot } from "@/lib/build-config";
-import { isSupabaseAdminConfigured } from "@/lib/supabase/env";
+import { generatePreviewToken, hashPreviewToken } from "@/lib/preview-token";
+import { assertSupabaseAdminEnv } from "@/lib/supabase/env";
 import {
   createSnapshot,
+  fetchInvitationBySlug,
+  listSnapshotsForInvitation,
+  setInvitationPreviewTokenHash,
   setInvitationPublishedSnapshot,
+  updateInvitationDataJson,
   upsertBlueprint,
   upsertInvitation,
   upsertPreset,
 } from "@/lib/repositories";
 import type { DesignPreset, InvitationData, SequenceBlueprint } from "@/types/invitation";
+
+loadProjectEnv();
 
 type SeedInvitation = {
   data: InvitationData;
@@ -37,6 +50,8 @@ type SeedInvitation = {
   preset: DesignPreset;
   publish?: boolean;
 };
+
+const PREVIEW_TOKENS_FILE = resolve(process.cwd(), ".preview-tokens.local");
 
 const BLUEPRINTS: SequenceBlueprint[] = [
   weddingStandardBlueprint,
@@ -62,75 +77,119 @@ const INVITATIONS: SeedInvitation[] = [
   { data: wsGalleryRepeatDemoData, blueprint: galleryRepeatAcceptanceBlueprint, preset: galleryRepeatAcceptancePreset },
 ];
 
+type SeedAction = "created" | "updated" | "skipped";
+
+function logAction(entity: string, key: string, action: SeedAction, detail?: string) {
+  const suffix = detail ? ` — ${detail}` : "";
+  console.log(`  ${action === "skipped" ? "○" : action === "created" ? "+" : "~"} ${entity} ${key}${suffix}`);
+}
+
+function appendPreviewToken(slug: string, token: string) {
+  const line = `${slug}=${token}\n`;
+  if (!existsSync(PREVIEW_TOKENS_FILE)) {
+    writeFileSync(PREVIEW_TOKENS_FILE, "# gitignored — draft preview tokens\n", "utf8");
+  }
+  appendFileSync(PREVIEW_TOKENS_FILE, line, "utf8");
+}
+
 async function main() {
-  if (!isSupabaseAdminConfigured()) {
+  try {
+    assertSupabaseAdminEnv();
+  } catch (error) {
     console.error(
-      "Missing env: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY (and anon key for reads)."
+      error instanceof Error ? error.message : "Supabase admin env not configured."
     );
+    console.error("Copy .env.local.example → .env.local and set Supabase keys.");
     process.exit(1);
   }
 
   const blueprintIds = new Map<string, string>();
+  const presetIds = new Map<string, string>();
 
-  console.log("Seeding blueprints...");
+  console.log("\n── Blueprints ──");
   for (const blueprint of BLUEPRINTS) {
     const version = blueprint.version ?? "1.0.0";
-    const row = await upsertBlueprint({
+    const key = `${blueprint.id}@${version}`;
+    const { row, action } = await upsertBlueprint({
       name: blueprint.id,
       version,
       blueprint,
     });
-    blueprintIds.set(`${blueprint.id}@${version}`, row.id);
-    console.log(`  ✓ ${blueprint.id}@${version} → ${row.id}`);
+    blueprintIds.set(key, row.id);
+    logAction("blueprint", key, action, row.id);
   }
 
-  const presetIds = new Map<string, string>();
-
-  console.log("Seeding presets...");
+  console.log("\n── Presets ──");
   for (const entry of PRESETS) {
     const preset = entry.preset;
     const version = preset.version ?? "1.0.0";
+    const key = `${preset.id}@${version}`;
     const compatibleKey = entry.compatibleBlueprintId
       ? `${entry.compatibleBlueprintId}@1.0.0`
       : undefined;
-    const compatibleUuid = compatibleKey
-      ? blueprintIds.get(compatibleKey) ?? null
-      : null;
-
-    const row = await upsertPreset({
+    const { row, action } = await upsertPreset({
       name: preset.id,
       version,
       preset,
-      compatibleBlueprintId: compatibleUuid,
+      compatibleBlueprintId: compatibleKey ? blueprintIds.get(compatibleKey) ?? null : null,
     });
-    presetIds.set(`${preset.id}@${version}`, row.id);
-    console.log(`  ✓ ${preset.id}@${version} → ${row.id}`);
+    presetIds.set(key, row.id);
+    logAction("preset", key, action, row.id);
   }
 
-  console.log("Seeding invitations...");
+  console.log("\n── Invitations ──");
   for (const entry of INVITATIONS) {
+    const slug = entry.data.slug;
     const bpVersion = entry.blueprint.version ?? "1.0.0";
     const prVersion = entry.preset.version ?? "1.0.0";
     const blueprintUuid = blueprintIds.get(`${entry.blueprint.id}@${bpVersion}`);
     const presetUuid = presetIds.get(`${entry.preset.id}@${prVersion}`);
 
     if (!blueprintUuid || !presetUuid) {
-      throw new Error(
-        `Missing blueprint/preset UUID for invitation ${entry.data.slug}`
-      );
+      throw new Error(`Missing blueprint/preset UUID for ${slug}`);
     }
 
-    const row = await upsertInvitation({
-      slug: entry.data.slug,
+    const existing = await fetchInvitationBySlug(slug);
+
+    if (existing?.status === "published" && existing.published_snapshot_id) {
+      await updateInvitationDataJson(existing.id, entry.data);
+      logAction("invitation", slug, "updated", "published — data only, snapshot preserved");
+      continue;
+    }
+
+    let previewTokenHash = existing?.preview_token_hash ?? null;
+    let previewTokenPlain: string | null = null;
+
+    if (!entry.publish && !previewTokenHash) {
+      previewTokenPlain = generatePreviewToken();
+      previewTokenHash = hashPreviewToken(previewTokenPlain);
+    }
+
+    const { row, action } = await upsertInvitation({
+      slug,
       blueprintId: blueprintUuid,
       blueprintVersion: bpVersion,
       presetId: presetUuid,
       presetVersion: prVersion,
       data: entry.data,
-      status: entry.publish ? "draft" : "draft",
+      status: "draft",
+      previewTokenHash,
     });
 
+    if (previewTokenPlain) {
+      appendPreviewToken(slug, previewTokenPlain);
+      logAction("preview", slug, "created", `/i/${slug}?preview=***`);
+    } else if (!entry.publish && existing?.preview_token_hash) {
+      logAction("preview", slug, "skipped", "existing token hash preserved");
+    }
+
     if (entry.publish) {
+      if (existing?.published_snapshot_id) {
+        const snapshots = await listSnapshotsForInvitation(existing.id);
+        logAction("invitation", slug, "skipped", `already published (${snapshots.length} snapshot(s))`);
+        continue;
+      }
+
       const config = createPublishedSnapshot(
         buildInvitationConfigV2(entry.blueprint, entry.preset, entry.data)
       );
@@ -143,19 +202,29 @@ async function main() {
         presetVersion: prVersion,
       });
       await setInvitationPublishedSnapshot(row.id, snapshot.id);
-      console.log(`  ✓ ${entry.data.slug} (published snapshot ${snapshot.id})`);
+      logAction("invitation", slug, action, `published snapshot ${snapshot.id}`);
     } else {
-      console.log(`  ✓ ${entry.data.slug} (draft)`);
+      if (!previewTokenPlain && row.preview_token_hash) {
+        await setInvitationPreviewTokenHash(row.id, row.preview_token_hash);
+      }
+      logAction("invitation", slug, action, "draft");
     }
   }
 
-  console.log("\nDone. Test:");
-  console.log("  /i/ws-royal-demo  → published snapshot from Supabase");
-  console.log("  /i/ws-floral-demo → draft live merge from Supabase");
-  console.log("  /i/demo-wedding   → local registry fallback");
+  console.log("\n── Done ──");
+  console.log("Published: /i/ws-royal-demo");
+  console.log("Draft preview URLs: see .preview-tokens.local (gitignored)");
+  console.log("Local fallback: /i/demo-wedding");
 }
 
-main().catch((error) => {
-  console.error(error);
+main().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  if (message.includes("preview_token_hash")) {
+    console.error(
+      "\nMissing column preview_token_hash — apply migration:\n" +
+        "  supabase/migrations/20260709130000_phase_3a_1_hardening.sql\n"
+    );
+  }
+  console.error(message);
   process.exit(1);
 });

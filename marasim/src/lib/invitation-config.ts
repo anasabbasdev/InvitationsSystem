@@ -60,3 +60,7 @@ export function getInvitationBySlug(slug: string): InvitationConfig | null {
 export function getLocalInvitationSlugs(): string[] {
   return Object.keys(INVITATION_REGISTRY);
 }
+
+export function isLocalRegistrySlug(slug: string): boolean {
+  return slug in INVITATION_REGISTRY;
+}

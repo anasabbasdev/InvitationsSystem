@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:seed": "tsx --tsconfig tsconfig.json scripts/seed-supabase.ts",
+    "test:persistence": "tsx --test --tsconfig tsconfig.json scripts/test-persistence.mts",
+    "verify:persistence": "tsx --tsconfig tsconfig.json scripts/verify-persistence.mts",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
@@ -22,6 +24,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.81.0",
+    "server-only": "^0.0.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

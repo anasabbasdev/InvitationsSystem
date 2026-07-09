@@ -1,43 +1,66 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getLocalInvitationSlugs } from "@/lib/invitation-config";
-import { loadInvitationBySlug } from "@/lib/invitation-loader";
+import {
+  isDraftPreviewRequired,
+  loadInvitation,
+} from "@/lib/invitation-loader";
+import { isInvitationLoaded } from "@/types/invitation-load";
 import InvitationRenderer from "@/components/invitation/InvitationRenderer";
 
 interface Props {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ preview?: string }>;
 }
 
-/** Allow slugs not in the static registry (Supabase-only invitations). */
+/**
+ * Cache policy (Phase 3A.1):
+ * - Published snapshots: safe to cache (immutable JSON). Loader reads live snapshot id;
+ *   re-publish creates new snapshot row + updates invitation.published_snapshot_id.
+ *   Call revalidateTag(`invitation-${slug}`) on republish (see republishInvitation).
+ * - Draft preview: `?preview=` forces dynamic render (searchParams) — always fresh merge.
+ * - Local registry: statically generated paths from generateStaticParams.
+ */
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
   return getLocalInvitationSlugs().map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const config = await loadInvitationBySlug(slug);
+  const { preview } = await searchParams;
+  const result = await loadInvitation(slug, { previewToken: preview ?? null });
   return {
-    title: config ? "دعوة خاصة" : "الصفحة غير موجودة",
+    title: isInvitationLoaded(result) ? "دعوة خاصة" : "الصفحة غير موجودة",
     robots: { index: false, follow: false },
   };
 }
 
-export default async function InvitationPage({ params }: Props) {
+export default async function InvitationPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const config = await loadInvitationBySlug(slug);
+  const { preview } = await searchParams;
 
-  if (!config) {
+  const result = await loadInvitation(slug, { previewToken: preview ?? null });
+
+  if (result.status === "not_found" || result.status === "not_configured") {
+    notFound();
+  }
+
+  if (result.status === "database_error") {
+    if (isDraftPreviewRequired(result)) {
+      notFound();
+    }
+    notFound();
+  }
+
+  if (!isInvitationLoaded(result)) {
     notFound();
   }
 
   return (
-    <div
-      className="min-h-dvh"
-      style={{ backgroundColor: "#000" }}
-    >
-      <InvitationRenderer config={config} />
+    <div className="min-h-dvh" style={{ backgroundColor: "#000" }}>
+      <InvitationRenderer config={result.config} />
     </div>
   );
 }

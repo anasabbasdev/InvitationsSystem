@@ -1,5 +1,4 @@
-import { getSupabaseServer } from "@/lib/supabase/server";
-import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import { createSupabaseAdminClient } from "@/lib/supabase/create-admin-client";
 import type { DesignPreset } from "@/types/invitation";
 import type { DbDesignPresetRow, UpsertPresetInput } from "@/types/persistence";
 
@@ -8,7 +7,7 @@ const TABLE = "design_presets";
 export async function fetchPresetById(
   id: string
 ): Promise<DbDesignPresetRow | null> {
-  const { data, error } = await getSupabaseServer()
+  const { data, error } = await createSupabaseAdminClient()
     .from(TABLE)
     .select("*")
     .eq("id", id)
@@ -22,7 +21,7 @@ export async function fetchPresetByNameVersion(
   name: string,
   version: string
 ): Promise<DbDesignPresetRow | null> {
-  const { data, error } = await getSupabaseServer()
+  const { data, error } = await createSupabaseAdminClient()
     .from(TABLE)
     .select("*")
     .eq("name", name)
@@ -37,10 +36,17 @@ export function parsePresetRow(row: DbDesignPresetRow): DesignPreset {
   return row.preset_json;
 }
 
+export type UpsertPresetResult = {
+  row: DbDesignPresetRow;
+  action: "created" | "updated";
+};
+
 export async function upsertPreset(
   input: UpsertPresetInput
-): Promise<DbDesignPresetRow> {
-  const admin = getSupabaseAdmin();
+): Promise<UpsertPresetResult> {
+  const admin = createSupabaseAdminClient();
+  const existing = await fetchPresetByNameVersion(input.name, input.version);
+
   const payload = {
     name: input.name,
     version: input.version,
@@ -56,5 +62,20 @@ export async function upsertPreset(
     .single();
 
   if (error) throw error;
-  return data as DbDesignPresetRow;
+  return {
+    row: data as DbDesignPresetRow,
+    action: existing ? "updated" : "created",
+  };
+}
+
+export async function updatePresetJson(
+  id: string,
+  preset: DesignPreset
+): Promise<void> {
+  const { error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .update({ preset_json: preset })
+    .eq("id", id);
+
+  if (error) throw error;
 }

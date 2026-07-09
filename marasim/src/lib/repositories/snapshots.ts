@@ -1,5 +1,4 @@
-import { getSupabaseServer } from "@/lib/supabase/server";
-import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import { createSupabaseAdminClient } from "@/lib/supabase/create-admin-client";
 import type { InvitationConfig } from "@/types/invitation";
 import type { DbPublishedSnapshotRow } from "@/types/persistence";
 
@@ -8,7 +7,7 @@ const TABLE = "published_snapshots";
 export async function fetchSnapshotById(
   id: string
 ): Promise<DbPublishedSnapshotRow | null> {
-  const { data, error } = await getSupabaseServer()
+  const { data, error } = await createSupabaseAdminClient()
     .from(TABLE)
     .select("*")
     .eq("id", id)
@@ -16,6 +15,19 @@ export async function fetchSnapshotById(
 
   if (error) throw error;
   return data as DbPublishedSnapshotRow | null;
+}
+
+export async function listSnapshotsForInvitation(
+  invitationId: string
+): Promise<DbPublishedSnapshotRow[]> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .select("*")
+    .eq("invitation_id", invitationId)
+    .order("snapshot_at", { ascending: true });
+
+  if (error) throw error;
+  return (data ?? []) as DbPublishedSnapshotRow[];
 }
 
 export function parseSnapshotConfig(
@@ -33,10 +45,11 @@ export type CreateSnapshotInput = {
   presetVersion: string;
 };
 
+/** Insert-only — snapshots are immutable (DB trigger enforces). */
 export async function createSnapshot(
   input: CreateSnapshotInput
 ): Promise<DbPublishedSnapshotRow> {
-  const admin = getSupabaseAdmin();
+  const admin = createSupabaseAdminClient();
   const { data, error } = await admin
     .from(TABLE)
     .insert({

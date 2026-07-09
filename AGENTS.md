@@ -153,22 +153,17 @@ gallery_media | location | notes | rsvp | ticket_confirmation
 - Re-publish creates a **new** snapshot; old snapshots are retained for audit / rollback.
 - `createPublishedSnapshot()` sets `snapshotAt` and should record `blueprintRef`, `presetRef`, `dataRef` on the config.
 
-### Database Contract (Phase 3A — design only, not implemented yet)
+### Database Contract (Phase 3A — implemented)
 
-Design tables:
+Design tables: `sequence_blueprints`, `design_presets`, `invitations`, `published_snapshots` + operational `events`, `event_settings`.
 
-| Table | Key fields |
-|---|---|
-| `sequence_blueprints` | `id`, `name`, `version`, `blueprint_json`, `status`, timestamps |
-| `design_presets` | `id`, `name`, `version`, `compatible_blueprint_id` (nullable), `preset_json`, `status`, timestamps |
-| `invitations` | `id`, `event_id`, `slug`, `blueprint_id`, `blueprint_version`, `preset_id`, `preset_version`, `invitation_data_json`, `status` (`draft` \| `published` \| `archived`), `published_snapshot_id` (nullable), timestamps |
-| `published_snapshots` | `id`, `invitation_id`, `resolved_config_json`, `blueprint_id`, `blueprint_version`, `preset_id`, `preset_version`, `snapshot_at` |
+Migrations: `marasim/supabase/migrations/` (apply both 3A and 3A.1).
 
-Operational tables (Phase 3B+): `events`, `event_settings`, `rsvps`, `tickets`, `invite_links`, `checkins`, `event_notifications`.
+Env: `.env.local` (see `.env.local.example`). Scripts use `loadProjectEnv()`.
 
-**Decision pending before migration:** actual schema may use UUID primary keys with string business IDs inside JSON — pick one convention and apply consistently.
+Draft preview: `/i/[slug]?preview=[token]` — hash in `invitations.preview_token_hash`.
 
-> Do not create Supabase tables or migrations until Phase 3A is explicitly approved.
+RLS: enabled, no public policies — service role server-side only.
 
 ---
 
@@ -231,7 +226,9 @@ src/
       journey.ts
     scene-design.ts               # DesignTokens defaults + resolution
     supabase.ts                   # Phase 3A+
-    invitation-config.ts          # slug registry (+ Supabase fallback in 3A)
+    invitation-config.ts          # local slug registry
+    invitation-loader.ts          # loadInvitation() + InvitationLoadResult
+    invitation-loader-core.ts     # shared loader (scripts/tests)
     rsvp.ts
     tickets.ts
     checkin.ts
@@ -446,14 +443,13 @@ Follow this order unless the user explicitly changes it:
 12. **Architecture Validation & Journey Foundation — SequenceBlueprint, DesignPreset, sceneId overrides, enabled scenes. Done (Phase 2.10)**
 13. **Scene Instance Composer & Architecture Closure — sceneId-based Composer, Journey editor, separated exports, published snapshot policy. Done (Phase 2.11)**
 14. **Documentation & Persistence Contract Freeze — V2-only docs, database contract, snapshot policy. Done (Phase 2.12)**
-15. **Phase 3A — Supabase Persistence Foundation** (in progress):
-    - Supabase setup + migrations ✅
-    - Blueprint / Preset / Invitation / Snapshot repositories ✅
-    - Load invitation by slug from Supabase ✅
-    - Local registry fallback for demos ✅
-    - Seed script (`npm run db:seed`) ✅
-    - No real RSVP submission yet
-16. **Phase 3B — Public Request RSVP** (not started — requires approval):
+15. **Phase 3A — Supabase Persistence Foundation** ✅ Done (integration-tested via 3A.1):
+    - Migrations + repositories + loader + seed + local fallback
+    - Commands: `npm run db:seed`, `npm run test:persistence`, `npm run verify:persistence`
+16. **Phase 3A.1 — Persistence Integration Acceptance & Hardening** ✅ Done:
+    - `.env.local` standard, Zod validation, draft preview tokens, RLS hardening
+    - Idempotent seed, explicit `InvitationLoadResult`, no silent DB→local fallback
+17. **Phase 3B — Public Request RSVP** (not started — requires approval):
     - RSVP submission + cryptographic `rsvp_view_token`
     - Redirect to `/s/[token]`
     - Status page: pending / rejected / approved
