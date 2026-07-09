@@ -19,9 +19,9 @@ import {
   createPublicRsvp,
   createInviteLink,
   confirmInviteLinkRpc,
+  fetchTicketDisplayInfo,
 } from "../src/lib/repositories";
-import { submitPublicRSVP, getRSVPStatusView } from "../src/lib/rsvp";
-import { getTicketByToken } from "../src/lib/tickets";
+import { submitPublicRSVP, getRSVPStatusView } from "../src/lib/rsvp-core";
 
 loadProjectEnv();
 
@@ -130,7 +130,7 @@ async function main() {
   console.log("  ✓ over-capacity approval blocked");
 
   console.log("\n── Check-in + wrong event ──");
-  const ticketInfo = await getTicketByToken(approved.ticketToken);
+  const ticketInfo = await fetchTicketDisplayInfo(approved.ticketToken);
   assert.ok(ticketInfo);
   const wrongScan = await scanTicket(approved.ticketToken, floral!.id);
   assert.equal(wrongScan.status, "WRONG_EVENT");

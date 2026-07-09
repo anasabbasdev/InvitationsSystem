@@ -13,7 +13,7 @@ import { fetchInvitationBySlug, listSnapshotsForInvitation } from "../src/lib/re
 import { loadInvitation } from "../src/lib/invitation-loader-core";
 import { updatePresetJson, fetchPresetById } from "../src/lib/repositories/presets";
 import { republishInvitation } from "../src/lib/repositories/republish";
-import { submitPublicRSVP, getRSVPStatusView } from "../src/lib/rsvp";
+import { submitPublicRSVP, getRSVPStatusView } from "../src/lib/rsvp-core";
 import { listNotificationsForEvent } from "../src/lib/repositories/notifications";
 import { weddingRoyalDarkPreset } from "../src/data/presets/wedding-royal-dark.preset";
 import { readFileSync, existsSync } from "node:fs";
