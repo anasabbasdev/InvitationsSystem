@@ -33,10 +33,12 @@ import {
   createSnapshot,
   fetchInvitationBySlug,
   listSnapshotsForInvitation,
+  setInvitationEventId,
   setInvitationPreviewTokenHash,
   setInvitationPublishedSnapshot,
   updateInvitationDataJson,
   upsertBlueprint,
+  upsertEventWithSettings,
   upsertInvitation,
   upsertPreset,
 } from "@/lib/repositories";
@@ -90,6 +92,32 @@ function appendPreviewToken(slug: string, token: string) {
     writeFileSync(PREVIEW_TOKENS_FILE, "# gitignored — draft preview tokens\n", "utf8");
   }
   appendFileSync(PREVIEW_TOKENS_FILE, line, "utf8");
+}
+
+function eventTitleFromData(data: InvitationData): string {
+  const hero = data.content.hero_names;
+  if (hero?.primaryName && hero?.secondaryName) {
+    return `زفاف ${hero.primaryName} و ${hero.secondaryName}`;
+  }
+  return data.slug;
+}
+
+async function ensureEventForInvitation(data: InvitationData): Promise<string | null> {
+  if (!data.rsvp?.enabled) return null;
+
+  const details = data.content.event_details;
+  const { event } = await upsertEventWithSettings({
+    slug: data.slug,
+    title: eventTitleFromData(data),
+    eventDate: details?.date ? `${details.date}T00:00:00+03:00` : null,
+    venueName: details?.venueName ?? null,
+    rsvpEnabled: data.rsvp.enabled,
+    rsvpMode: data.rsvp.mode,
+    maxPublicRequest: data.rsvp.maxPublicRequest ?? 4,
+    approvalRequired: data.rsvp.approvalRequired,
+  });
+
+  return event.id;
 }
 
 async function main() {
@@ -149,10 +177,19 @@ async function main() {
       throw new Error(`Missing blueprint/preset UUID for ${slug}`);
     }
 
+    const eventId = await ensureEventForInvitation(entry.data);
+    if (eventId) {
+      logAction("event", slug, "updated", eventId);
+    }
+
     const existing = await fetchInvitationBySlug(slug);
 
     if (existing?.status === "published" && existing.published_snapshot_id) {
       await updateInvitationDataJson(existing.id, entry.data);
+      if (eventId && !existing.event_id) {
+        await setInvitationEventId(existing.id, eventId);
+        logAction("event_link", slug, "updated", eventId);
+      }
       logAction("invitation", slug, "updated", "published — data only, snapshot preserved");
       continue;
     }
@@ -167,6 +204,7 @@ async function main() {
 
     const { row, action } = await upsertInvitation({
       slug,
+      eventId: eventId ?? undefined,
       blueprintId: blueprintUuid,
       blueprintVersion: bpVersion,
       presetId: presetUuid,
@@ -213,6 +251,7 @@ async function main() {
 
   console.log("\n── Done ──");
   console.log("Published: /i/ws-royal-demo");
+  console.log("RSVP status after submit: /s/[rsvp_view_token]");
   console.log("Draft preview URLs: see .preview-tokens.local (gitignored)");
   console.log("Local fallback: /i/demo-wedding");
 }
@@ -223,6 +262,12 @@ main().catch((error: unknown) => {
     console.error(
       "\nMissing column preview_token_hash — apply migration:\n" +
         "  supabase/migrations/20260709130000_phase_3a_1_hardening.sql\n"
+    );
+  }
+  if (message.includes("rsvps") || message.includes("event_notifications")) {
+    console.error(
+      "\nMissing RSVP tables — apply migration:\n" +
+        "  supabase/migrations/20260709140000_phase_3b_rsvp.sql\n"
     );
   }
   console.error(message);

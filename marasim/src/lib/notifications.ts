@@ -1,6 +1,5 @@
 /**
- * In-app notification logic — Phase 4
- * Notifications are stored in Supabase and displayed in the owner dashboard.
+ * In-app notification types — Phase 3B creates records; Phase 4 displays in dashboard.
  */
 
 export interface AppNotification {

@@ -7,7 +7,6 @@ import SceneFrame from "../SceneFrame";
 import LayerRenderer from "../LayerRenderer";
 import SceneOrnament from "@/components/ui/SceneOrnament";
 import SectionLabel from "@/components/ui/SectionLabel";
-import SceneIcon from "@/components/ui/SceneIcon";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, getButtonStyles, getCardStyles, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
 
@@ -21,32 +20,65 @@ type VProps = { scene: InvitationScene; config: InvitationConfig; content: Conte
 
 type FormState = { name: string; guests: string; note: string };
 
-function useRSVPForm() {
+function useRSVPForm(slug: string, maxSeats: number) {
   const [form, setForm] = useState<FormState>({ name: "", guests: "1", note: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const seatOptions = Array.from({ length: Math.max(1, maxSeats) }, (_, i) => i + 1);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/rsvp/public", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug,
+          name: form.name.trim(),
+          requestedSeats: Number.parseInt(form.guests, 10),
+          guestNote: form.note.trim() || undefined,
+        }),
+      });
+
+      const data = (await response.json()) as { statusUrl?: string; error?: string };
+
+      if (!response.ok) {
+        setError(data.error ?? "تعذر إرسال الطلب. حاول مرة أخرى.");
+        return;
+      }
+
+      if (data.statusUrl) {
+        window.location.href = data.statusUrl;
+      }
+    } catch {
+      setError("تعذر الاتصال بالخادم. تحقق من الاتصال وحاول مرة أخرى.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
-  return { form, submitted, handleChange, handleSubmit };
+  return { form, submitting, error, seatOptions, handleChange, handleSubmit };
 }
 
 // ─── Variant: luxury_form ─────────────────────────────────────────────────────
 // Full styled form with ornament divider.
 
 function LuxuryForm({ scene, config, content, d }: VProps) {
-  const { theme, rsvp } = config;
+  const { theme, rsvp, slug } = config;
   const primaryRgb = hexToRgbString(theme.primaryColor);
   const cardStyles = getCardStyles(d.cardStyle, primaryRgb);
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
   const label = content.sectionLabel ?? "تأكيد الحضور";
-  const { form, submitted, handleChange, handleSubmit } = useRSVPForm();
+  const maxSeats = rsvp.maxPublicRequest ?? 4;
+  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats);
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -80,31 +112,7 @@ function LuxuryForm({ scene, config, content, d }: VProps) {
           <SceneOrnament dividerStyle={d.dividerStyle} ornamentAsset={d.ornamentAsset} />
         </motion.div>
 
-        {submitted ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "1.25rem",
-              padding: "2.5rem 2rem",
-              maxWidth: 320,
-              ...cardStyles,
-            }}
-          >
-            <SceneIcon name="check" style="line" size={32} color={theme.primaryColor} />
-            <p style={{ fontFamily: resolveFont(d, "heading"), fontSize: "1.2rem", color: theme.primaryColor }}>
-              تم استلام طلبك
-            </p>
-            <p style={{ fontFamily: resolveFont(d, "body"), fontSize: "0.82rem", color: theme.secondaryColor, opacity: 0.65, lineHeight: 1.9 }}>
-              في النسخة الفعلية سيتم إنشاء رابط خاص لمتابعة حالة طلبك والحصول على التذكرة بعد موافقة المضيف.
-            </p>
-          </motion.div>
-        ) : (
-          <motion.form
+        <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -129,11 +137,18 @@ function LuxuryForm({ scene, config, content, d }: VProps) {
               value={form.name}
               onChange={handleChange}
               required
+              disabled={submitting}
               style={inputStyle}
             />
 
-            <select name="guests" value={form.guests} onChange={handleChange} style={inputStyle}>
-              {[1, 2, 3, 4, 5].map((n) => (
+            <select
+              name="guests"
+              value={form.guests}
+              onChange={handleChange}
+              disabled={submitting}
+              style={inputStyle}
+            >
+              {seatOptions.map((n) => (
                 <option key={n} value={n}>
                   {n} {n === 1 ? "شخص" : "أشخاص"}
                 </option>
@@ -145,19 +160,38 @@ function LuxuryForm({ scene, config, content, d }: VProps) {
               placeholder="ملاحظة (اختياري)"
               value={form.note}
               onChange={handleChange}
+              disabled={submitting}
               rows={3}
               style={{ ...inputStyle, resize: "none" }}
             />
 
+            {error && (
+              <p
+                style={{
+                  fontFamily: resolveFont(d, "body"),
+                  fontSize: "0.8rem",
+                  color: "#E8A0A0",
+                  lineHeight: 1.6,
+                }}
+              >
+                {error}
+              </p>
+            )}
+
             <motion.button
               type="submit"
-              whileTap={{ scale: 0.97 }}
-              style={{ ...btnStyle, marginTop: "0.5rem" }}
+              whileTap={{ scale: submitting ? 1 : 0.97 }}
+              disabled={submitting}
+              style={{
+                ...btnStyle,
+                marginTop: "0.5rem",
+                opacity: submitting ? 0.7 : 1,
+                cursor: submitting ? "wait" : "pointer",
+              }}
             >
-              تأكيد الحضور
+              {submitting ? "جاري الإرسال..." : "تأكيد الحضور"}
             </motion.button>
           </motion.form>
-        )}
       </div>
 
       {scene.foreground?.map((layer, i) => (
@@ -171,10 +205,11 @@ function LuxuryForm({ scene, config, content, d }: VProps) {
 // Same fields, much less decoration. Clean and minimal.
 
 function MinimalForm({ scene, config, content, d }: VProps) {
-  const { theme, rsvp } = config;
+  const { theme, rsvp, slug } = config;
   const label = content.sectionLabel ?? "تأكيد الحضور";
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
-  const { form, submitted, handleChange, handleSubmit } = useRSVPForm();
+  const maxSeats = rsvp.maxPublicRequest ?? 4;
+  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats);
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -199,22 +234,7 @@ function MinimalForm({ scene, config, content, d }: VProps) {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-dvh px-8 py-16 gap-10">
         <SectionLabel text={label} d={d} />
 
-        {submitted ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col items-center gap-4 text-center max-w-xs"
-          >
-            <p style={{ fontFamily: resolveFont(d, "heading"), fontSize: "1.3rem", color: theme.primaryColor }}>
-              تم استلام طلبك
-            </p>
-            <p style={{ fontFamily: resolveFont(d, "body"), fontSize: "0.82rem", color: theme.secondaryColor, opacity: 0.65, lineHeight: 1.9 }}>
-              سيتم إنشاء رابط خاص لمتابعة حالة طلبك بعد الموافقة.
-            </p>
-          </motion.div>
-        ) : (
-          <motion.form
+        <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -236,11 +256,18 @@ function MinimalForm({ scene, config, content, d }: VProps) {
               value={form.name}
               onChange={handleChange}
               required
+              disabled={submitting}
               style={inputStyle}
             />
 
-            <select name="guests" value={form.guests} onChange={handleChange} style={inputStyle}>
-              {[1, 2, 3, 4, 5].map((n) => (
+            <select
+              name="guests"
+              value={form.guests}
+              onChange={handleChange}
+              disabled={submitting}
+              style={inputStyle}
+            >
+              {seatOptions.map((n) => (
                 <option key={n} value={n}>
                   {n} {n === 1 ? "شخص" : "أشخاص"}
                 </option>
@@ -252,15 +279,37 @@ function MinimalForm({ scene, config, content, d }: VProps) {
               placeholder="ملاحظة (اختياري)"
               value={form.note}
               onChange={handleChange}
+              disabled={submitting}
               rows={2}
               style={{ ...inputStyle, resize: "none" }}
             />
 
-            <motion.button type="submit" whileTap={{ scale: 0.97 }} style={btnStyle}>
-              تأكيد الحضور
+            {error && (
+              <p
+                style={{
+                  fontFamily: resolveFont(d, "body"),
+                  fontSize: "0.8rem",
+                  color: "#E8A0A0",
+                  lineHeight: 1.6,
+                }}
+              >
+                {error}
+              </p>
+            )}
+
+            <motion.button
+              type="submit"
+              whileTap={{ scale: submitting ? 1 : 0.97 }}
+              disabled={submitting}
+              style={{
+                ...btnStyle,
+                opacity: submitting ? 0.7 : 1,
+                cursor: submitting ? "wait" : "pointer",
+              }}
+            >
+              {submitting ? "جاري الإرسال..." : "تأكيد الحضور"}
             </motion.button>
           </motion.form>
-        )}
       </div>
 
       {scene.foreground?.map((layer, i) => (

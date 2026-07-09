@@ -1,4 +1,4 @@
-# Supabase — Phase 3A / 3A.1
+# Supabase — Phase 3A / 3A.1 / 3B
 
 ## Environment files
 
@@ -23,10 +23,13 @@ Next.js does **not** read `.dev.vars` by itself. Use `.env.local` for the app.
 
 1. `migrations/20260709120000_phase_3a_persistence.sql`
 2. `migrations/20260709130000_phase_3a_1_hardening.sql`
+3. `migrations/20260709140000_phase_3b_rsvp.sql`
 
 In Supabase SQL Editor: run each file in order.
 
 Migration 002 adds: `preview_token_hash`, constraints, snapshot immutability triggers, removes anon read RLS policies.
+
+Migration 003 adds: `rsvps`, `event_notifications` (service-role only; no anon policies).
 
 ## Commands
 
@@ -40,9 +43,17 @@ npm run db:seed
 # Unit tests (no Supabase required)
 npm run test:persistence
 
-# Integration tests (real Supabase + both migrations + seed)
+# Integration tests (real Supabase + all migrations + seed)
 npm run verify:persistence
 ```
+
+## Phase 3B — Public Request RSVP
+
+- Guest submits on `/i/ws-royal-demo` (published) → `POST /api/rsvp/public`
+- Redirect to `/s/[rsvp_view_token]` (pending / approved / rejected)
+- Owner notification row in `event_notifications` on submit
+- No seat deduction until Phase 4 approval
+- Seed links `events` + `event_settings` to invitations with RSVP enabled
 
 Draft preview URLs are written to `.preview-tokens.local` (gitignored) on first seed.
 

@@ -78,6 +78,18 @@ export async function upsertInvitation(
   };
 }
 
+export async function setInvitationEventId(
+  invitationId: string,
+  eventId: string
+): Promise<void> {
+  const { error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .update({ event_id: eventId })
+    .eq("id", invitationId);
+
+  if (error) throw error;
+}
+
 export async function setInvitationPreviewTokenHash(
   invitationId: string,
   previewTokenHash: string

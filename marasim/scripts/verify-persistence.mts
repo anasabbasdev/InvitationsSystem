@@ -13,6 +13,8 @@ import { fetchInvitationBySlug, listSnapshotsForInvitation } from "../src/lib/re
 import { loadInvitation } from "../src/lib/invitation-loader-core";
 import { updatePresetJson, fetchPresetById } from "../src/lib/repositories/presets";
 import { republishInvitation } from "../src/lib/repositories/republish";
+import { submitPublicRSVP, getRSVPStatusView } from "../src/lib/rsvp";
+import { listNotificationsForEvent } from "../src/lib/repositories/notifications";
 import { weddingRoyalDarkPreset } from "../src/data/presets/wedding-royal-dark.preset";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
@@ -26,6 +28,8 @@ const REQUIRED_TABLES = [
   "published_snapshots",
   "events",
   "event_settings",
+  "rsvps",
+  "event_notifications",
 ];
 
 function readPreviewToken(slug: string): string | null {
@@ -115,6 +119,33 @@ async function main() {
     assert.equal(localLoad.source, "local_registry");
   }
   console.log("  ✓ demo-wedding from local registry");
+
+  console.log("\n── 5. Public RSVP (ws-royal-demo) ──");
+  assert.ok(royalRow.event_id, "ws-royal-demo must be linked to event — re-run db:seed after migration 3B");
+
+  const uniqueName = `Verify Guest ${Date.now()}`;
+  const rsvpResult = await submitPublicRSVP({
+    slug: "ws-royal-demo",
+    name: uniqueName,
+    requestedSeats: 2,
+    guestNote: "integration test",
+  });
+  assert.ok(rsvpResult.rsvpViewToken);
+  assert.equal(rsvpResult.status, "pending");
+
+  const statusView = await getRSVPStatusView(rsvpResult.rsvpViewToken);
+  assert.ok(statusView);
+  assert.equal(statusView?.name, uniqueName);
+  assert.equal(statusView?.status, "pending");
+  assert.equal(statusView?.requestedSeats, 2);
+  console.log(`  ✓ RSVP submitted → /s/${rsvpResult.rsvpViewToken.slice(0, 8)}...`);
+
+  const notifications = await listNotificationsForEvent(royalRow.event_id!);
+  const pendingNotif = notifications.find(
+    (n) => n.type === "rsvp_pending" && n.payload?.name === uniqueName
+  );
+  assert.ok(pendingNotif, "owner notification must be created on RSVP submit");
+  console.log("  ✓ owner notification created");
 
   console.log("\n── All integration checks passed ──\n");
 }

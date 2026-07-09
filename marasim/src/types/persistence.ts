@@ -70,6 +70,57 @@ export type DbEventRow = {
   created_at: string;
 };
 
+export type DbEventSettingsRow = {
+  id: string;
+  event_id: string;
+  rsvp_enabled: boolean;
+  rsvp_mode: string;
+  max_public_request: number;
+  approval_required: boolean;
+  cancellation_deadline_hours: number;
+  created_at: string;
+};
+
+export type DbRsvpRow = {
+  id: string;
+  event_id: string;
+  invitation_id: string | null;
+  invite_link_id: string | null;
+  name: string;
+  phone: string | null;
+  side: string | null;
+  guest_note: string | null;
+  requested_seats: number;
+  approved_seats: number | null;
+  status: "pending" | "approved" | "rejected";
+  rsvp_view_token: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DbEventNotificationRow = {
+  id: string;
+  event_id: string;
+  type: string;
+  title: string;
+  message: string | null;
+  payload: Record<string, unknown> | null;
+  read_at: string | null;
+  created_at: string;
+};
+
+export type UpsertEventInput = {
+  slug: string;
+  title: string;
+  eventDate?: string | null;
+  venueName?: string | null;
+  totalCapacity?: number | null;
+  rsvpEnabled: boolean;
+  rsvpMode: "none" | "public_request" | "controlled_link";
+  maxPublicRequest: number;
+  approvalRequired: boolean;
+};
+
 export type UpsertBlueprintInput = {
   name: string;
   version: string;

@@ -20,6 +20,11 @@ import { weddingStandardBlueprint } from "@/data/blueprints/wedding-standard.blu
 import { weddingRoyalDarkPreset } from "@/data/presets/wedding-royal-dark.preset";
 import { wsRoyalDemoData } from "@/data/invitations/ws-royal-demo";
 import { buildInvitationConfigV2, createPublishedSnapshot } from "@/lib/build-config";
+import { generateSecureToken } from "@/lib/secure-token";
+import {
+  parsePublicRsvpBody,
+  publicRsvpBodySchema,
+} from "@/lib/validation/rsvp-schemas";
 
 describe("preview token", () => {
   it("generates and verifies token hash", () => {
@@ -149,5 +154,44 @@ describe("snapshot immutability contract", () => {
     const snapshot = createPublishedSnapshot(config);
     assert.ok(snapshot.snapshotAt);
     assert.notEqual(snapshot.snapshotAt, config.snapshotAt);
+  });
+});
+
+describe("RSVP validation (Phase 3B)", () => {
+  it("generates URL-safe secure tokens", () => {
+    const a = generateSecureToken();
+    const b = generateSecureToken();
+    assert.ok(a.length >= 32);
+    assert.notEqual(a, b);
+    assert.match(a, /^[A-Za-z0-9_-]+$/);
+  });
+
+  it("accepts valid public RSVP body", () => {
+    const parsed = parsePublicRsvpBody({
+      slug: "ws-royal-demo",
+      name: "محمد أحمد",
+      requestedSeats: 2,
+      guestNote: "شكراً",
+    });
+    assert.equal(parsed.slug, "ws-royal-demo");
+    assert.equal(parsed.requestedSeats, 2);
+  });
+
+  it("rejects short name", () => {
+    const result = publicRsvpBodySchema.safeParse({
+      slug: "ws-royal-demo",
+      name: "م",
+      requestedSeats: 1,
+    });
+    assert.equal(result.success, false);
+  });
+
+  it("coerces requestedSeats from string", () => {
+    const parsed = parsePublicRsvpBody({
+      slug: "ws-royal-demo",
+      name: "سارة",
+      requestedSeats: "3",
+    });
+    assert.equal(parsed.requestedSeats, 3);
   });
 });
