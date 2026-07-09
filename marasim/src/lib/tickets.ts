@@ -1,11 +1,27 @@
+import "server-only";
+
 /**
- * Ticket generation logic — Phase 5
- * Will create group QR tickets linked to approved RSVPs.
+ * Ticket lookups — group QR tickets are created inside approve_rsvp /
+ * confirm_invite_link (Postgres functions), never directly from app code.
+ * This module only exposes read access for guest-facing pages and the scanner.
  */
 
-import type { Ticket } from "@/types/tickets";
+import { fetchTicketDisplayInfo, scanTicket } from "@/lib/repositories";
+import type { ScanResult, TicketDisplayInfo } from "@/types/tickets";
 
-export type { Ticket };
+export type { Ticket, TicketDisplayInfo, ScanResult } from "@/types/tickets";
+export { extractTicketToken } from "@/lib/ticket-token";
 
-// TODO Phase 5: implement generateTicket(rsvpId: string, maxEntries: number): Promise<Ticket>
-// TODO Phase 5: implement getTicketByToken(token: string): Promise<Ticket | null>
+export async function getTicketByToken(
+  token: string
+): Promise<TicketDisplayInfo | null> {
+  return fetchTicketDisplayInfo(token);
+}
+
+/** Read-only lookup used by the scanner before check-in — never mutates. */
+export async function lookupTicketForScanner(
+  token: string,
+  scannerEventId: string
+): Promise<ScanResult> {
+  return scanTicket(token, scannerEventId);
+}

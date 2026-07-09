@@ -1,6 +1,17 @@
+import "server-only";
+
 /**
- * In-app notification types — Phase 3B creates records; Phase 4 displays in dashboard.
+ * In-app notification logic. Records are created by RSVP submission and
+ * approval/rejection flows (see lib/rsvp.ts + Postgres functions) and
+ * displayed in the owner dashboard.
  */
+
+import {
+  listNotificationsForEvent as listNotificationsRepo,
+  countUnreadNotifications as countUnreadRepo,
+  markNotificationRead as markReadRepo,
+  markAllNotificationsRead as markAllReadRepo,
+} from "@/lib/repositories";
 
 export interface AppNotification {
   id: string;
@@ -13,5 +24,18 @@ export interface AppNotification {
   createdAt: string;
 }
 
-// TODO Phase 4: implement getNotifications(eventId: string): Promise<AppNotification[]>
-// TODO Phase 4: implement markNotificationRead(id: string): Promise<void>
+export async function getNotifications(eventId: string): Promise<AppNotification[]> {
+  return listNotificationsRepo(eventId);
+}
+
+export async function countUnreadNotifications(eventId: string): Promise<number> {
+  return countUnreadRepo(eventId);
+}
+
+export async function markNotificationRead(id: string): Promise<void> {
+  return markReadRepo(id);
+}
+
+export async function markAllNotificationsRead(eventId: string): Promise<void> {
+  return markAllReadRepo(eventId);
+}

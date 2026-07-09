@@ -7,10 +7,11 @@ import {
 } from "@/lib/invitation-loader";
 import { isInvitationLoaded } from "@/types/invitation-load";
 import InvitationRenderer from "@/components/invitation/InvitationRenderer";
+import { validateInviteLink } from "@/lib/rsvp";
 
 interface Props {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ preview?: string }>;
+  searchParams: Promise<{ preview?: string; t?: string }>;
 }
 
 /**
@@ -39,7 +40,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 
 export default async function InvitationPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { preview } = await searchParams;
+  const { preview, t: inviteToken } = await searchParams;
 
   const result = await loadInvitation(slug, { previewToken: preview ?? null });
 
@@ -58,9 +59,27 @@ export default async function InvitationPage({ params, searchParams }: Props) {
     notFound();
   }
 
+  let controlledMaxSeats: number | null = null;
+  let controlledLabel: string | null = null;
+  let validInviteToken: string | null = null;
+
+  if (inviteToken) {
+    const validation = await validateInviteLink(inviteToken, slug);
+    if (validation.valid) {
+      validInviteToken = inviteToken;
+      controlledMaxSeats = validation.link.max_seats;
+      controlledLabel = validation.link.label ?? validation.link.guest_name ?? "دعوة خاصة";
+    }
+  }
+
   return (
     <div className="min-h-dvh" style={{ backgroundColor: "#000" }}>
-      <InvitationRenderer config={result.config} />
+      <InvitationRenderer
+        config={result.config}
+        inviteToken={validInviteToken}
+        controlledMaxSeats={controlledMaxSeats}
+        controlledLabel={controlledLabel}
+      />
     </div>
   );
 }

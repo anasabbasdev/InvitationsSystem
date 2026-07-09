@@ -23,6 +23,10 @@ function isSceneVisible(scene: InvitationScene): boolean {
 
 interface InvitationRendererProps {
   config: InvitationConfig;
+  /** Controlled Link RSVP — private invite token from ?t= */
+  inviteToken?: string | null;
+  controlledMaxSeats?: number | null;
+  controlledLabel?: string | null;
 }
 
 /**
@@ -34,7 +38,12 @@ interface InvitationRendererProps {
  *  2. Tap → gate fades out, content fades in.
  *  3. rsvp/ticket_confirmation hidden when rsvp.enabled = false.
  */
-export default function InvitationRenderer({ config }: InvitationRendererProps) {
+export default function InvitationRenderer({
+  config,
+  inviteToken,
+  controlledMaxSeats,
+  controlledLabel,
+}: InvitationRendererProps) {
   const { theme, layout, scenes } = config;
 
   // Find the opening scene — must be enabled to act as a gate
@@ -104,7 +113,22 @@ export default function InvitationRenderer({ config }: InvitationRendererProps) 
               {contentScenes.map((scene) => {
                 const Component = SCENE_COMPONENTS[scene.type];
                 if (!Component) return null;
-                return <Component key={scene.id} scene={scene} config={config} />;
+                const rsvpProps =
+                  scene.type === "rsvp"
+                    ? {
+                        inviteToken: inviteToken ?? undefined,
+                        controlledMaxSeats: controlledMaxSeats ?? undefined,
+                        controlledLabel: controlledLabel ?? undefined,
+                      }
+                    : {};
+                return (
+                  <Component
+                    key={scene.id}
+                    scene={scene}
+                    config={config}
+                    {...rsvpProps}
+                  />
+                );
               })}
             </motion.div>
           )}

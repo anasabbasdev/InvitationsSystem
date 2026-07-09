@@ -1,16 +1,28 @@
 import "server-only";
 
-import { fetchEventById, fetchEventSettings } from "@/lib/repositories/events";
-import { createEventNotification } from "@/lib/repositories/notifications";
-import { fetchInvitationBySlug } from "@/lib/repositories/invitations";
-import { createPublicRsvp, fetchRsvpByViewToken } from "@/lib/repositories/rsvps";
+import {
+  fetchEventById,
+  fetchEventSettings,
+  fetchInvitationBySlug,
+  fetchInviteLinkByToken,
+  fetchRsvpByViewToken,
+  createPublicRsvp,
+  createEventNotification,
+  approveRsvp as approveRsvpRepo,
+  rejectRsvp as rejectRsvpRepo,
+  confirmInviteLinkRpc,
+  fetchTicketDisplayInfo,
+  fetchTicketTokenByRsvpId,
+} from "@/lib/repositories";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { parsePublicRsvpBody } from "@/lib/validation/rsvp-schemas";
 import type {
+  ControlledRSVPSubmission,
   PublicRSVPResult,
   PublicRSVPSubmission,
   RSVPStatusView,
 } from "@/types/rsvp";
+import type { DbInviteLinkRow } from "@/types/persistence";
 
 export type { PublicRSVPSubmission, PublicRSVPResult, RSVPStatusView } from "@/types/rsvp";
 
@@ -108,15 +120,114 @@ export async function getRSVPStatusView(
 
   const event = await fetchEventById(rsvp.eventId);
 
+  let ticket: RSVPStatusView["ticket"] = null;
+  const ticketInfo =
+    rsvp.status === "approved" || rsvp.status === "confirmed"
+      ? await findTicketForRsvp(rsvp.id)
+      : null;
+  if (ticketInfo) {
+    ticket = {
+      token: ticketInfo.ticket.token,
+      maxEntries: ticketInfo.ticket.maxEntries,
+      usedEntries: ticketInfo.ticket.usedEntries,
+      remainingEntries: ticketInfo.ticket.remainingEntries,
+      status: ticketInfo.ticket.status,
+    };
+  }
+
   return {
     status: rsvp.status,
     name: rsvp.name,
     requestedSeats: rsvp.requestedSeats,
     approvedSeats: rsvp.approvedSeats,
     eventTitle: event?.title,
+    eventDate: event?.event_date,
+    venueName: event?.venue_name,
     guestNote: rsvp.guestNote,
+    ticket,
   };
 }
 
-// TODO Phase 4: implement approveRSVP(id: string, approvedSeats: number)
-// TODO Phase 4: implement rejectRSVP(id: string)
+async function findTicketForRsvp(rsvpId: string) {
+  const token = await fetchTicketTokenByRsvpId(rsvpId);
+  if (!token) return null;
+  return fetchTicketDisplayInfo(token);
+}
+
+// ─── Owner actions ──────────────────────────────────────────────────────────
+
+export async function approveRSVP(rsvpId: string, approvedSeats: number) {
+  return approveRsvpRepo(rsvpId, approvedSeats);
+}
+
+export async function rejectRSVP(rsvpId: string) {
+  return rejectRsvpRepo(rsvpId);
+}
+
+// ─── Controlled Link RSVP (Phase 6) ─────────────────────────────────────────
+
+export type InviteLinkValidation =
+  | { valid: true; link: DbInviteLinkRow }
+  | { valid: false; code: string; message: string };
+
+export async function validateInviteLink(
+  token: string,
+  slug: string
+): Promise<InviteLinkValidation> {
+  const link = await fetchInviteLinkByToken(token);
+  if (!link) {
+    return { valid: false, code: "INVALID", message: "رابط الدعوة غير صالح" };
+  }
+
+  const invitation = await fetchInvitationBySlug(slug);
+  if (!invitation || link.event_id !== invitation.event_id) {
+    return { valid: false, code: "INVALID", message: "رابط الدعوة لا يخص هذه الدعوة" };
+  }
+
+  if (link.status === "confirmed") {
+    return { valid: false, code: "ALREADY_CONFIRMED", message: "تم تأكيد هذا الرابط مسبقاً" };
+  }
+  if (link.status === "disabled") {
+    return { valid: false, code: "DISABLED", message: "تم تعطيل هذا الرابط" };
+  }
+  if (link.status === "expired" || (link.expires_at && new Date(link.expires_at) < new Date())) {
+    return { valid: false, code: "EXPIRED", message: "انتهت صلاحية هذا الرابط" };
+  }
+
+  return { valid: true, link };
+}
+
+export async function confirmControlledRSVP(
+  input: ControlledRSVPSubmission
+): Promise<{ rsvpViewToken: string; ticketToken: string }> {
+  if (!isSupabaseConfigured()) {
+    throw new RsvpError("RSVP is not available", "NOT_CONFIGURED", 503);
+  }
+
+  const validation = await validateInviteLink(input.inviteToken, input.slug);
+  if (!validation.valid) {
+    throw new RsvpError(validation.message, validation.code, 400);
+  }
+
+  if (!input.name || input.name.trim().length < 2) {
+    throw new RsvpError("الاسم غير صالح", "VALIDATION_ERROR", 400);
+  }
+  if (!Number.isInteger(input.seats) || input.seats <= 0) {
+    throw new RsvpError("عدد المقاعد غير صالح", "VALIDATION_ERROR", 400);
+  }
+
+  const result = await confirmInviteLinkRpc(
+    input.inviteToken,
+    input.name.trim(),
+    input.phone?.trim() || null,
+    input.seats
+  );
+
+  if (!result.ok) {
+    throw new RsvpError(result.message, result.code, 400);
+  }
+
+  return { rsvpViewToken: result.rsvpViewToken, ticketToken: result.ticketToken };
+}
+
+// TODO Post-MVP: allow guests to cancel/edit their own pending RSVP via the status page.

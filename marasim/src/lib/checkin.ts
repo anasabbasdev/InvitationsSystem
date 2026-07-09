@@ -1,10 +1,21 @@
+import "server-only";
+
 /**
- * Check-in / scanner logic — Phase 5
- * Will validate QR tickets and record partial group entries.
+ * Check-in / scanner logic. All capacity and event-matching safety lives in
+ * the check_in_ticket Postgres function (migration 004) — this module is a
+ * thin, typed wrapper so app code never has to reason about SQL directly.
  */
 
-import type { Ticket, CheckinEntry } from "@/types/tickets";
+import { checkInTicket as checkInTicketRepo } from "@/lib/repositories";
+import type { CheckInResult } from "@/types/tickets";
 
-export type { Ticket, CheckinEntry };
+export type { CheckInResult } from "@/types/tickets";
 
-// TODO Phase 5: implement checkIn(ticketId: string, entriesCount: number, scannerEventId: string): Promise<"ok" | "wrong_event" | "exceeded" | "invalid">
+export async function checkIn(
+  ticketToken: string,
+  scannerEventId: string,
+  entriesCount: number,
+  checkedBy?: string | null
+): Promise<CheckInResult> {
+  return checkInTicketRepo(ticketToken, scannerEventId, entriesCount, checkedBy);
+}

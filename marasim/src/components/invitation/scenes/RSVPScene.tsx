@@ -13,14 +13,29 @@ import { resolveDesign, getButtonStyles, getCardStyles, hexToRgbString, resolveF
 interface Props {
   scene: InvitationScene;
   config: InvitationConfig;
+  inviteToken?: string;
+  controlledMaxSeats?: number;
+  controlledLabel?: string;
 }
 
 type Content = { sectionLabel?: string };
-type VProps = { scene: InvitationScene; config: InvitationConfig; content: Content; d: ResolvedDesign };
+type VProps = {
+  scene: InvitationScene;
+  config: InvitationConfig;
+  content: Content;
+  d: ResolvedDesign;
+  inviteToken?: string;
+  controlledMaxSeats?: number;
+  controlledLabel?: string;
+};
 
 type FormState = { name: string; guests: string; note: string };
 
-function useRSVPForm(slug: string, maxSeats: number) {
+function useRSVPForm(
+  slug: string,
+  maxSeats: number,
+  options?: { inviteToken?: string; controlled?: boolean }
+) {
   const [form, setForm] = useState<FormState>({ name: "", guests: "1", note: "" });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,16 +52,29 @@ function useRSVPForm(slug: string, maxSeats: number) {
     setError(null);
 
     try {
-      const response = await fetch("/api/rsvp/public", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug,
-          name: form.name.trim(),
-          requestedSeats: Number.parseInt(form.guests, 10),
-          guestNote: form.note.trim() || undefined,
-        }),
-      });
+      const isControlled = Boolean(options?.inviteToken);
+      const response = await fetch(
+        isControlled ? "/api/rsvp/controlled/confirm" : "/api/rsvp/public",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(
+            isControlled
+              ? {
+                  slug,
+                  inviteToken: options!.inviteToken,
+                  name: form.name.trim(),
+                  seats: Number.parseInt(form.guests, 10),
+                }
+              : {
+                  slug,
+                  name: form.name.trim(),
+                  requestedSeats: Number.parseInt(form.guests, 10),
+                  guestNote: form.note.trim() || undefined,
+                }
+          ),
+        }
+      );
 
       const data = (await response.json()) as { statusUrl?: string; error?: string };
 
@@ -71,14 +99,17 @@ function useRSVPForm(slug: string, maxSeats: number) {
 // ─── Variant: luxury_form ─────────────────────────────────────────────────────
 // Full styled form with ornament divider.
 
-function LuxuryForm({ scene, config, content, d }: VProps) {
+function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats, controlledLabel }: VProps) {
   const { theme, rsvp, slug } = config;
   const primaryRgb = hexToRgbString(theme.primaryColor);
   const cardStyles = getCardStyles(d.cardStyle, primaryRgb);
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
-  const label = content.sectionLabel ?? "تأكيد الحضور";
-  const maxSeats = rsvp.maxPublicRequest ?? 4;
-  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats);
+  const label = content.sectionLabel ?? (inviteToken ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
+  const maxSeats = inviteToken ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
+  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats, {
+    inviteToken,
+    controlled: Boolean(inviteToken),
+  });
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -110,6 +141,9 @@ function LuxuryForm({ scene, config, content, d }: VProps) {
         >
           <SectionLabel text={label} d={d} />
           <SceneOrnament dividerStyle={d.dividerStyle} ornamentAsset={d.ornamentAsset} />
+          {controlledLabel && (
+            <p className="text-xs opacity-60 max-w-xs">{controlledLabel}</p>
+          )}
         </motion.div>
 
         <motion.form
@@ -160,9 +194,9 @@ function LuxuryForm({ scene, config, content, d }: VProps) {
               placeholder="ملاحظة (اختياري)"
               value={form.note}
               onChange={handleChange}
-              disabled={submitting}
+              disabled={submitting || Boolean(inviteToken)}
               rows={3}
-              style={{ ...inputStyle, resize: "none" }}
+              style={{ ...inputStyle, resize: "none", display: inviteToken ? "none" : undefined }}
             />
 
             {error && (
@@ -204,12 +238,15 @@ function LuxuryForm({ scene, config, content, d }: VProps) {
 // ─── Variant: minimal_form ────────────────────────────────────────────────────
 // Same fields, much less decoration. Clean and minimal.
 
-function MinimalForm({ scene, config, content, d }: VProps) {
+function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeats, controlledLabel }: VProps) {
   const { theme, rsvp, slug } = config;
-  const label = content.sectionLabel ?? "تأكيد الحضور";
+  const label = content.sectionLabel ?? (inviteToken ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
-  const maxSeats = rsvp.maxPublicRequest ?? 4;
-  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats);
+  const maxSeats = inviteToken ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
+  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats, {
+    inviteToken,
+    controlled: Boolean(inviteToken),
+  });
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -233,6 +270,7 @@ function MinimalForm({ scene, config, content, d }: VProps) {
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-dvh px-8 py-16 gap-10">
         <SectionLabel text={label} d={d} />
+        {controlledLabel && <p className="text-xs opacity-60 text-center max-w-xs">{controlledLabel}</p>}
 
         <motion.form
             onSubmit={handleSubmit}
@@ -279,9 +317,9 @@ function MinimalForm({ scene, config, content, d }: VProps) {
               placeholder="ملاحظة (اختياري)"
               value={form.note}
               onChange={handleChange}
-              disabled={submitting}
+              disabled={submitting || Boolean(inviteToken)}
               rows={2}
-              style={{ ...inputStyle, resize: "none" }}
+              style={{ ...inputStyle, resize: "none", display: inviteToken ? "none" : undefined }}
             />
 
             {error && (
@@ -321,13 +359,19 @@ function MinimalForm({ scene, config, content, d }: VProps) {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function RSVPScene({ scene, config }: Props) {
+export default function RSVPScene({
+  scene,
+  config,
+  inviteToken,
+  controlledMaxSeats,
+  controlledLabel,
+}: Props) {
   const mediaView = renderMediaSceneIfNeeded(scene, config);
   if (mediaView) return mediaView;
 
   const d = resolveDesign(config, scene);
   const content = (scene.content ?? {}) as Content;
-  const p = { scene, config, content, d };
+  const p = { scene, config, content, d, inviteToken, controlledMaxSeats, controlledLabel };
 
   switch (scene.variant) {
     case "minimal_form": return <MinimalForm {...p} />;

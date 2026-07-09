@@ -15,7 +15,9 @@ export {
 export {
   fetchInvitationBySlug,
   fetchInvitationById,
+  fetchInvitationByEventId,
   fetchAllInvitationSlugs,
+  listAllInvitations,
   upsertInvitation,
   setInvitationEventId,
   setInvitationPreviewTokenHash,
@@ -33,19 +35,61 @@ export {
 export { republishInvitation } from "@/lib/repositories/republish";
 
 export {
+  mapEventRow,
+  mapEventSettingsRow,
   fetchEventBySlug,
   fetchEventById,
   fetchEventSettings,
+  listAllEvents,
   upsertEventWithSettings,
+  createEventWithOwner,
+  countRsvpsByStatusForEvent,
 } from "@/lib/repositories/events";
 
 export {
   fetchRsvpByViewToken,
+  fetchRsvpById,
+  listRsvpsForEvent,
+  listOwnerRsvpsForEvent,
   createPublicRsvp,
   countPendingRsvpsForEvent,
+  approveRsvp,
+  rejectRsvp,
 } from "@/lib/repositories/rsvps";
 
 export {
   createEventNotification,
   listNotificationsForEvent,
+  countUnreadNotifications,
+  markNotificationRead,
+  markAllNotificationsRead,
 } from "@/lib/repositories/notifications";
+
+export {
+  fetchTicketDisplayInfo,
+  fetchTicketTokenByRsvpId,
+  scanTicket,
+  checkInTicket,
+  listTicketsForEvent,
+} from "@/lib/repositories/tickets";
+
+export { listCheckinsForEvent } from "@/lib/repositories/checkins";
+
+export {
+  fetchInviteLinkByToken,
+  listInviteLinksForEvent,
+  createInviteLink,
+  disableInviteLink,
+  confirmInviteLinkRpc,
+} from "@/lib/repositories/invite-links";
+
+export {
+  isEventOwner,
+  addEventOwner,
+  listEventsForOwner,
+  getUserRole,
+  setUserRole,
+  fetchEventOwnersForEvent,
+} from "@/lib/repositories/owners";
+
+export { callRpc, unwrapRpc, RpcError } from "@/lib/repositories/rpc";

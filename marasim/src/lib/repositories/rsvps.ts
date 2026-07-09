@@ -1,7 +1,8 @@
 import { createSupabaseAdminClient } from "@/lib/supabase/create-admin-client";
 import type { DbRsvpRow } from "@/types/persistence";
-import type { RSVP, RSVPSubmission } from "@/types/rsvp";
+import type { OwnerRSVPRow, RSVP, RSVPSubmission } from "@/types/rsvp";
 import { generateSecureToken } from "@/lib/secure-token";
+import { callRpc, unwrapRpc } from "@/lib/repositories/rpc";
 
 const TABLE = "rsvps";
 
@@ -36,6 +37,47 @@ export async function fetchRsvpByViewToken(
   if (error) throw error;
   if (!data) return null;
   return mapRow(data as DbRsvpRow);
+}
+
+export async function fetchRsvpById(id: string): Promise<RSVP | null> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return null;
+  return mapRow(data as DbRsvpRow);
+}
+
+export async function listRsvpsForEvent(eventId: string): Promise<RSVP[]> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .select("*")
+    .eq("event_id", eventId)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return (data ?? []).map((row) => mapRow(row as DbRsvpRow));
+}
+
+export async function listOwnerRsvpsForEvent(eventId: string): Promise<OwnerRSVPRow[]> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .select("*, tickets(token, status)")
+    .eq("event_id", eventId)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return (data ?? []).map((row) => {
+    const r = row as DbRsvpRow & { tickets: { token: string; status: string } | null };
+    return {
+      ...mapRow(r),
+      ticketToken: r.tickets?.token ?? null,
+      ticketStatus: (r.tickets?.status as OwnerRSVPRow["ticketStatus"]) ?? null,
+    };
+  });
 }
 
 export async function createPublicRsvp(
@@ -73,4 +115,38 @@ export async function countPendingRsvpsForEvent(eventId: string): Promise<number
 
   if (error) throw error;
   return count ?? 0;
+}
+
+export type ApproveRsvpResult = {
+  rsvpId: string;
+  status: "approved";
+  approvedSeats: number;
+  ticketToken: string;
+  ticketStatus: "active" | "revoked" | "fully_used";
+  confirmedSeats: number;
+  totalCapacity: number | null;
+};
+
+/** Atomic approve (or edit approved seats) via Postgres function — see migration 004. */
+export async function approveRsvp(
+  rsvpId: string,
+  approvedSeats: number
+): Promise<ApproveRsvpResult> {
+  const result = await callRpc<ApproveRsvpResult>("approve_rsvp", {
+    p_rsvp_id: rsvpId,
+    p_approved_seats: approvedSeats,
+  });
+  return unwrapRpc(result);
+}
+
+export type RejectRsvpResult = {
+  rsvpId: string;
+  status: "rejected";
+};
+
+export async function rejectRsvp(rsvpId: string): Promise<RejectRsvpResult> {
+  const result = await callRpc<RejectRsvpResult>("reject_rsvp", {
+    p_rsvp_id: rsvpId,
+  });
+  return unwrapRpc(result);
 }

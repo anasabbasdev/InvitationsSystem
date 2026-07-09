@@ -43,6 +43,7 @@ import {
   upsertPreset,
 } from "@/lib/repositories";
 import type { DesignPreset, InvitationData, SequenceBlueprint } from "@/types/invitation";
+import { seedOperationalDemoData } from "./seed-demo-operational";
 
 loadProjectEnv();
 
@@ -73,7 +74,7 @@ const PRESETS: Array<{
 
 const INVITATIONS: SeedInvitation[] = [
   { data: wsRoyalDemoData, blueprint: weddingStandardBlueprint, preset: weddingRoyalDarkPreset, publish: true },
-  { data: wsFloralDemoData, blueprint: weddingStandardBlueprint, preset: weddingCinematicFloralPreset },
+  { data: wsFloralDemoData, blueprint: weddingStandardBlueprint, preset: weddingCinematicFloralPreset, publish: true },
   { data: wsMinimalDemoData, blueprint: weddingStandardBlueprint, preset: weddingMinimalModernPreset },
   { data: wsShortDemoData, blueprint: weddingShortBlueprint, preset: weddingRoyalDarkPreset },
   { data: wsGalleryRepeatDemoData, blueprint: galleryRepeatAcceptanceBlueprint, preset: galleryRepeatAcceptancePreset },
@@ -111,6 +112,7 @@ async function ensureEventForInvitation(data: InvitationData): Promise<string | 
     title: eventTitleFromData(data),
     eventDate: details?.date ? `${details.date}T00:00:00+03:00` : null,
     venueName: details?.venueName ?? null,
+    totalCapacity: data.slug === "ws-royal-demo" ? 20 : data.slug === "ws-floral-demo" ? 10 : null,
     rsvpEnabled: data.rsvp.enabled,
     rsvpMode: data.rsvp.mode,
     maxPublicRequest: data.rsvp.maxPublicRequest ?? 4,
@@ -249,9 +251,30 @@ async function main() {
     }
   }
 
+  console.log("\n── Operational demo data ──");
+  try {
+    const op = await seedOperationalDemoData();
+    console.log(`  ✓ owner: ${op.ownerEmail}`);
+    console.log(`  ✓ demo URLs: .seed-data.local`);
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : String(error);
+    if (msg.includes("user_roles") || msg.includes("tickets") || msg.includes("invite_links")) {
+      console.error(
+        "\nMissing Phase 4+ tables — apply migrations:\n" +
+          "  20260710010000_phase4_owner_auth.sql\n" +
+          "  20260710020000_phase4_tickets_and_approval.sql\n" +
+          "  20260710030000_phase6_invite_links.sql\n"
+      );
+    }
+    throw error;
+  }
+
   console.log("\n── Done ──");
-  console.log("Published: /i/ws-royal-demo");
+  console.log("Published: /i/ws-royal-demo, /i/ws-floral-demo");
+  console.log("Owner login: /owner/login (see .seed-data.local)");
+  console.log("Test Hub: /lab/test-hub (dev only)");
   console.log("RSVP status after submit: /s/[rsvp_view_token]");
+  console.log("Ticket page: /t/[ticketToken]");
   console.log("Draft preview URLs: see .preview-tokens.local (gitignored)");
   console.log("Local fallback: /i/demo-wedding");
 }

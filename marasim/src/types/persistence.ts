@@ -92,10 +92,73 @@ export type DbRsvpRow = {
   guest_note: string | null;
   requested_seats: number;
   approved_seats: number | null;
-  status: "pending" | "approved" | "rejected";
+  status: "pending" | "approved" | "rejected" | "confirmed";
   rsvp_view_token: string;
   created_at: string;
   updated_at: string;
+};
+
+export type DbTicketRow = {
+  id: string;
+  event_id: string;
+  rsvp_id: string;
+  token: string;
+  max_entries: number;
+  used_entries: number;
+  status: "active" | "revoked" | "fully_used";
+  created_at: string;
+  updated_at: string;
+};
+
+export type DbCheckinRow = {
+  id: string;
+  ticket_id: string;
+  event_id: string;
+  entries_count: number;
+  checked_by: string | null;
+  created_at: string;
+};
+
+export type DbInviteLinkRow = {
+  id: string;
+  event_id: string;
+  invitation_id: string | null;
+  token: string;
+  label: string | null;
+  guest_name: string | null;
+  side: string | null;
+  max_seats: number;
+  status: "active" | "disabled" | "expired" | "confirmed";
+  expires_at: string | null;
+  confirmed_seats: number | null;
+  rsvp_id: string | null;
+  ticket_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DbEventOwnerRow = {
+  id: string;
+  event_id: string;
+  user_id: string;
+  role: "owner";
+  created_at: string;
+};
+
+export type DbUserRoleRow = {
+  user_id: string;
+  role: "admin" | "owner";
+  created_at: string;
+};
+
+export type CreateInviteLinkInput = {
+  eventId: string;
+  invitationId?: string | null;
+  label?: string | null;
+  guestName?: string | null;
+  side?: string | null;
+  maxSeats: number;
+  expiresAt?: string | null;
 };
 
 export type DbEventNotificationRow = {

@@ -54,3 +54,33 @@ export async function listNotificationsForEvent(
   if (error) throw error;
   return (data ?? []).map((row) => mapRow(row as DbEventNotificationRow));
 }
+
+export async function countUnreadNotifications(eventId: string): Promise<number> {
+  const { count, error } = await createSupabaseAdminClient()
+    .from("event_notifications")
+    .select("*", { count: "exact", head: true })
+    .eq("event_id", eventId)
+    .is("read_at", null);
+
+  if (error) throw error;
+  return count ?? 0;
+}
+
+export async function markNotificationRead(id: string): Promise<void> {
+  const { error } = await createSupabaseAdminClient()
+    .from("event_notifications")
+    .update({ read_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (error) throw error;
+}
+
+export async function markAllNotificationsRead(eventId: string): Promise<void> {
+  const { error } = await createSupabaseAdminClient()
+    .from("event_notifications")
+    .update({ read_at: new Date().toISOString() })
+    .eq("event_id", eventId)
+    .is("read_at", null);
+
+  if (error) throw error;
+}

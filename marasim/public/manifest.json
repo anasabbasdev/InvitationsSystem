@@ -1,0 +1,20 @@
+{
+  "name": "مراسِم — لوحة المالك",
+  "short_name": "مراسِم",
+  "description": "لوحة تحكم مناسبات مراسِم",
+  "start_url": "/owner/events",
+  "scope": "/owner/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#C9A24D",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/window.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

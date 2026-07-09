@@ -29,6 +29,7 @@ import JourneyPanel from "./JourneyPanel";
 import PreviewFrame from "./PreviewFrame";
 import { getSceneComponent } from "@/components/invitation/scene-registry";
 import InvitationRenderer from "@/components/invitation/InvitationRenderer";
+import ComposerSupabaseBar from "./ComposerSupabaseBar";
 
 type ComposerTab = "journey" | "design" | "content";
 type ExportKind = "blueprint" | "preset" | "invitationData" | "resolvedConfig";
@@ -181,6 +182,13 @@ export default function ComposerApp() {
               Export {kind === "invitationData" ? "Data" : kind === "resolvedConfig" ? "Config" : kind === "blueprint" ? "Blueprint" : "Preset"}
             </button>
           ))}
+        </div>
+        <div className="mx-auto mt-2 max-w-[1600px]">
+          <ComposerSupabaseBar
+            slug={slug}
+            invitationData={separatedExports.invitationData}
+            onLoadSlug={(s) => loadDemo(s as ComposerDemoSlug)}
+          />
         </div>
       </header>
 

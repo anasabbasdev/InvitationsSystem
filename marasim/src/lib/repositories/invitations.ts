@@ -39,6 +39,32 @@ export async function fetchAllInvitationSlugs(): Promise<string[]> {
   return (data ?? []).map((row) => row.slug as string);
 }
 
+export async function fetchInvitationByEventId(
+  eventId: string
+): Promise<DbInvitationRow | null> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .select("*")
+    .eq("event_id", eventId)
+    .neq("status", "archived")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data as DbInvitationRow | null;
+}
+
+export async function listAllInvitations(): Promise<DbInvitationRow[]> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from(TABLE)
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return (data ?? []) as DbInvitationRow[];
+}
+
 export type UpsertInvitationResult = {
   row: DbInvitationRow;
   action: "created" | "updated";

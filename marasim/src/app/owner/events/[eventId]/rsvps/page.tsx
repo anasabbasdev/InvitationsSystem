@@ -1,24 +1,40 @@
-/**
- * Owner RSVP Requests — Phase 4
- */
+import Link from "next/link";
+import { requireEventOwnership } from "@/lib/auth";
+import { listOwnerRsvpsForEvent } from "@/lib/repositories";
+import RsvpRow from "@/components/owner/RsvpRow";
+
 export default async function OwnerRSVPsPage({
   params,
 }: {
   params: Promise<{ eventId: string }>;
 }) {
   const { eventId } = await params;
+  await requireEventOwnership(eventId);
+
+  const rsvps = await listOwnerRsvpsForEvent(eventId);
 
   return (
-    <main className="min-h-dvh flex items-center justify-center bg-black text-white">
-      <div className="flex flex-col items-center gap-4 text-center px-6">
-        <h1 className="text-2xl font-bold" style={{ color: "#C9A24D" }}>
+    <div className="flex flex-col gap-4">
+      <div>
+        <Link href={`/owner/events/${eventId}`} className="text-xs text-zinc-500 hover:text-zinc-300">
+          ← المناسبة
+        </Link>
+        <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
           طلبات الحضور
         </h1>
-        <p className="text-sm text-gray-500">
-          Event: <code className="text-gray-400">{eventId}</code>
-        </p>
-        <p className="text-xs text-gray-600">RSVP Management — المرحلة 4</p>
       </div>
-    </main>
+
+      {rsvps.length === 0 ? (
+        <p className="rounded-lg border border-zinc-800 bg-zinc-900 p-6 text-center text-sm text-zinc-500">
+          لا توجد طلبات حضور حتى الآن.
+        </p>
+      ) : (
+        <ul className="flex flex-col gap-3">
+          {rsvps.map((rsvp) => (
+            <RsvpRow key={rsvp.id} eventId={eventId} rsvp={rsvp} />
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

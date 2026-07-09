@@ -1,24 +1,33 @@
-/**
- * QR Scanner — Phase 5
- */
+import Link from "next/link";
+import { requireEventOwnership } from "@/lib/auth";
+import { fetchEventById } from "@/lib/repositories";
+import { mapEventRow } from "@/lib/repositories/events";
+import ScannerClient from "@/components/owner/ScannerClient";
+
 export default async function ScannerPage({
   params,
 }: {
   params: Promise<{ eventId: string }>;
 }) {
   const { eventId } = await params;
+  await requireEventOwnership(eventId);
+
+  const eventRow = await fetchEventById(eventId);
+  const event = eventRow ? mapEventRow(eventRow) : null;
 
   return (
-    <main className="min-h-dvh flex items-center justify-center bg-black text-white">
-      <div className="flex flex-col items-center gap-4 text-center px-6">
-        <h1 className="text-2xl font-bold" style={{ color: "#C9A24D" }}>
+    <div className="flex flex-col gap-4">
+      <div>
+        <Link href={`/owner/events/${eventId}`} className="text-xs text-zinc-500 hover:text-zinc-300">
+          ← المناسبة
+        </Link>
+        <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
           فحص التذاكر
         </h1>
-        <p className="text-sm text-gray-500">
-          Event: <code className="text-gray-400">{eventId}</code>
-        </p>
-        <p className="text-xs text-gray-600">QR Scanner — المرحلة 5</p>
+        {event && <p className="text-xs text-zinc-500">{event.title}</p>}
       </div>
-    </main>
+
+      <ScannerClient eventId={eventId} />
+    </div>
   );
 }

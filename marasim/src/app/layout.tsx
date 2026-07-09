@@ -29,6 +29,12 @@ export const metadata: Metadata = {
   },
   description: "دعوات رقمية فاخرة تفاعلية",
   robots: { index: false, follow: false },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: APP_NAME,
+    statusBarStyle: "black-translucent",
+  },
 };
 
 export const viewport: Viewport = {

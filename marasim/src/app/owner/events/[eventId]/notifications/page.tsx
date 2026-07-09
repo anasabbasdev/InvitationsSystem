@@ -1,24 +1,89 @@
-/**
- * Owner Notifications — Phase 4
- */
+import Link from "next/link";
+import { requireEventOwnership } from "@/lib/auth";
+import { getNotifications } from "@/lib/notifications";
+import {
+  markAllNotificationsReadAction,
+  markNotificationReadAction,
+} from "@/app/owner/events/[eventId]/notifications/actions";
+
+const TYPE_LABELS: Record<string, string> = {
+  rsvp_pending: "طلب حضور جديد",
+  rsvp_approved: "تمت الموافقة",
+  rsvp_rejected: "تم الرفض",
+  controlled_rsvp_confirmed: "تأكيد رابط خاص",
+};
+
 export default async function OwnerNotificationsPage({
   params,
 }: {
   params: Promise<{ eventId: string }>;
 }) {
   const { eventId } = await params;
+  await requireEventOwnership(eventId);
+
+  const notifications = await getNotifications(eventId);
+  const hasUnread = notifications.some((n) => !n.readAt);
 
   return (
-    <main className="min-h-dvh flex items-center justify-center bg-black text-white">
-      <div className="flex flex-col items-center gap-4 text-center px-6">
-        <h1 className="text-2xl font-bold" style={{ color: "#C9A24D" }}>
-          الإشعارات
-        </h1>
-        <p className="text-sm text-gray-500">
-          Event: <code className="text-gray-400">{eventId}</code>
-        </p>
-        <p className="text-xs text-gray-600">In-App Notifications — المرحلة 4</p>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-start justify-between">
+        <div>
+          <Link href={`/owner/events/${eventId}`} className="text-xs text-zinc-500 hover:text-zinc-300">
+            ← المناسبة
+          </Link>
+          <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
+            الإشعارات
+          </h1>
+        </div>
+        {hasUnread && (
+          <form action={markAllNotificationsReadAction.bind(null, eventId)}>
+            <button
+              type="submit"
+              className="rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
+            >
+              تحديد الكل كمقروء
+            </button>
+          </form>
+        )}
       </div>
-    </main>
+
+      {notifications.length === 0 ? (
+        <p className="rounded-lg border border-zinc-800 bg-zinc-900 p-6 text-center text-sm text-zinc-500">
+          لا توجد إشعارات بعد.
+        </p>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {notifications.map((n) => (
+            <li
+              key={n.id}
+              className={`flex items-start justify-between gap-3 rounded-lg border p-3 text-sm ${
+                n.readAt ? "border-zinc-800 bg-zinc-900" : "border-amber-700/50 bg-amber-950/20"
+              }`}
+            >
+              <div>
+                <p className="font-medium text-white">
+                  {!n.readAt && <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-amber-400" />}
+                  {TYPE_LABELS[n.type] ?? n.title}
+                </p>
+                {n.message && <p className="text-xs text-zinc-500">{n.message}</p>}
+                <p className="mt-1 text-[11px] text-zinc-600" dir="ltr">
+                  {new Date(n.createdAt).toLocaleString("ar-SA", { dateStyle: "short", timeStyle: "short" })}
+                </p>
+              </div>
+              {!n.readAt && (
+                <form action={markNotificationReadAction.bind(null, eventId, n.id)}>
+                  <button
+                    type="submit"
+                    className="shrink-0 rounded-md border border-zinc-700 px-2.5 py-1 text-[11px] text-zinc-400 hover:bg-zinc-800"
+                  >
+                    تحديد كمقروء
+                  </button>
+                </form>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

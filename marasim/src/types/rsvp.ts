@@ -1,4 +1,4 @@
-export type RSVPStatus = "pending" | "approved" | "rejected";
+export type RSVPStatus = "pending" | "approved" | "rejected" | "confirmed";
 
 export type RSVPMode = "public_request" | "controlled_link";
 
@@ -10,6 +10,14 @@ export interface PublicRSVPSubmission {
   phone?: string;
 }
 
+export interface ControlledRSVPSubmission {
+  slug: string;
+  inviteToken: string;
+  name: string;
+  phone?: string;
+  seats: number;
+}
+
 export interface RSVPSubmission {
   name: string;
   phone?: string;
@@ -18,6 +26,9 @@ export interface RSVPSubmission {
   invitationId?: string;
   guestNote?: string;
   inviteLinkId?: string;
+  side?: string;
+  status?: RSVPStatus;
+  approvedSeats?: number;
 }
 
 export interface RSVP {
@@ -42,11 +53,28 @@ export interface PublicRSVPResult {
   status: RSVPStatus;
 }
 
+export interface RSVPStatusTicketView {
+  token: string;
+  maxEntries: number;
+  usedEntries: number;
+  remainingEntries: number;
+  status: "active" | "revoked" | "fully_used";
+}
+
 export interface RSVPStatusView {
   status: RSVPStatus;
   name: string;
   requestedSeats: number;
   approvedSeats?: number | null;
   eventTitle?: string;
+  eventDate?: string | null;
+  venueName?: string | null;
   guestNote?: string | null;
+  ticket?: RSVPStatusTicketView | null;
+}
+
+/** Owner-facing RSVP row with computed fields for the management table. */
+export interface OwnerRSVPRow extends RSVP {
+  ticketToken?: string | null;
+  ticketStatus?: "active" | "revoked" | "fully_used" | null;
 }
