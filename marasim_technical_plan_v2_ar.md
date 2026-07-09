@@ -1,6 +1,8 @@
 # خطة تقنية تنفيذية v2 لمشروع مراسِم Marasim
 
-> آخر تحديث: يعكس فصل Sequence/Invitation، تدفق QR عبر `/s/[rsvp_view_token]`، وإكمال المرحلتين 0 و1.
+> آخر تحديث: **Phase 2.12** — معمارية V2 فقط كمرجع، عقد قاعدة البيانات، وسياسة الـ Snapshot قبل Supabase.
+>
+> **المعمارية المعتمدة:** `SequenceBlueprint` + `DesignPreset` + `InvitationData` → `buildInvitationConfigV2()` → `InvitationConfig` → `InvitationRenderer`
 >
 > هذا الملف مخصص لوضعه داخل Cursor كبداية تنفيذ مباشرة. الهدف ليس بناء SaaS كامل، ولا صفحة HTML واحدة، بل بناء محرك دعوات تفاعلية قابل للتكرار، مع Dashboard لصاحب المناسبة، RSVP مضبوط، وتذاكر QR جماعية.
 
@@ -79,8 +81,8 @@
 
 المهام:
 
-- تحميل config الدعوة (مبني من Sequence + InvitationData).
-- عرض المشاهد حسب الترتيب.
+- تحميل config الدعوة (V2: `buildInvitationConfigV2` أو snapshot منشور من `published_snapshots`).
+- عرض المشاهد حسب ترتيب الـ Blueprint (المشاهد ذات `enabled: false` لا تُعرض).
 - تشغيل الموسيقى بعد أول tap.
 - إظهار RSVP إذا كان مفعلاً.
 - مشهد `ticket_confirmation` داخل الدعوة = إغلاق / شكر فقط — **ليس** صفحة QR.
@@ -151,8 +153,8 @@
 المهام:
 
 - إنشاء مناسبة.
-- إنشاء/تعديل Sequence (تصميم قابل لإعادة الاستخدام).
-- إنشاء دعوة جديدة بربط Sequence + بيانات العميل.
+- إنشاء/تعديل Blueprint (رحلة) و Design Preset (هوية بصرية).
+- إنشاء دعوة جديدة = blueprint + preset + invitation data + assets.
 - رفع assets (صور/فيديو/موسيقى).
 - إنشاء controlled links.
 - إدارة guest list.
@@ -160,11 +162,11 @@
 
 ---
 
-## 4. المشاهد المعتمدة في المحرك
+## 4. مكتبة المشاهد (Scene Library)
 
-هذه هي المشاهد الأساسية المعتمدة من البداية. يجب إنشاء مكونات لها كلها في المرحلة الأولى حتى لو كانت بعض المشاهد بسيطة جداً في البداية.
+الأنواع العشرة التالية هي **مكتبة مكونات** قابلة لإعادة الاستخدام — وليست رحلة إجبارية ثابتة. كل دعوة تحدد رحلتها عبر `SequenceBlueprint`: يمكن إضافة، حذف، تكرار، وإعادة ترتيب المشاهد.
 
-### القائمة الأساسية 10 مشاهد
+### الأنواع المعتمدة (10)
 
 ```txt
 1. opening
@@ -208,105 +210,138 @@
 #### 9. rsvp
 فورم تأكيد الحضور عند تفعيل RSVP.
 
-#### 10. ticket_confirmation
-مشهد الإغلاق داخل الدعوة:
+#### 10. ticket_confirmation (Closing Scene)
+مشهد الإغلاق داخل الدعوة — الاسم التاريخي في الكود `ticket_confirmation`، والوظيفة **Closing Scene** فقط:
 - شكر / نراكم قريباً.
-- تأكيد استلام الطلب (عند تفعيل RSVP).
+- رسالة وداع (قد تشير لاستلام الطلب عند تفعيل RSVP).
 - **لا يعرض QR داخل الدعوة.**
 
 حالة التذكرة وQR يظهران فقط في:
 - `/s/[rsvp_view_token]` (Public Request)
 - `/t/[ticketToken]` أو رابط controlled link (Controlled Link)
 
-### ملاحظة مهمة
+### ملاحظات الرحلة وRSVP
 
-إذا كان RSVP غير مفعل، يتم إخفاء مشهدي rsvp وticket_confirmation أو تحويل ticket_confirmation إلى closing/thank_you بسيط.
-
-لا تعرض QR داخل scroll الدعوة — المدعو غير مرتبط بحساب ولا يستطيع استرجاع التذكرة لاحقاً من نفس الصفحة.
+- كل مشهد يُتحكم بظهوره عبر `enabled` على مستوى الـ scene instance — وليس عبر `variant: "hidden"`.
+- تعطيل RSVP (`rsvp.enabled = false`) **لا يخفي** مشهد الإغلاق تلقائياً. لإخفاء `rsvp` أو Closing Scene يجب تعطيل المشهد نفسه في overrides.
+- لا تعرض QR داخل scroll الدعوة — المدعو غير مرتبط بحساب.
 
 ---
 
-## 5. نموذج البيانات المعتمد: Sequence + Invitation
+## 5. نموذج البيانات المعتمد (V2)
 
-لا تخلط التصميم مع بيانات العميل في ملف واحد.
+لا تخلط الرحلة مع التصميم مع بيانات العميل في ملف واحد.
 
-### الطبقتان
+### الطبقات الست
 
-| الطبقة | الملف | المحتوى |
-|---|---|---|
-| `InvitationSequence` | `data/sequences/*.sequence.ts` | theme, layout, variants, gradients, motion, defaultContent |
-| `InvitationData` | `data/invitations/*.ts` | أسماء، تواريخ، صور، فيديو، RSVP، content overrides |
+| # | الطبقة | النوع | الملف | المحتوى |
+|---|---|---|---|---|
+| 1 | مكتبة المشاهد | `SceneType` | `scene-registry.tsx` | 10 أنواع — كتالوج مكونات، ليست رحلة |
+| 2 | الرحلة | `SequenceBlueprint` | `data/blueprints/*.blueprint.ts` | `SceneBlueprintEntry[]`: id, type, enabledByDefault, required |
+| 3 | التصميم | `DesignPreset` | `data/presets/*.preset.ts` | theme, typeDefaults[sceneType], sceneOverrides[sceneId] |
+| 4 | المحتوى | `InvitationData` | `data/invitations/*.ts` | أسماء، تواريخ، RSVP، sceneOverrides[sceneId] |
+| 5 | المدمج | `InvitationConfig` | يُبنى وقت التشغيل | InvitationScene[] جاهز للـ Renderer |
+| 6 | المنشور | `PublishedSnapshot` | `published_snapshots` (Phase 3A) | InvitationConfig مجمد + snapshotAt + مراجع الإصدارات |
 
-### الدمج قبل العرض
+**SceneInstance** = وحدة مشهد محلولة وقت التشغيل: `InvitationScene` بـ `id` فريد (sceneId) و `type` (SceneType).
+
+### مسار الدمج
 
 ```txt
-buildInvitationConfig(InvitationData, InvitationSequence) → InvitationConfig
+SequenceBlueprint + DesignPreset + InvitationData
+  → buildInvitationConfigV2()
+  → InvitationConfig
+  → InvitationRenderer
 ```
 
+### ترتيب الدمج (الأولوية من الأدنى للأعلى)
+
+1. **Blueprint** — `SceneBlueprintEntry` (id, type, enabled من enabledByDefault/required)
+2. **Preset** — `typeDefaults[sceneType]`
+3. **Preset** — `sceneOverrides[sceneId]`
+4. **Data** — `sceneOverrides[sceneId]` (محتوى، enabled، أصول)
+5. → **InvitationScene** محلول
+
+### مثال Blueprint (رحلة فقط)
+
 ```ts
-// data/sequences/wedding-royal.sequence.ts — التصميم فقط
-export const weddingRoyalSequence: InvitationSequence = {
-  id: "wedding-royal",
-  label: "Wedding Royal — Dark Gold",
-  theme: { primaryColor: "#C9A24D", backgroundColor: "#0F0B08", /* ... */ },
+// data/blueprints/wedding-standard.blueprint.ts
+export const weddingStandardBlueprint: SequenceBlueprint = {
+  id: "wedding-standard",
+  label: "Wedding Standard Journey",
+  version: "1.0.0",
   layout: { mobileMaxWidth: 430, minSupportedWidth: 348, safePaddingX: 24 },
   scenes: [
-    {
-      sceneType: "hero_names",
-      variant: "calligraphy_reveal",
-      background: { type: "gradient", value: "radial-gradient(...)" },
-      defaultContent: { primaryName: "الاسم الأول", secondaryName: "الاسم الثاني" },
-    },
-    // ... باقي المشاهد بدون بيانات عميل حقيقية
+    { id: "ws-opening", type: "opening", label: "Opening", enabledByDefault: true },
+    { id: "ws-hero", type: "hero_names", enabledByDefault: true },
+    { id: "ws-gallery-a", type: "gallery_media", label: "Gallery A" },
+    { id: "ws-gallery-b", type: "gallery_media", label: "Gallery B" },
+    // ... باقي المشاهد — بدون theme ولا variant ولا محتوى عميل
   ],
 };
 ```
 
+### مثال Design Preset (تصميم فقط)
+
 ```ts
-// data/invitations/ahmad-sara-demo.ts — بيانات العميل فقط
-export const ahmadSaraDemoData: InvitationData = {
-  id: "demo-wedding-royal-01",
-  slug: "demo-wedding",
-  eventId: "event_demo_001",
-  sequenceId: "wedding-royal",
-  language: "ar",
-  direction: "rtl",
-  music: { enabled: true, src: "/assets/demo/wedding/music.mp3", startMode: "after_first_tap" },
-  rsvp: { enabled: true, mode: "public_request", approvalRequired: true, maxPublicRequest: 4 },
-  content: {
-    hero_names: { primaryName: "أحمد", secondaryName: "سارة", subtitle: "..." },
-    event_details: { date: "2026-09-15", time: "20:00", venueName: "قاعة المثال — دبي" },
-    gallery_media: { media: [{ type: "image", src: "/assets/demo/wedding/photo-01.webp" }] },
-    // ...
+// data/presets/wedding-royal-dark.preset.ts
+export const weddingRoyalDarkPreset: DesignPreset = {
+  id: "wedding-royal-dark",
+  label: "Royal Dark",
+  version: "1.0.0",
+  theme: { primaryColor: "#C9A24D", backgroundColor: "#0F0B08", design: { cardStyle: "framed", /* ... */ } },
+  typeDefaults: {
+    opening: { variant: "rings_luxury", media: { compositionMode: "web_layout" } },
+    hero_names: { variant: "stacked_calligraphy" },
   },
-  assetOverrides: {
-    // اختياري: استبدال gradient بصورة/فيديو حقيقي
-    // opening: { background: { type: "video", src: "/storage/client/opening.mp4" } },
+  sceneOverrides: {
+    "ws-gallery-a": { variant: "single_card", media: { compositionMode: "full_media" } },
+    "ws-gallery-b": { variant: "full_bleed_media" },
   },
 };
 ```
 
+### مثال InvitationData (محتوى العميل)
+
 ```ts
-// data/demo-invitations/wedding-royal.ts — غلاف رفيع للـ registry
-export const weddingRoyalConfig = buildInvitationConfig(
-  ahmadSaraDemoData,
-  weddingRoyalSequence
-);
+// data/invitations/ws-royal-demo.ts
+export const wsRoyalDemoData: InvitationData = {
+  id: "ws-royal-demo-01",
+  slug: "ws-royal-demo",
+  eventId: "event_demo_ws",
+  blueprintId: "wedding-standard",
+  presetId: "wedding-royal-dark",
+  language: "ar",
+  direction: "rtl",
+  music: { enabled: true, src: "/assets/demo/wedding/music.mp3", startMode: "after_first_tap" },
+  rsvp: { enabled: true, mode: "public_request", approvalRequired: true, maxPublicRequest: 4 },
+  sceneOverrides: {
+    "ws-hero": {
+      content: { primaryName: "أحمد", secondaryName: "سارة", subtitle: "..." },
+    },
+    "ws-gallery-a": {
+      content: { media: [{ type: "image", src: "/assets/demo/wedding/photo-01.webp" }] },
+    },
+    // rsvp: { enabled: false }  — لتعطيل مشهد RSVP مستقلاً
+  },
+};
 ```
 
-### إنشاء دعوة جديدة بنفس التصميم
+### البناء والتسجيل
 
-1. أنشئ ملف `InvitationData` جديد في `data/invitations/`.
-2. اربطه بـ `sequenceId: "wedding-royal"`.
-3. املأ `content` و`assetOverrides`.
-4. سجّل الـ slug في `lib/invitation-config.ts` (لاحقاً: Supabase).
+```ts
+const config = buildInvitationConfigV2(weddingStandardBlueprint, weddingRoyalDarkPreset, wsRoyalDemoData);
+// للنشر: const snapshot = createPublishedSnapshot(config);
+```
 
-### إنشاء Sequence جديدة
+### قواعد إنشاء جديد
 
-1. أنشئ ملف في `data/sequences/`.
-2. عرّف theme + layout + scenes مع variants وdefaultContent فقط.
-3. لا تضع أسماء أو تواريخ أو assets خاصة بعميل.
-4. أعد استخدامها لعدة دعوات.
+| التغيير | الإجراء |
+|---|---|
+| رحلة مختلفة (عدد/ترتيب/تكرار) | `SequenceBlueprint` جديد في `data/blueprints/` |
+| هوية بصرية أو أصول جديدة | `DesignPreset` جديد في `data/presets/` |
+| دعوة عميل جديد | `InvitationData` جديد + نفس blueprint/preset أو مختلفين |
+| slug عام | تسجيل في `lib/invitation-config.ts` (Phase 3A: Supabase + fallback محلي) |
 
 ---
 
@@ -314,193 +349,107 @@ export const weddingRoyalConfig = buildInvitationConfig(
 
 كل دعوة تُعرض عبر `InvitationConfig` مدمج. لا تكتب بيانات دعوة داخل components مباشرة.
 
-مثال مبسط للشكل النهائي بعد الدمج:
+الشكل النهائي يتضمن `scenes[]` حيث كل عنصر:
 
 ```ts
-export const invitationConfig = {
-  id: "demo-wedding-royal-01",
-  eventId: "event_001",
-  slug: "ahmad-sara-wedding",
-  language: "ar",
-  direction: "rtl",
-  theme: {
-    family: "royal",
-    primaryColor: "#C9A24D",
-    secondaryColor: "#F7E7B4",
-    backgroundColor: "#0F0B08",
-    fontHeading: "CustomArabicFont",
-    fontBody: "Tajawal"
-  },
-  layout: {
-    mobileMaxWidth: 430,
-    minSupportedWidth: 348,
-    safePaddingX: 24
-  },
-  music: {
-    enabled: true,
-    src: "/assets/demo/wedding/music.mp3",
-    startMode: "after_first_tap"
-  },
-  rsvp: {
-    enabled: true,
-    mode: "public_request",
-    approvalRequired: true,
-    maxPublicRequest: 4
-  },
-  scenes: [
-    {
-      id: "opening-01",
-      type: "opening",
-      variant: "envelope_video",
-      background: {
-        type: "video",
-        src: "/assets/demo/wedding/opening.mp4",
-        fit: "cover"
-      },
-      content: {
-        tapText: "افتح الدعوة"
-      },
-      motion: {
-        enter: "fade",
-        scrollHint: true
-      }
-    },
-    {
-      id: "hero-01",
-      type: "hero_names",
-      variant: "calligraphy_reveal",
-      background: {
-        type: "image",
-        src: "/assets/demo/wedding/bg-gold.webp",
-        fit: "cover"
-      },
-      foreground: [
-        {
-          type: "image",
-          src: "/assets/demo/wedding/ornament-bottom.webp",
-          position: "bottom",
-          opacity: 0.85
-        }
-      ],
-      content: {
-        primaryName: "أحمد",
-        secondaryName: "سارة",
-        subtitle: "يتشرفان بدعوتكم لحضور حفل زفافهما"
-      },
-      motion: {
-        names: "fade_up",
-        ornaments: "slow_float"
-      }
-    },
-    {
-      id: "message-01",
-      type: "invitation_message",
-      variant: "classic_card",
-      content: {
-        title: "دعوة كريمة",
-        body: "يسعدنا حضوركم ومشاركتكم فرحتنا في هذه الليلة المميزة."
-      },
-      motion: {
-        card: "scroll_reveal"
-      }
-    },
-    {
-      id: "details-01",
-      type: "event_details",
-      variant: "stacked_info",
-      content: {
-        date: "2026-09-15",
-        time: "20:00",
-        venueName: "قاعة المثال - دبي"
-      }
-    },
-    {
-      id: "countdown-01",
-      type: "countdown",
-      variant: "minimal_luxury",
-      content: {
-        targetDate: "2026-09-15T20:00:00+04:00"
-      }
-    },
-    {
-      id: "gallery-01",
-      type: "gallery_media",
-      variant: "single_video_or_image",
-      content: {
-        media: [
-          { type: "image", src: "/assets/demo/wedding/photo-01.webp", alt: "" }
-        ]
-      }
-    },
-    {
-      id: "location-01",
-      type: "location",
-      variant: "map_button",
-      content: {
-        venueName: "قاعة المثال - دبي",
-        address: "Dubai, UAE",
-        mapUrl: "https://maps.google.com/"
-      }
-    },
-    {
-      id: "notes-01",
-      type: "notes",
-      variant: "simple_list",
-      content: {
-        items: ["يرجى تأكيد الحضور", "الدعوة خاصة للعائلة"]
-      }
-    },
-    {
-      id: "rsvp-01",
-      type: "rsvp",
-      variant: "public_request_form"
-    },
-    {
-      id: "ticket-01",
-      type: "ticket_confirmation",
-      variant: "closing_or_status"
-    }
-  ]
-};
+{
+  id: "ws-hero",           // sceneId — مفتاح overrides
+  type: "hero_names",      // SceneType — يحدد المكون من scene-registry
+  enabled: true,
+  variant: "stacked_calligraphy",
+  design?: SceneDesign,
+  media?: SceneMediaConfig,
+  background?: Layer,
+  content?: { primaryName: "أحمد", /* ... */ },
+}
 ```
 
-> ملاحظة: المثال أعلاه يمثل الشكل النهائي بعد `buildInvitationConfig()`. المصدر الحقيقي للصيانة هو ملفا Sequence + InvitationData وليس ملف config واحد ضخم.
+> المصدر الحقيقي للصيانة: Blueprint + Preset + InvitationData — وليس ملف config واحد ضخم.
+> الدعوات المنشورة تُقرأ من `PublishedSnapshot.resolved_config_json` وليس من إعادة دمج حية.
+
+### سياسة الـ Snapshot
+
+- **مسودة (draft):** تُبنى من أحدث Blueprint/Preset/Data المرتبطة.
+- **منشورة (published):** تعرض الـ snapshot المجمد فقط.
+- تعديل Blueprint أو Preset لا يغيّر دعوة منشورة تلقائياً.
+- إعادة النشر تنشئ snapshot جديدة؛ تُحفظ القديمة للتدقيق أو rollback.
 
 ---
 
-## 6. Types المعتمدة
+## 6. Types المعتمدة (V2)
 
 ```ts
 export type SceneType =
-  | "opening"
-  | "hero_names"
-  | "invitation_message"
-  | "event_details"
-  | "countdown"
-  | "gallery_media"
-  | "location"
-  | "notes"
-  | "rsvp"
-  | "ticket_confirmation";
+  | "opening" | "hero_names" | "invitation_message" | "event_details"
+  | "countdown" | "gallery_media" | "location" | "notes" | "rsvp"
+  | "ticket_confirmation";  // Closing Scene — الاسم التاريخي
 
-export type LayerType = "image" | "video" | "color" | "gradient" | "lottie";
+export type SceneBlueprintEntry = {
+  id: string;
+  type: SceneType;
+  label?: string;
+  enabledByDefault?: boolean;
+  required?: boolean;
+};
 
-export type Layer = {
-  type: LayerType;
-  src?: string;
-  value?: string;
-  fit?: "cover" | "contain";
-  position?: "top" | "center" | "bottom" | "full";
-  opacity?: number;
+export type SequenceBlueprint = {
+  id: string;
+  label: string;
+  version?: string;
+  layout: InvitationLayout;
+  scenes: SceneBlueprintEntry[];
+};
+
+export type DesignPresetScene = {
+  variant?: string;
+  design?: SceneDesign;
+  media?: SceneMediaConfig;
+  background?: Layer;
+  defaultContent?: Record<string, unknown>;
+  motion?: Record<string, unknown>;
+};
+
+export type DesignPreset = {
+  id: string;
+  label: string;
+  version?: string;
+  theme: InvitationTheme;
+  typeDefaults?: Partial<Record<SceneType, DesignPresetScene>>;
+  sceneOverrides?: Record<string, DesignPresetScene>;
+};
+
+export type SceneInstanceOverride = {
+  enabled?: boolean;
+  variant?: string;
+  content?: Record<string, unknown>;
+  design?: SceneDesign;
+  media?: SceneMediaConfig;
+  background?: Layer;
+  overlay?: Layer;
+  foreground?: Layer[];
+};
+
+export type InvitationData = {
+  id: string;
+  slug: string;
+  eventId: string;
+  blueprintId: string;
+  presetId: string;
+  language: "ar" | "en";
+  direction: "rtl" | "ltr";
+  music: InvitationMusic;
+  rsvp: InvitationRSVP;
+  sceneOverrides?: Record<string, SceneInstanceOverride>;
 };
 
 export type InvitationScene = {
   id: string;
   type: SceneType;
+  enabled: boolean;
   variant: string;
+  design?: SceneDesign;
+  media?: SceneMediaConfig;
   background?: Layer;
-  overlay?: Layer;
-  foreground?: Layer[];
   content?: Record<string, unknown>;
   motion?: Record<string, unknown>;
 };
@@ -512,135 +461,77 @@ export type InvitationConfig = {
   language: "ar" | "en";
   direction: "rtl" | "ltr";
   theme: InvitationTheme;
-  layout: {
-    mobileMaxWidth: number;
-    minSupportedWidth: number;
-    safePaddingX: number;
-  };
-  music: {
-    enabled: boolean;
-    src?: string;
-    startMode: "after_first_tap" | "manual" | "disabled";
-  };
-  rsvp: {
-    enabled: boolean;
-    mode: "none" | "public_request" | "controlled_link";
-    approvalRequired: boolean;
-    maxPublicRequest?: number;
-  };
+  layout: InvitationLayout;
+  music: InvitationMusic;
+  rsvp: InvitationRSVP;
   scenes: InvitationScene[];
+  snapshotAt?: string;
+  blueprintRef?: { id: string; version: string };
+  presetRef?: { id: string; version: string };
+  dataRef?: { id: string };
 };
 
-// ── Sequence + InvitationData (طبقتان قبل الدمج) ──
-
-export type SceneDefinition = {
-  sceneType: SceneType;
-  variant: string;
-  background?: Layer;
-  overlay?: Layer;
-  foreground?: Layer[];
-  defaultContent?: Record<string, unknown>;
-  motion?: Record<string, unknown>;
-};
-
-export type InvitationSequence = {
-  id: string;
-  label: string;
-  theme: InvitationTheme;
-  layout: InvitationConfig["layout"];
-  scenes: SceneDefinition[];
-};
-
-export type InvitationData = {
-  id: string;
-  slug: string;
-  eventId: string;
-  sequenceId: string;
-  language: "ar" | "en";
-  direction: "rtl" | "ltr";
-  music: InvitationConfig["music"];
-  rsvp: InvitationConfig["rsvp"];
-  content: Partial<Record<SceneType, Record<string, unknown>>>;
-  assetOverrides?: Partial<Record<SceneType, {
-    background?: Layer;
-    overlay?: Layer;
-    foreground?: Layer[];
-  }>>;
-  themeOverrides?: Partial<InvitationTheme>;
-};
+// PublishedSnapshot = InvitationConfig مجمد في published_snapshots.resolved_config_json
 ```
 
----
+> التفاصيل الكاملة في `marasim/src/types/invitation.ts`.
 
-## 7. بنية الملفات المعتمدة
+## 7. بنية الملفات المعتمدة (V2)
 
 ```txt
-marasim/                              # تطبيق Next.js (اسم المشروع ليس نهائياً)
+marasim/
 src/
   app/
     i/[slug]/page.tsx
-    s/[token]/page.tsx                # صفحة حالة المدعو + QR (المرحلة 3)
-    owner/
-      login/page.tsx
-      events/page.tsx
-      events/[eventId]/page.tsx
-      events/[eventId]/rsvps/page.tsx
-      events/[eventId]/tickets/page.tsx
-      events/[eventId]/scanner/page.tsx
-      events/[eventId]/notifications/page.tsx
-    admin/
-      page.tsx
+    s/[token]/page.tsx                # Phase 3B
+    t/[ticketToken]/page.tsx          # Phase 5
+    lab/
+      composer/page.tsx               # Scene Instance Composer
+      composer/userguide/page.tsx
+    owner/ ...
+    admin/page.tsx
   components/
     invitation/
       InvitationRenderer.tsx
       SceneFrame.tsx
       LayerRenderer.tsx
+      MediaSceneRenderer.tsx
       MusicGate.tsx
-      scenes/
-        OpeningScene.tsx
-        HeroNamesScene.tsx
-        InvitationMessageScene.tsx
-        EventDetailsScene.tsx
-        CountdownScene.tsx
-        GalleryMediaScene.tsx
-        LocationScene.tsx
-        NotesScene.tsx
-        RSVPScene.tsx
-        TicketConfirmationScene.tsx   # إغلاق فقط — بدون QR
-    dashboard/
-      EventOverviewCards.tsx
-      RSVPRequestsTable.tsx
-      SeatCounters.tsx
-      OwnerNotifications.tsx
-    scanner/
-      QRScanner.tsx
-      TicketValidationResult.tsx
-      CheckinActions.tsx
+      scene-registry.tsx              # SceneType → component
+      scenes/ ...
+    lab/
+      ComposerApp.tsx
+      JourneyPanel.tsx
+      DesignPanel.tsx
+      ContentPanel.tsx
+    dashboard/ ...
+    scanner/ ...
     ui/
   lib/
-    build-config.ts                   # buildInvitationConfig()
-    supabase.ts
-    invitation-config.ts              # slug registry
-    rsvp.ts
-    tickets.ts
-    checkin.ts
-    notifications.ts
+    build-config.ts                   # buildInvitationConfigV2 + createPublishedSnapshot
+    preset-utils.ts
+    composer/
+      state.ts
+      journey.ts
+    scene-design.ts
+    supabase.ts                       # Phase 3A+
+    invitation-config.ts
+    rsvp.ts | tickets.ts | checkin.ts | notifications.ts
   types/
-    invitation.ts
-    rsvp.ts
-    tickets.ts
-    events.ts
+    invitation.ts                     # V2 + Legacy V1 types
+    rsvp.ts | tickets.ts | events.ts
   data/
-    sequences/
-      wedding-royal.sequence.ts
-    invitations/
-      ahmad-sara-demo.ts
-    demo-invitations/
-      wedding-royal.ts
-      birth-elegant.ts
-  public/
-    assets/
-      demo/
+    blueprints/                       # SequenceBlueprint
+      wedding-standard.blueprint.ts
+      wedding-short.blueprint.ts
+    presets/                          # DesignPreset
+      wedding-royal-dark.preset.ts
+      wedding-cinematic-floral.preset.ts
+    invitations/                      # InvitationData
+      ws-royal-demo.ts
+    sequences/                        # LEGACY V1 — ديموهات قديمة فقط
+    demo-invitations/                 # LEGACY V1 wrappers
+  public/assets/demo/
 ```
 
 ---
@@ -746,7 +637,71 @@ if (scannerEventId !== ticket.eventId) {
 
 ---
 
-## 10. قاعدة البيانات المقترحة
+## 10. عقد قاعدة البيانات (Phase 3A — تصميم فقط، غير منفّذ)
+
+> **لا تنشئ جداول أو migrations قبل الموافقة الصريحة على Phase 3A.**
+> قد تستخدم الـ schema UUID كمفاتيح أساسية مع business IDs نصية داخل JSON — يجب اتخاذ قرار واحد قبل كتابة الـ migration.
+
+### جداول التصميم والدعوات
+
+```sql
+-- الرحلات القابلة لإعادة الاستخدام
+create table sequence_blueprints (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  version text not null,
+  blueprint_json jsonb not null,       -- SequenceBlueprint
+  status text not null default 'active',  -- active | archived
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- الهويات البصرية
+create table design_presets (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  version text not null,
+  compatible_blueprint_id uuid references sequence_blueprints(id),  -- null = عام
+  preset_json jsonb not null,          -- DesignPreset
+  status text not null default 'active',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- دعوة العميل
+create table invitations (
+  id uuid primary key default gen_random_uuid(),
+  event_id uuid references events(id) on delete cascade,
+  slug text unique not null,
+  blueprint_id uuid references sequence_blueprints(id) not null,
+  blueprint_version text not null,
+  preset_id uuid references design_presets(id) not null,
+  preset_version text not null,
+  invitation_data_json jsonb not null, -- InvitationData (بدون blueprint/preset مكررة)
+  status text not null default 'draft',  -- draft | published | archived
+  published_snapshot_id uuid,            -- FK → published_snapshots (nullable للمسودات)
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- لقطة مجمدة عند النشر
+create table published_snapshots (
+  id uuid primary key default gen_random_uuid(),
+  invitation_id uuid references invitations(id) on delete cascade not null,
+  resolved_config_json jsonb not null, -- InvitationConfig كامل مجمد
+  blueprint_id uuid not null,
+  blueprint_version text not null,
+  preset_id uuid not null,
+  preset_version text not null,
+  snapshot_at timestamptz not null default now()
+);
+
+alter table invitations
+  add constraint fk_published_snapshot
+  foreign key (published_snapshot_id) references published_snapshots(id);
+```
+
+### جداول تشغيلية (Phase 3B+)
 
 ```sql
 create table events (
@@ -773,26 +728,6 @@ create table event_settings (
   cancellation_deadline_hours integer default 24,
   created_at timestamptz default now()
 );
-
-create table invitations (
-  id uuid primary key default gen_random_uuid(),
-  event_id uuid references events(id) on delete cascade,
-  slug text unique not null,
-  sequence_id text not null,
-  invitation_data_json jsonb not null,
-  config_json jsonb not null,
-  is_published boolean default false,
-  created_at timestamptz default now(),
-  updated_at timestamptz default now()
-);
-
--- sequences يمكن تخزينها في جدول منفصل لاحقاً في Admin
--- create table invitation_sequences (
---   id text primary key,
---   label text not null,
---   sequence_json jsonb not null,
---   created_at timestamptz default now()
--- );
 
 create table invite_links (
   id uuid primary key default gen_random_uuid(),
@@ -854,6 +789,15 @@ create table event_notifications (
 );
 ```
 
+### تحميل الدعوة (Phase 3A)
+
+```txt
+slug → invitations row
+  if status = published → published_snapshots.resolved_config_json
+  if status = draft     → buildInvitationConfigV2(blueprint, preset, invitation_data_json)
+fallback: lib/invitation-config.ts للديموهات المحلية
+```
+
 ---
 
 ## 11. مراحل التنفيذ المعتمدة
@@ -866,9 +810,11 @@ create table event_notifications (
 - وضع بنية folders الأساسية.
 - لا يتم ربط Supabase قبل تثبيت الواجهة الأساسية.
 
-### المرحلة 1: محرك الدعوة الكامل Skeleton ✅ مكتملة
+### المرحلة 1: محرك الدعوة الكامل Skeleton ✅ مكتملة (V1 — أصبح Legacy)
 
-الهدف: بناء الهيكل الكامل للمحرك والمشاهد العشرة.
+الهدف: بناء الهيكل الكامل للمحرك ومكتبة المشاهد العشرة.
+
+> هذه المرحلة استخدمت `InvitationSequence` + `buildInvitationConfig()` — المسار المعتمد الآن هو V2 (Phase 2.10+).
 
 المطلوب (منجز):
 
@@ -1019,26 +965,58 @@ khalid-noura
 > Sequence جديدة تُبنى فقط عندما تتغير رحلة الدعوة: عدد المشاهد، ترتيبها، تكرارها، أنواعها.
 
 
-### المرحلة 3: Supabase + RSVP Public Request + صفحة الحالة
+### المرحلة 2.12: Documentation & Persistence Contract Freeze ✅
+
+المطلوب:
+
+- V2 فقط كمعمارية أساسية في `AGENTS.md` وهذا الملف.
+- V1 → Appendix Legacy.
+- عقد قاعدة البيانات (blueprints, presets, invitations, snapshots).
+- سياسة Snapshot موثقة.
+- تقسيم Phase 3 → 3A (persistence) + 3B (RSVP).
+
+معيار القبول:
+
+- لا تعارض بين الوثائق ومعمارية V2 في الكود.
+- لا migrations ولا Supabase جديد.
+- `npm run build` لا يتأثر.
+
+### المرحلة 3A: Supabase Persistence Foundation (لم تبدأ — تتطلب موافقة)
 
 المطلوب:
 
 - إعداد Supabase client.
-- إنشاء الجداول الأساسية (مع `rsvp_view_token`).
+- migrations للجداول: `sequence_blueprints`, `design_presets`, `invitations`, `published_snapshots` + `events`, `event_settings`.
+- repositories لتحميل blueprint/preset/data/snapshot.
+- تحميل دعوة بالـ slug من Supabase.
+- fallback للـ registry المحلي للديموهات.
+- **بدون** RSVP submission حقيقي.
+
+معيار القبول:
+
+- slug منشور يقرأ من snapshot مجمد.
+- slug مسودة يُبنى حياً من أحدث blueprint/preset/data.
+- الديموهات المحلية تعمل بدون Supabase.
+
+### المرحلة 3B: Public Request RSVP (لم تبدأ — تتطلب موافقة)
+
+المطلوب:
+
 - ربط RSVPScene بقاعدة البيانات.
 - إرسال public request بحالة pending.
+- `rsvp_view_token` cryptographically strong.
 - redirect إلى `/s/[rsvp_view_token]` بعد الإرسال.
-- صفحة `/s/[token]` تعرض الحالة وQR بعد الموافقة.
+- صفحة `/s/[token]`: pending / rejected / approved.
 - إنشاء notification لصاحب المناسبة.
+- **لا** خصم مقاعد قبل الموافقة.
 
 معيار القبول:
 
 - المدعو يرسل طلب حضور ويصل لصفحة حالته الشخصية.
 - الطلب يظهر في قاعدة البيانات.
-- لا يتم خصم المقاعد قبل الموافقة.
 - بعد الموافقة يظهر QR في صفحة الحالة وليس داخل الدعوة.
 
-### المرحلة 4: Owner Dashboard PWA Skeleton + Admin Sequences
+### المرحلة 4: Owner Dashboard PWA Skeleton + Admin Blueprints/Presets
 
 المطلوب:
 
@@ -1047,8 +1025,8 @@ khalid-noura
 - RSVP requests list.
 - approve / reject / edit seats.
 - in-app notifications.
-- Admin: إنشاء/تعديل sequences.
-- Admin: إنشاء دعوة جديدة = sequence + invitation data + assets.
+- Admin: إنشاء/تعديل blueprints و presets.
+- Admin: إنشاء دعوة جديدة = blueprint + preset + invitation data + assets.
 - إعداد manifest كبداية PWA.
 
 معيار القبول:
@@ -1126,9 +1104,11 @@ khalid-noura
 
 - لا تبنِ صفحة واحدة hardcoded.
 - لا تكسر schema المشاهد.
-- لا تخلط Sequence (تصميم) مع InvitationData (بيانات عميل) في ملف واحد.
-- استخدم `buildInvitationConfig()` دائماً قبل التمرير للـ Renderer.
+- لا تخلط Blueprint (رحلة) مع DesignPreset (تصميم) مع InvitationData (محتوى) في ملف واحد.
+- استخدم `buildInvitationConfigV2()` لأي feature جديد — وليس `buildInvitationConfig()`.
+- overrides الجديدة تستهدف `sceneId` — وليس `SceneType` وحده.
 - لا تعرض QR داخل scroll الدعوة — استخدم `/s/[rsvp_view_token]` أو controlled link.
+- لا تبدأ Supabase أو migrations قبل الموافقة على Phase 3A.
 - لا تضف features خارج المرحلة الحالية.
 - لا تجعل المدعو يحتاج login أو PWA.
 - لا تخصم المقاعد قبل approval أو confirmation النهائي.
@@ -1145,8 +1125,8 @@ khalid-noura
 
 يعتبر المشروع قابلاً للعرض عندما نستطيع:
 
-1. فتح رابط دعوة demo على الموبايل.
-2. مشاهدة 10 مشاهد بالترتيب.
+1. فتح رابط دعوة demo على الموبايل (V2: `ws-*` أو Legacy: `demo-wedding` / `noor-*`).
+2. مشاهدة رحلة الدعوة حسب Blueprint (ليست بالضرورة 10 مشاهد ثابتة).
 3. إرسال RSVP والوصول لصفحة حالة شخصية `/s/[token]`.
 4. الموافقة عليه من dashboard.
 5. توليد QR وعرضه في صفحة الحالة (وليس داخل الدعوة).
@@ -1154,5 +1134,47 @@ khalid-noura
 7. تسجيل دخول جزء من المجموعة.
 8. منع تجاوز المقاعد.
 9. عرض WRONG_EVENT عند المناسبة الخاطئة.
-10. إنشاء دعوة جديدة من sequence موجود + بيانات جديدة.
+10. إنشاء دعوة جديدة من blueprint + preset + invitation data (V2).
 11. تصوير فيديو تسويقي للديمو وإرساله لعملاء محتملين.
+
+---
+
+## Appendix A — Legacy V1 (توافق خلفي فقط)
+
+> **لا تستخدم V1 لأي feature أو دعوة أو تصميم قاعدة بيانات جديد.**
+
+### المسار القديم
+
+```txt
+InvitationSequence + InvitationData
+  → buildInvitationConfig()   // @deprecated
+  → InvitationConfig
+```
+
+### لماذا بقي؟
+
+| العنصر | السبب |
+|---|---|
+| `data/sequences/*.sequence.ts` | ديموهات `demo-wedding`, `noor-*` تعمل قبل Phase 2.10 |
+| `buildInvitationConfig()` | غلاف registry للـ slugs القديمة |
+| `content[SceneType]` / `assetOverrides[SceneType]` | fallback في دمج V2 للبيانات القديمة |
+| `InvitationSequence` / `SceneDefinition` | أنواع TypeScript محفوظة للتوافق |
+| `data/demo-invitations/` | configs مبنية مسبقاً للـ registry |
+
+### ما الذي تغيّر في V2؟
+
+| V1 | V2 |
+|---|---|
+| Sequence = تصميم + رحلة معاً | Blueprint = رحلة فقط، Preset = تصميم فقط |
+| overrides بـ `SceneType` | overrides بـ `sceneId` |
+| `variant: "hidden"` | `enabled: false` |
+| `sequenceId` في InvitationData | `blueprintId` + `presetId` |
+| `config_json` + `is_published` في DB | `published_snapshots` منفصلة |
+| رحلة 10 مشاهد ضمنية | رحلة قابلة للتخصيص per blueprint |
+
+### ترحيل ديمو قديم إلى V2
+
+1. استخرج ترتيب المشاهد و IDs → `SequenceBlueprint`
+2. استخرج theme/variants/media → `DesignPreset`
+3. استخرج أسماء/تواريخ/أصول → `InvitationData.sceneOverrides[sceneId]`
+4. سجّل slug جديد أو حدّث registry

@@ -346,7 +346,12 @@ export type InvitationData = {
   id: string;
   slug: string;
   eventId: string;
+  /** @deprecated Legacy V1 — use blueprintId for V2 invitations */
   sequenceId: string;
+  /** V2 blueprint business id (e.g. wedding-standard) */
+  blueprintId?: string;
+  /** V2 design preset business id (e.g. wedding-royal-dark) */
+  presetId?: string;
   language: "ar" | "en";
   direction: "rtl" | "ltr";
   music: InvitationMusic;

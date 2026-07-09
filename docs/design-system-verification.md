@@ -1,10 +1,20 @@
-# Design System Verification — Phase 2.7
+# Design System Verification
 
-> Acceptance test proving Phase 2.6 turned the engine into a **Creative Design Engine** — not a single template with different colors.
+> **Current architecture source of truth: Phase 2.11 / V2**
+>
+> Sections 1–10 document **Phase 2.7** — a historical acceptance test before Journey Foundation (Phase 2.10–2.11).
+> For current architecture, merge rules, and demos, see **Sections 11–13** and `AGENTS.md`.
 
 ---
 
-## 1. Routes & Sequences
+## Historical — Phase 2.7 Acceptance Test
+
+> Acceptance test proving Phase 2.6 turned the engine into a **Creative Design Engine** — not a single template with different colors.
+> At this stage, demos still used V1 `InvitationSequence` + `buildInvitationConfig()`. Journey editing was not yet separated from design.
+
+---
+
+## 1. Routes & Sequences (Phase 2.7 — Legacy V1 demos)
 
 | Route | Slug | Sequence | InvitationData | Purpose |
 |---|---|---|---|---|
@@ -326,3 +336,33 @@ All routes including legacy demos + 2 new media demos: `npm run build` ✅
 - **Draft:** resolves latest blueprint + preset + data via `buildInvitationConfigV2()`.
 - **Published:** `createPublishedSnapshot(config)` freezes `InvitationConfig` with `snapshotAt`, `blueprintRef`, `presetRef`, `dataRef`.
 - Later blueprint/preset edits do not affect published invitations.
+- Re-publish creates a new snapshot; old snapshots retained for audit.
+
+---
+
+## 13. Phase 2.12 — Documentation & Persistence Contract Freeze
+
+### What changed in docs (not code)
+
+- V2 (`SequenceBlueprint` + `DesignPreset` + `InvitationData` → `buildInvitationConfigV2`) is the **only** primary architecture in `AGENTS.md` and `marasim_technical_plan_v2_ar.md`.
+- V1 (`InvitationSequence` + `buildInvitationConfig`) moved to **Legacy** — kept for old demo routes only.
+- Database contract documented for Phase 3A (`sequence_blueprints`, `design_presets`, `invitations`, `published_snapshots` + operational tables).
+- Phase 3 split into **3A** (persistence) and **3B** (RSVP).
+
+### Journey is not hardcoded
+
+- The 10 scene types are a **Scene Library**, not a fixed mandatory journey.
+- Blueprints may include 6 scenes, 10 scenes, repeated `gallery_media`, or any valid combination.
+- Scene visibility is per-instance `enabled` — not global RSVP-based auto-skip of closing scene.
+
+### Current V2 demo routes
+
+| Route | Blueprint | Preset |
+|---|---|---|
+| `/i/ws-royal-demo` | `wedding-standard` | `wedding-royal-dark` |
+| `/i/ws-floral-demo` | `wedding-standard` | `wedding-cinematic-floral` |
+| `/i/ws-minimal-demo` | `wedding-standard` | `wedding-minimal-modern` |
+| `/i/ws-short-demo` | `wedding-short` | (preset per demo file) |
+| `/i/ws-gallery-repeat-demo` | `gallery-repeat-acceptance` | `gallery-repeat-acceptance` |
+
+Legacy V1 routes (`demo-wedding`, `noor-*`) remain for backward compatibility.

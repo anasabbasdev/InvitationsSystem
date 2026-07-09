@@ -16,6 +16,8 @@ export const wsRoyalDemoData: InvitationData = {
   slug: "ws-royal-demo",
   eventId: "event_ws_royal_01",
   sequenceId: "wedding-standard",
+  blueprintId: "wedding-standard",
+  presetId: "wedding-royal-dark",
 
   language: "ar",
   direction: "rtl",

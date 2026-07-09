@@ -1,14 +1,19 @@
 /**
- * Supabase client — Phase 3
+ * Supabase clients — Phase 3A
  *
- * To enable, install @supabase/supabase-js and set:
+ * Env vars:
  *   NEXT_PUBLIC_SUPABASE_URL
  *   NEXT_PUBLIC_SUPABASE_ANON_KEY
- *
- * Then replace this stub with:
- *   import { createClient } from "@supabase/supabase-js";
- *   export const supabase = createClient(url, key);
+ *   SUPABASE_SERVICE_ROLE_KEY  (seed / admin writes only)
  */
 
-export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-export const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+export {
+  getSupabaseUrl,
+  getSupabaseAnonKey,
+  getSupabaseServiceRoleKey,
+  isSupabaseConfigured,
+  isSupabaseAdminConfigured,
+} from "@/lib/supabase/env";
+
+export { getSupabaseServer } from "@/lib/supabase/server";
+export { getSupabaseAdmin } from "@/lib/supabase/admin";

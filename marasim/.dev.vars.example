@@ -1,7 +1,7 @@
 # Copy to .dev.vars for local development (never commit .dev.vars)
 NEXTJS_ENV=development
 
-# Phase 3+ — add when Supabase is integrated:
-# NEXT_PUBLIC_SUPABASE_URL=
-# NEXT_PUBLIC_SUPABASE_ANON_KEY=
-# SUPABASE_SERVICE_ROLE_KEY=
+# Phase 3A — Supabase persistence
+# NEXT_PUBLIC_SUPABASE_URL=https://duqineonftzakpjnrewp.supabase.co
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1cWluZW9uZnR6YWtwam5yZXdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MDYzODAsImV4cCI6MjA5OTA4MjM4MH0.aI7naEyEDC_80At_ZJNZoHPNhbogZMuwHtm4eKJWBTY
+# SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1cWluZW9uZnR6YWtwam5yZXdwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzUwNjM4MCwiZXhwIjoyMDk5MDgyMzgwfQ.GNokQ_TK0GTAwueyc6H4vvh1b0-3U5Dn1twAYq0bwnQ

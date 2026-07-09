@@ -21,8 +21,8 @@ Clients receive a premium custom-designed invitation. Internally, the system use
 Build only the MVP needed to sell and test the service:
 
 - Mobile-first invitation renderer.
-- 10 canonical invitation scenes.
-- JSON-based invitation config.
+- Scene Library of 10 canonical scene types (journey is configurable per blueprint).
+- JSON-based invitation config (V2: Blueprint + Preset + Data).
 - RSVP with two modes:
   - Public Request RSVP.
   - Controlled Link RSVP.
@@ -69,54 +69,106 @@ Use English for code identifiers, file names, variables, and comments. Arabic co
 
 ---
 
-## Architecture Rule
+## Architecture Rule (V2 — Source of Truth)
 
 Never hardcode an invitation as a single page.
 
 Every invitation must be rendered through:
 
 ```txt
-InvitationSequence + InvitationData
-  -> buildInvitationConfig()
+SequenceBlueprint + DesignPreset + InvitationData
+  -> buildInvitationConfigV2()
   -> InvitationConfig
   -> InvitationRenderer
-  -> Scene Components
+  -> Scene Components (via scene registry)
 ```
 
-### Two-Layer Config Model
-
-Do not mix design and client content in one file.
-
-| Layer | Purpose | Contains |
-|---|---|---|
-| `InvitationSequence` | Reusable visual design | theme, layout, scene variants, gradients, motion defaults |
-| `InvitationData` | Per-client invitation | names, dates, assets, RSVP settings, content overrides |
-
-The renderer consumes only the merged `InvitationConfig`. Build it with:
+On publish:
 
 ```txt
-lib/build-config.ts  ->  buildInvitationConfig(data, sequence)
-lib/invitation-config.ts  ->  slug registry + Supabase lookup (Phase 3+)
+InvitationConfig
+  -> createPublishedSnapshot()
+  -> frozen published config (stored in published_snapshots)
 ```
 
-Canonical scenes:
+### Six-Layer Model
+
+Do not mix journey, design, and client content in one file.
+
+| Layer | Type | Purpose | Contains |
+|---|---|---|---|
+| 1. Scene Library | `SceneType` | Reusable component catalog | 10 canonical types — **not** a fixed journey |
+| 2. Journey | `SequenceBlueprint` | Which scenes, in what order | `SceneBlueprintEntry[]`: `id`, `type`, `enabledByDefault`, `required` — **no design, no content** |
+| 3. Design | `DesignPreset` | Visual identity | `theme`, `typeDefaults[sceneType]`, `sceneOverrides[sceneId]` |
+| 4. Content | `InvitationData` | Per-client invitation | names, dates, assets, RSVP, `sceneOverrides[sceneId]` |
+| 5. Resolved | `InvitationConfig` | Runtime merge output | `InvitationScene[]` with `enabled`, variant, design, media, content |
+| 6. Published | `PublishedSnapshot` | Frozen publish artifact | `InvitationConfig` + `snapshotAt` + version refs — immutable for live invitations |
+
+**SceneInstance** is the resolved unit at runtime: one `InvitationScene` with a unique `id` (sceneId), a `type` (SceneType), and merged fields. Blueprint entries become instances after merge.
+
+### Merge Order (buildInvitationConfigV2)
+
+1. Blueprint `SceneBlueprintEntry` (id, type, enabled from `enabledByDefault` / `required`)
+2. `DesignPreset.typeDefaults[sceneType]`
+3. `DesignPreset.sceneOverrides[sceneId]`
+4. `InvitationData.sceneOverrides[sceneId]` (content, `enabled`, assets)
+5. → Resolved `InvitationScene`
+
+Build with:
 
 ```txt
-1. opening
-2. hero_names
-3. invitation_message
-4. event_details
-5. countdown
-6. gallery_media
-7. location
-8. notes
-9. rsvp
-10. ticket_confirmation
+lib/build-config.ts       ->  buildInvitationConfigV2(blueprint, preset, data)
+lib/build-config.ts       ->  createPublishedSnapshot(config)
+lib/preset-utils.ts       ->  getPresetTypeDefaults()
+lib/invitation-config.ts  ->  slug registry + Supabase lookup (Phase 3A+)
 ```
 
-If RSVP is disabled, the renderer should skip `rsvp` and `ticket_confirmation`, or turn `ticket_confirmation` into a simple closing/thank-you scene.
+### Journey vs Scene Library
 
-`ticket_confirmation` inside the invitation is **never** the QR ticket page. It is only a closing / thank-you scene. The guest's QR and ticket status live on a separate personal status route (see RSVP and QR rules below).
+The 10 scene types are a **Scene Library**, not a mandatory fixed journey:
+
+```txt
+opening | hero_names | invitation_message | event_details | countdown
+gallery_media | location | notes | rsvp | ticket_confirmation
+```
+
+- Scenes can be **added, duplicated, reordered, or removed** per blueprint.
+- The same `SceneType` may appear multiple times with different `sceneId` values (e.g. two `gallery_media` scenes).
+- New assets or visual identity → new **DesignPreset**, not a new blueprint.
+- New **SequenceBlueprint** only when the **journey** changes (count, order, repetition, types).
+- Overrides target **`sceneId`**, not `SceneType` alone (legacy type-keyed overrides exist only in V1).
+
+### RSVP & Closing Scene Rules
+
+- `rsvp` scene: disable independently via `scene.enabled: false` in overrides — not via `variant: "hidden"`.
+- `ticket_confirmation` is the historical `SceneType` name; functionally it is the **Closing Scene** only (thank-you / farewell).
+- **Disabling RSVP does NOT auto-hide the closing scene.** Each scene's visibility is controlled by its own `enabled` flag.
+- QR and ticket status **never** appear inside `InvitationRenderer` — only on `/s/[rsvp_view_token]` or `/t/[ticketToken]`.
+
+### Snapshot Policy
+
+- **Draft invitation:** built from latest linked Blueprint + Preset + InvitationData via `buildInvitationConfigV2()`.
+- **Published invitation:** serves the frozen `PublishedSnapshot` only — not a live re-merge.
+- Editing a Blueprint or Preset does **not** auto-change published invitations.
+- Re-publish creates a **new** snapshot; old snapshots are retained for audit / rollback.
+- `createPublishedSnapshot()` sets `snapshotAt` and should record `blueprintRef`, `presetRef`, `dataRef` on the config.
+
+### Database Contract (Phase 3A — design only, not implemented yet)
+
+Design tables:
+
+| Table | Key fields |
+|---|---|
+| `sequence_blueprints` | `id`, `name`, `version`, `blueprint_json`, `status`, timestamps |
+| `design_presets` | `id`, `name`, `version`, `compatible_blueprint_id` (nullable), `preset_json`, `status`, timestamps |
+| `invitations` | `id`, `event_id`, `slug`, `blueprint_id`, `blueprint_version`, `preset_id`, `preset_version`, `invitation_data_json`, `status` (`draft` \| `published` \| `archived`), `published_snapshot_id` (nullable), timestamps |
+| `published_snapshots` | `id`, `invitation_id`, `resolved_config_json`, `blueprint_id`, `blueprint_version`, `preset_id`, `preset_version`, `snapshot_at` |
+
+Operational tables (Phase 3B+): `events`, `event_settings`, `rsvps`, `tickets`, `invite_links`, `checkins`, `event_notifications`.
+
+**Decision pending before migration:** actual schema may use UUID primary keys with string business IDs inside JSON — pick one convention and apply consistently.
+
+> Do not create Supabase tables or migrations until Phase 3A is explicitly approved.
 
 ---
 
@@ -129,7 +181,11 @@ marasim/                          # Next.js app (project name is not final)
 src/
   app/
     i/[slug]/page.tsx             # Public invitation player
-    s/[token]/page.tsx            # Guest RSVP/ticket status page (Phase 3)
+    s/[token]/page.tsx            # Guest RSVP/ticket status page (Phase 3B)
+    t/[ticketToken]/page.tsx      # Direct ticket page (Phase 5)
+    lab/
+      composer/page.tsx           # Internal Scene Instance Composer (dev)
+      composer/userguide/page.tsx
     owner/
       login/page.tsx
       events/page.tsx
@@ -145,7 +201,9 @@ src/
       InvitationRenderer.tsx
       SceneFrame.tsx
       LayerRenderer.tsx
+      MediaSceneRenderer.tsx      # full_media / layered_media scenes
       MusicGate.tsx
+      scene-registry.tsx          # SceneType → component map
       scenes/
         OpeningScene.tsx
         HeroNamesScene.tsx
@@ -156,31 +214,46 @@ src/
         LocationScene.tsx
         NotesScene.tsx
         RSVPScene.tsx
-        TicketConfirmationScene.tsx   # closing/thank-you only — no QR here
+        TicketConfirmationScene.tsx   # Closing scene only — no QR
+    lab/
+      ComposerApp.tsx
+      JourneyPanel.tsx
+      DesignPanel.tsx
+      ContentPanel.tsx
     dashboard/
     scanner/
     ui/
   lib/
-    build-config.ts               # buildInvitationConfig(data, sequence)
-    supabase.ts
-    invitation-config.ts          # slug registry
+    build-config.ts               # buildInvitationConfigV2 + createPublishedSnapshot
+    preset-utils.ts               # getPresetTypeDefaults()
+    composer/                     # Composer state, journey helpers
+      state.ts
+      journey.ts
+    scene-design.ts               # DesignTokens defaults + resolution
+    supabase.ts                   # Phase 3A+
+    invitation-config.ts          # slug registry (+ Supabase fallback in 3A)
     rsvp.ts
     tickets.ts
     checkin.ts
     notifications.ts
   types/
-    invitation.ts                 # InvitationConfig, InvitationSequence, InvitationData
+    invitation.ts                 # V2 types + legacy V1 types
     rsvp.ts
     tickets.ts
     events.ts
   data/
-    sequences/                    # reusable design templates
+    blueprints/                   # SequenceBlueprint journey definitions
+      wedding-standard.blueprint.ts
+      wedding-short.blueprint.ts
+    presets/                      # DesignPreset visual identities
+      wedding-royal-dark.preset.ts
+      wedding-cinematic-floral.preset.ts
+    invitations/                  # InvitationData per client / demo
+      ws-royal-demo.ts
+    sequences/                    # LEGACY V1 — old demos only
       wedding-royal.sequence.ts
-    invitations/                  # per-client content + assets
-      ahmad-sara-demo.ts
-    demo-invitations/             # built configs for registry (thin wrappers)
+    demo-invitations/             # LEGACY V1 thin wrappers for registry
       wedding-royal.ts
-      birth-elegant.ts
   public/
     assets/
       demo/
@@ -371,25 +444,37 @@ Follow this order unless the user explicitly changes it:
 10. **Asset-Driven Scene Player — full_media / layered_media / MediaSceneRenderer. Done (Phase 2.8)**
 11. **Internal Scene Composer — /lab/composer dev tool. Done (Phase 2.9)**
 12. **Architecture Validation & Journey Foundation — SequenceBlueprint, DesignPreset, sceneId overrides, enabled scenes. Done (Phase 2.10)**
-13. **Scene Instance Composer & Architecture Closure — sceneId-based Composer, Journey editor (add/duplicate/reorder), separated exports, published snapshot policy. Done (Phase 2.11)**
-14. Supabase + Public Request RSVP + `/s/[rsvp_view_token]` status page (Phase 3).
-15. Owner dashboard skeleton (Phase 4).
-16. Approval flow, seat counters, ticket generation (Phase 4).
-17. QR display on status page + scanner/check-in (Phase 5).
-18. Controlled Link RSVP (Phase 6).
-19. Landing page (Phase 7).
-20. PWA polish.
+13. **Scene Instance Composer & Architecture Closure — sceneId-based Composer, Journey editor, separated exports, published snapshot policy. Done (Phase 2.11)**
+14. **Documentation & Persistence Contract Freeze — V2-only docs, database contract, snapshot policy. Done (Phase 2.12)**
+15. **Phase 3A — Supabase Persistence Foundation** (in progress):
+    - Supabase setup + migrations ✅
+    - Blueprint / Preset / Invitation / Snapshot repositories ✅
+    - Load invitation by slug from Supabase ✅
+    - Local registry fallback for demos ✅
+    - Seed script (`npm run db:seed`) ✅
+    - No real RSVP submission yet
+16. **Phase 3B — Public Request RSVP** (not started — requires approval):
+    - RSVP submission + cryptographic `rsvp_view_token`
+    - Redirect to `/s/[token]`
+    - Status page: pending / rejected / approved
+    - Owner notification record
+    - No seat deduction before approval
+17. Owner dashboard skeleton (Phase 4).
+18. Approval flow, seat counters, ticket generation (Phase 4).
+19. QR display on status page + scanner/check-in (Phase 5).
+20. Controlled Link RSVP (Phase 6).
+21. Landing page (Phase 7).
+22. PWA polish.
 
 **Phase 2.6 is a prerequisite for Phase 3+ if the goal is selling real Noor-designed invitations.**
 **Phase 2.8 is the preferred delivery path for Noor animations** — designer videos/images, not per-client web animations.
-Reason: Admin UI will store `variant`, `design tokens`, and `scene.design` in the database.
-Those fields must work in the renderer before the admin can manage them.
+**Phase 2.12 freezes the V2 persistence contract.** Do not start Supabase until Phase 3A is explicitly approved.
+Reason: Admin UI will store blueprint, preset, and invitation data in the database.
+Those fields must match the V2 merge model before migrations are written.
 
 Do not jump to payments, WhatsApp automation, or template editor before these are stable.
 
-### Creating a New Invitation (internal workflow — Phase 2.11+)
-
-Preferred V2 path:
+### Creating a New Invitation (V2 workflow)
 
 ```txt
 SequenceBlueprint  +  DesignPreset  +  InvitationData
@@ -402,33 +487,52 @@ SequenceBlueprint  +  DesignPreset  +  InvitationData
 2. Pick or create a `DesignPreset` in `data/presets/` (`typeDefaults` + optional `sceneOverrides` by sceneId).
 3. Create `InvitationData` in `data/invitations/` with client content and `sceneOverrides` keyed by sceneId.
 4. Build: `buildInvitationConfigV2(blueprint, preset, data)`.
-5. Register slug in `lib/invitation-config.ts`.
+5. Register slug in `lib/invitation-config.ts` (Phase 3A+: Supabase with local fallback).
 
 **Rule:** New assets or visual identity = new DesignPreset, NOT a new SequenceBlueprint.
 New SequenceBlueprint only when the journey changes (scene count, order, repetition, types).
 
-### Published snapshot policy (pre-Supabase)
+### Creating a New Blueprint (journey only)
 
-- **Draft:** `buildInvitationConfigV2()` resolves latest blueprint + preset + data.
-- **Published:** store `createPublishedSnapshot(config)` — frozen `InvitationConfig` with `snapshotAt`, `blueprintRef`, `presetRef`, `dataRef`.
-- Editing blueprint/preset later must NOT auto-change published invitations.
+1. Define ordered `SceneBlueprintEntry[]` with unique `id`, `type`, optional `label`, `enabledByDefault`, `required`.
+2. Set `layout` defaults only — no theme, no variants, no client content.
+3. Bump `version` when journey structure changes.
+4. Reuse across multiple presets and invitations.
 
-### Creating a New Invitation (legacy V1 workflow)
+### Creating a New Design Preset
 
-### Creating a New Sequence (internal workflow)
+1. Define `theme` + `typeDefaults[sceneType]` for baseline visuals per scene type.
+2. Use `sceneOverrides[sceneId]` for per-instance differences (e.g. two gallery scenes).
+3. Bump `version` when visual defaults change.
+4. Optionally set `compatible_blueprint_id` when preset is blueprint-specific.
 
-1. Define theme, layout, and ordered `SceneDefinition[]` with variants and default content only.
-2. Set `theme.design` (DesignTokens) to define the visual personality of the sequence.
-3. Set `variant` per scene to control layout (e.g., `rings_luxury`, `split_names`, `minimal_tap`).
-4. Optionally set `scene.design` for per-scene overrides (e.g., different `iconStyle` on one scene).
-5. Do not put real client names, dates, or uploaded assets in the sequence file.
-6. Reuse the sequence across multiple invitations via different `InvitationData` files.
+---
+
+## Legacy (V1 — backward compatibility only)
+
+V1 exists **only** to keep old demo routes working (`demo-wedding`, `noor-*`). Do **not** use V1 for any new feature, demo, or database design.
+
+```txt
+InvitationSequence + InvitationData
+  → buildInvitationConfig()   # @deprecated
+  → InvitationConfig
+```
+
+| V1 artifact | Location | Why kept |
+|---|---|---|
+| `InvitationSequence` | `data/sequences/` | Old demos built before Phase 2.10 |
+| `buildInvitationConfig()` | `lib/build-config.ts` | Registry wrappers for legacy slugs |
+| Type-keyed `content` / `assetOverrides` | `InvitationData` | Backward compat in merge fallbacks |
+| `data/demo-invitations/` | thin V1 wrappers | Pre-built configs for old registry entries |
+| `variant: "hidden"` | some legacy sequences | Superseded by `enabled: false` in V2 |
+
+When migrating a demo to V2: extract journey → blueprint, design → preset, content → `sceneOverrides[sceneId]`.
 
 ### Design System — Phase 2.6
 
 The renderer supports a two-level design token system:
 
-**Level 1 — `sequence.theme.design` (DesignTokens):** Applies to all scenes.
+**Level 1 — `DesignPreset.theme.design` or `theme.design` (DesignTokens):** Applies to all scenes.
 ```ts
 theme.design = {
   cardStyle: "framed" | "minimal" | "glass" | "full_bleed" | "none",
@@ -457,7 +561,7 @@ scene.design = {
 `scene.design` → `theme.design` → DESIGN_DEFAULTS (in `lib/scene-design.ts`)
 
 **JSON-serializable:** All values are plain strings. No functions or components in config.
-Suitable for storage in Supabase `sequences` table in Phase 3.
+Suitable for storage in Supabase `design_presets` / `published_snapshots` tables (Phase 3A).
 
 ### Scene Variants Reference
 
@@ -484,7 +588,7 @@ Each scene can set `media.compositionMode`:
 | `layered_media` | Stack background + foreground assets + optional live text |
 | `web_layout` | Default — variants + design tokens (RSVP, countdown, etc.) |
 
-Config lives on `SceneDefinition.media`, overridable via `InvitationData.mediaOverrides`.
+Config lives on scene media fields in preset/data overrides.
 Rendered by `MediaSceneRenderer` when mode is `full_media` or `layered_media`.
 
 ---
@@ -493,7 +597,8 @@ Rendered by `MediaSceneRenderer` when mode is `full_media` or `layered_media`.
 
 The MVP is acceptable when:
 
-- `/i/demo-wedding` shows a full mobile invitation with the 10-scene sequence.
+- `/i/ws-royal-demo` (or any V2 demo) shows a full mobile invitation from blueprint + preset + data.
+- `/i/demo-wedding` continues to work via legacy V1 registry path.
 - RSVP can be submitted and guest is redirected to `/s/[rsvp_view_token]`.
 - Owner can approve/reject/edit seats.
 - Approved RSVP creates a group QR ticket visible on the guest status page.
@@ -503,7 +608,7 @@ The MVP is acceptable when:
 - Scanner detects wrong-event tickets.
 - Dashboard shows seat counters and in-app notifications.
 - Landing page can send potential customers to WhatsApp/request quote.
-- New invitations can be created by pairing an existing sequence with new invitation data.
+- New invitations are created via Blueprint + Preset + InvitationData (V2).
 
 ---
 

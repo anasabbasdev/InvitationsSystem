@@ -48,10 +48,15 @@ const INVITATION_REGISTRY: Record<string, InvitationConfig> = {
   "ws-gallery-repeat-demo": wsGalleryRepeatConfig, // gallery_media × 2 with different IDs
 };
 
-export function getInvitationBySlug(slug: string): InvitationConfig | null {
+export function getInvitationFromRegistry(slug: string): InvitationConfig | null {
   return INVITATION_REGISTRY[slug] ?? null;
 }
 
-export function getAllInvitationSlugs(): string[] {
+/** @deprecated Use loadInvitationBySlug for server routes; registry-only for Composer */
+export function getInvitationBySlug(slug: string): InvitationConfig | null {
+  return getInvitationFromRegistry(slug);
+}
+
+export function getLocalInvitationSlugs(): string[] {
   return Object.keys(INVITATION_REGISTRY);
 }
