@@ -2,6 +2,9 @@ import Link from "next/link";
 import { getSessionUser } from "@/lib/auth";
 import { signOutAction } from "@/app/owner/actions";
 
+/** Auth layout uses cookies — must not be statically prerendered on CI/Workers. */
+export const dynamic = "force-dynamic";
+
 export default async function OwnerLayout({
   children,
 }: {

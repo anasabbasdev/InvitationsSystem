@@ -1,59 +1,75 @@
 # Cloudflare Workers Deployment
 
-## Why 500 on `/owner/login`?
+## المشكلة الشائعة: GitHub Secrets وحدها لا تكفي
 
-Usually one of:
+OpenNext يحتاج متغيرين **منفصلين**:
 
-1. **Missing env vars** on the Worker (Supabase URL/keys not set at build or runtime).
-2. **Middleware/auth crash** on edge (now hardened — page should load with a config message).
-3. **Test Hub hidden** — `/lab/test-hub` returns 404 in production unless `ENABLE_TEST_HUB=true`.
-
-## Required variables
-
-| Variable | When | Where |
+| المرحلة | أين تُضبط | لماذا |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Build + Runtime | GitHub secret + Worker var |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Build + Runtime | GitHub secret + Worker var |
-| `SUPABASE_SERVICE_ROLE_KEY` | Runtime only | Worker **secret** |
-| `NEXT_PUBLIC_SITE_URL` | Build (QR links) | GitHub secret + Worker var |
-| `ENABLE_TEST_HUB` | Runtime (optional) | Worker var = `true` |
+| **Build** | GitHub Secrets → خطوة `opennextjs-cloudflare build` | تضمين `NEXT_PUBLIC_*` في الحزمة |
+| **Runtime** | Cloudflare Worker vars/secrets عند `deploy` | `middleware` و Server Components تقرأ `process.env` على الـ Worker |
 
-## GitHub Actions secrets
+وضع Secrets في GitHub **فقط** يصلح البناء لكن الـ Worker عند التشغيل يبقى بدون `process.env` → 500.
 
-Add to repository **Settings → Secrets**:
+الـ workflow الحالي (`deploy-cloudflare.yml`) يزامن **تلقائياً**:
 
+- `SUPABASE_SERVICE_ROLE_KEY` → Worker secret
+- `NEXT_PUBLIC_*` + `ENABLE_TEST_HUB` → Worker vars عبر `--var`
+- `--keep-vars` يحافظ على vars اليدوية في Dashboard
+
+## GitHub Secrets المطلوبة
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `NEXT_PUBLIC_SITE_URL` (e.g. `https://marasim.anas-abass1.workers.dev`)
+- `NEXT_PUBLIC_SITE_URL` (مثال: `https://marasim.anas-abass1.workers.dev`)
 
-Push to `main` redeploys with build-time env + service role secret sync.
+## تحقق بعد النشر
 
-## Manual setup (Cloudflare Dashboard)
+افتح:
 
-1. **Workers → marasim → Settings → Variables**
-2. Add **plain text**:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `NEXT_PUBLIC_SITE_URL`
-   - `ENABLE_TEST_HUB` = `true` (optional)
-3. Add **secret**:
-   - `SUPABASE_SERVICE_ROLE_KEY`
+```txt
+https://YOUR-WORKER.workers.dev/api/health
+```
 
-## Manual CLI
+المتوقع:
+
+```json
+{
+  "ok": true,
+  "supabasePublic": true,
+  "supabaseAdmin": true,
+  "hasSiteUrl": true
+}
+```
+
+إذا `supabasePublic: false` → runtime vars لم تصل للـ Worker.
+
+## يدوياً (بدون انتظار GitHub)
 
 ```bash
 cd marasim
+export NEXT_PUBLIC_SUPABASE_URL=...
+export NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+export NEXT_PUBLIC_SITE_URL=https://marasim.anas-abass1.workers.dev
+export SUPABASE_SERVICE_ROLE_KEY=...
+
 npx opennextjs-cloudflare build
-npx wrangler deploy
-npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+echo "$SUPABASE_SERVICE_ROLE_KEY" | npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+npx opennextjs-cloudflare deploy -- \
+  --keep-vars \
+  --var "NEXT_PUBLIC_SUPABASE_URL:$NEXT_PUBLIC_SUPABASE_URL" \
+  --var "NEXT_PUBLIC_SUPABASE_ANON_KEY:$NEXT_PUBLIC_SUPABASE_ANON_KEY" \
+  --var "NEXT_PUBLIC_SITE_URL:$NEXT_PUBLIC_SITE_URL" \
+  --var "ENABLE_TEST_HUB:true"
 ```
 
-Set plain vars in dashboard or `wrangler.jsonc` `[vars]` (never commit secrets).
+## Test Hub على الإنتاج
 
-## Verify after deploy
+`/lab/test-hub` يظهر فقط إذا `ENABLE_TEST_HUB=true` على الـ Worker (الـ workflow يضبطها تلقائياً).
 
-- `/` — landing
-- `/i/ws-royal-demo` — invitation (needs service role + DB)
-- `/owner/login` — login form (not 500)
-- `/lab/test-hub` — only if `ENABLE_TEST_HUB=true`
+## ملاحظة على `if: secrets` في GitHub Actions
+
+لا تستخدم `if: secrets.X != ''` — GitHub يعاملها دائماً كفارغة في الشروط. لذلك أزلنا الشرط من خطوة secret sync.
