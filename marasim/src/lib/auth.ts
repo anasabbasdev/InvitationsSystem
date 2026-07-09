@@ -2,6 +2,7 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server-client";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { isEventOwner, getUserRole } from "@/lib/repositories/owners";
 
 export type SessionUser = {
@@ -11,10 +12,17 @@ export type SessionUser = {
 
 /** Validates the JWT against Supabase Auth — safe for server-side authorization checks. */
 export async function getSessionUser(): Promise<SessionUser | null> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return null;
-  return { id: data.user.id, email: data.user.email ?? null };
+  if (!isSupabaseConfigured()) return null;
+
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) return null;
+    return { id: data.user.id, email: data.user.email ?? null };
+  } catch {
+    // Cloudflare Workers / edge: cookies or auth refresh may fail — treat as logged out.
+    return null;
+  }
 }
 
 /** Redirects to /owner/login when there is no valid session. */

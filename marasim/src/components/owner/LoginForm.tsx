@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { createSupabaseBrowserClient, isBrowserSupabaseConfigured } from "@/lib/supabase/browser";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -14,8 +14,15 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [configError] = useState(() =>
+    isBrowserSupabaseConfigured()
+      ? null
+      : "إعداد Supabase غير مكتمل على السيرفر. أضف NEXT_PUBLIC_SUPABASE_URL و NEXT_PUBLIC_SUPABASE_ANON_KEY في Cloudflare Worker ثم أعد النشر."
+  );
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (configError) return;
     setLoading(true);
     setError(null);
 
@@ -76,13 +83,17 @@ export default function LoginForm() {
         />
       </div>
 
+      {configError && (
+        <p className="rounded-md bg-amber-950/50 px-3 py-2 text-sm text-amber-200">{configError}</p>
+      )}
+
       {error && (
         <p className="rounded-md bg-red-950/50 px-3 py-2 text-sm text-red-300">{error}</p>
       )}
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || Boolean(configError)}
         className="mt-2 rounded-md bg-amber-500 px-4 py-3 text-sm font-medium text-black transition-opacity hover:opacity-90 disabled:opacity-60"
       >
         {loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
