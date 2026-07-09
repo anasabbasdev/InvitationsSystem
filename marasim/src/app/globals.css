@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-tajawal);
+  --font-heading: var(--font-amiri);
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Invitation page global overrides ─────────────────────────────────── */
+
+/* Hide scrollbar on invitation pages while preserving scroll */
+.inv-scroll-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.inv-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Text selection color inside invitations */
+.inv-root ::selection {
+  background-color: rgba(201, 162, 77, 0.25);
+  color: #f7e7b4;
+}
+
+/* Input/select focus styles for dark-themed invitation form */
+.inv-input {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inv-input:focus {
+  border-color: rgba(201, 162, 77, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(201, 162, 77, 0.08);
+  outline: none;
+}
+
+/* Prevent iOS font size bump on form inputs */
+.inv-input,
+.inv-select {
+  font-size: max(15px, 1rem);
+}
+
+/* Remove default select arrow on webkit; we style our own */
+.inv-select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Smooth scroll hint animation */
+@keyframes inv-bounce-down {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(5px); opacity: 1; }
+}
+.inv-bounce-down {
+  animation: inv-bounce-down 2s ease-in-out infinite;
+}
+
+/* Subtle gold shimmer sweep on buttons */
+@keyframes inv-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.inv-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 100%
+  );
+  background-size: 200% auto;
+  animation: inv-shimmer 2.8s linear infinite;
+}
