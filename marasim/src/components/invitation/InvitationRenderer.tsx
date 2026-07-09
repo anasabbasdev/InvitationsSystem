@@ -8,14 +8,17 @@ import MusicGate from "./MusicGate";
 import OpeningScene from "./scenes/OpeningScene";
 import { SCENE_COMPONENTS } from "./scene-registry";
 
-function shouldShowScene(scene: InvitationScene, rsvpEnabled: boolean): boolean {
-  // Hide the RSVP form when RSVP is disabled.
-  // ticket_confirmation always shows — it adapts its message based on rsvp.enabled
-  // ("نراكم قريباً" when no RSVP, "شكراً لتفاعلكم" when RSVP enabled).
-  if (!rsvpEnabled && scene.type === "rsvp") {
-    return false;
-  }
-  return true;
+/**
+ * A scene is visible when enabled !== false.
+ * enabled is set at build time by buildInvitationConfig / buildInvitationConfigV2:
+ *   - RSVP scenes get enabled=false when rsvp.enabled=false
+ *   - SceneDefinition.enabledByDefault controls other scenes
+ *   - data.sceneOverrides[id].enabled can override any scene
+ * Using scene.enabled instead of a type-specific switch keeps the renderer
+ * agnostic about event type and journey structure.
+ */
+function isSceneVisible(scene: InvitationScene): boolean {
+  return scene.enabled !== false;
 }
 
 interface InvitationRendererProps {
@@ -32,18 +35,24 @@ interface InvitationRendererProps {
  *  3. rsvp/ticket_confirmation hidden when rsvp.enabled = false.
  */
 export default function InvitationRenderer({ config }: InvitationRendererProps) {
-  const { theme, layout, rsvp, scenes } = config;
+  const { theme, layout, scenes } = config;
 
-  const openingScene = scenes.find((s) => s.type === "opening");
+  // Find the opening scene — must be enabled to act as a gate
+  const openingScene = scenes.find(
+    (s) => s.type === "opening" && isSceneVisible(s)
+  );
   const hasOpening = Boolean(openingScene);
 
   const [isOpened, setIsOpened] = useState(!hasOpening);
 
+  // All non-opening scenes that are enabled — renderer is agnostic about count/order
   const contentScenes = scenes.filter(
-    (s) => s.type !== "opening" && shouldShowScene(s, rsvp.enabled)
+    (s) => s.type !== "opening" && isSceneVisible(s)
   );
 
   const cssVars = buildInvitationCssVars(theme);
+  const bgColor = theme.backgroundColor;
+  const textColor = theme.textColor ?? "var(--inv-text, #F5F0E8)";
 
   return (
     <MusicGate config={config}>
@@ -52,8 +61,8 @@ export default function InvitationRenderer({ config }: InvitationRendererProps) 
         style={{
           maxWidth: layout.mobileMaxWidth,
           minWidth: layout.minSupportedWidth,
-          backgroundColor: theme.backgroundColor,
-          color: theme.textColor ?? "#F5F0E8",
+          backgroundColor: bgColor,
+          color: textColor,
           fontFamily: "var(--font-tajawal)",
           direction: config.direction,
           ...cssVars,
@@ -65,12 +74,12 @@ export default function InvitationRenderer({ config }: InvitationRendererProps) 
             <motion.div
               key="opening-gate"
               className="fixed inset-0 z-50"
-              style={{
-                maxWidth: layout.mobileMaxWidth,
-                left: "50%",
-                transform: "translateX(-50%)",
-                backgroundColor: theme.backgroundColor,
-              }}
+          style={{
+            maxWidth: layout.mobileMaxWidth,
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: bgColor,
+          }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             >

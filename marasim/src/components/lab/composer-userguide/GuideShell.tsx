@@ -172,7 +172,7 @@ export default function GuideShell({ toc, children }: GuideShellProps) {
           </Link>
           <span className="text-zinc-600">|</span>
           <h1 className="text-sm font-medium text-zinc-300">دليل الاستخدام الداخلي</h1>
-          <span className="rounded bg-red-900/40 px-2 py-0.5 text-xs text-red-300">داخلي — Phase 2.9.x</span>
+          <span className="rounded bg-red-900/40 px-2 py-0.5 text-xs text-red-300">داخلي — Phase 2.11</span>
           <div className="flex-1" />
           <Link
             href="/lab/composer"

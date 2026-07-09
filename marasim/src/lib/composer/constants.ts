@@ -2,6 +2,13 @@ import type { SceneType } from "@/types/invitation";
 
 /** Demo slugs available in the internal scene composer. */
 export const COMPOSER_DEMO_SLUGS = [
+  // Phase 2.10 — SequenceBlueprint + DesignPreset architecture proofs
+  "ws-royal-demo",
+  "ws-floral-demo",
+  "ws-minimal-demo",
+  "ws-short-demo",
+  "ws-gallery-repeat-demo",
+  // Legacy demos (Phase 2.x)
   "demo-wedding",
   "noor-wedding-demo",
   "noor-birth-demo",

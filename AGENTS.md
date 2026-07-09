@@ -370,13 +370,15 @@ Follow this order unless the user explicitly changes it:
 9. Design Integration Acceptance Test — reuse proof, variantOverrides, verification docs. **Done (Phase 2.7)**
 10. **Asset-Driven Scene Player — full_media / layered_media / MediaSceneRenderer. Done (Phase 2.8)**
 11. **Internal Scene Composer — /lab/composer dev tool. Done (Phase 2.9)**
-12. Supabase + Public Request RSVP + `/s/[rsvp_view_token]` status page (Phase 3).
-13. Owner dashboard skeleton (Phase 4).
-14. Approval flow, seat counters, ticket generation (Phase 4).
-15. QR display on status page + scanner/check-in (Phase 5).
-16. Controlled Link RSVP (Phase 6).
-17. Landing page (Phase 7).
-18. PWA polish.
+12. **Architecture Validation & Journey Foundation — SequenceBlueprint, DesignPreset, sceneId overrides, enabled scenes. Done (Phase 2.10)**
+13. **Scene Instance Composer & Architecture Closure — sceneId-based Composer, Journey editor (add/duplicate/reorder), separated exports, published snapshot policy. Done (Phase 2.11)**
+14. Supabase + Public Request RSVP + `/s/[rsvp_view_token]` status page (Phase 3).
+15. Owner dashboard skeleton (Phase 4).
+16. Approval flow, seat counters, ticket generation (Phase 4).
+17. QR display on status page + scanner/check-in (Phase 5).
+18. Controlled Link RSVP (Phase 6).
+19. Landing page (Phase 7).
+20. PWA polish.
 
 **Phase 2.6 is a prerequisite for Phase 3+ if the goal is selling real Noor-designed invitations.**
 **Phase 2.8 is the preferred delivery path for Noor animations** — designer videos/images, not per-client web animations.
@@ -385,12 +387,33 @@ Those fields must work in the renderer before the admin can manage them.
 
 Do not jump to payments, WhatsApp automation, or template editor before these are stable.
 
-### Creating a New Invitation (internal workflow)
+### Creating a New Invitation (internal workflow — Phase 2.11+)
 
-1. Pick or create an `InvitationSequence` in `data/sequences/`.
-2. Create `InvitationData` in `data/invitations/` with client content and asset paths.
-3. Build config: `buildInvitationConfig(data, sequence)`.
-4. Register slug in `lib/invitation-config.ts` (Phase 3+: save to Supabase `invitations` table instead).
+Preferred V2 path:
+
+```txt
+SequenceBlueprint  +  DesignPreset  +  InvitationData
+  → buildInvitationConfigV2()
+  → InvitationConfig
+  → InvitationRenderer
+```
+
+1. Pick or create a `SequenceBlueprint` in `data/blueprints/` (journey only — IDs, order, enabled).
+2. Pick or create a `DesignPreset` in `data/presets/` (`typeDefaults` + optional `sceneOverrides` by sceneId).
+3. Create `InvitationData` in `data/invitations/` with client content and `sceneOverrides` keyed by sceneId.
+4. Build: `buildInvitationConfigV2(blueprint, preset, data)`.
+5. Register slug in `lib/invitation-config.ts`.
+
+**Rule:** New assets or visual identity = new DesignPreset, NOT a new SequenceBlueprint.
+New SequenceBlueprint only when the journey changes (scene count, order, repetition, types).
+
+### Published snapshot policy (pre-Supabase)
+
+- **Draft:** `buildInvitationConfigV2()` resolves latest blueprint + preset + data.
+- **Published:** store `createPublishedSnapshot(config)` — frozen `InvitationConfig` with `snapshotAt`, `blueprintRef`, `presetRef`, `dataRef`.
+- Editing blueprint/preset later must NOT auto-change published invitations.
+
+### Creating a New Invitation (legacy V1 workflow)
 
 ### Creating a New Sequence (internal workflow)
 

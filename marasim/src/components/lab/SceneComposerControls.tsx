@@ -30,6 +30,8 @@ interface SceneComposerControlsProps {
   edit: ComposerSceneEdit;
   onChange: (edit: ComposerSceneEdit) => void;
   uiMode: "basic" | "advanced";
+  /** Which tab context this renders in: "design" shows media/visual, "content" shows only editor */
+  tab?: "design" | "content";
 }
 
 export default function SceneComposerControls({
@@ -38,6 +40,7 @@ export default function SceneComposerControls({
   edit,
   onChange,
   uiMode,
+  tab,
 }: SceneComposerControlsProps) {
   const assetSet = getAssetPathSet(slug);
   const media = edit.media;
@@ -82,14 +85,31 @@ export default function SceneComposerControls({
     onChange(next);
   };
 
+  // When tab="content", only show the content editor
+  if (tab === "content") {
+    return (
+      <div className="space-y-4 overflow-y-auto pr-1" style={{ maxHeight: "calc(100vh - 260px)" }}>
+        <SceneContentEditor
+          sceneType={sceneType}
+          content={edit.content}
+          onChange={handleContentChange}
+          mode="advanced"
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-4 overflow-y-auto pr-1" style={{ maxHeight: "calc(100vh - 220px)" }}>
-      <SceneContentEditor
-        sceneType={sceneType}
-        content={edit.content}
-        onChange={handleContentChange}
-        mode={uiMode}
-      />
+    <div className="space-y-4 overflow-y-auto pr-1" style={{ maxHeight: "calc(100vh - 260px)" }}>
+      {/* In Design tab, always show content editor in basic mode for quick access */}
+      {tab === "design" ? null : (
+        <SceneContentEditor
+          sceneType={sceneType}
+          content={edit.content}
+          onChange={handleContentChange}
+          mode={uiMode}
+        />
+      )}
 
       <SceneVisualControls
         sceneType={sceneType}

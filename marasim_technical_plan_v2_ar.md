@@ -986,6 +986,38 @@ data/demo-invitations/
 ahmad-sara
 khalid-noura
 
+### المرحلة 2.10: Architecture Validation & Journey Foundation ✅
+
+المطلوب:
+
+- فصل `SequenceBlueprint` (الرحلة) عن `DesignPreset` (الهوية البصرية) عن `InvitationData` (بيانات العميل).
+- `buildInvitationConfigV2(blueprint, preset, data)`.
+- `sceneId` مستقل عن `sceneType` — دعم تكرار نفس النوع.
+- `enabled: false` لكل مشهد (بدلاً من `variant: "hidden"`).
+- ثلاث دعوات من `wedding-standard` blueprint مع presets مختلفة: Royal Dark / Cinematic Floral / Minimal Modern.
+
+### المرحلة 2.11: Scene Instance Composer & Architecture Closure ✅
+
+المطلوب:
+
+- Composer مفهرس بـ `sceneId` (ليس `sceneType`) في التعديلات والمعاينة والتصدير.
+- Journey Editor: Add Scene / Duplicate / Remove / Move Up-Down / Enable-Disable / تعديل ID.
+- `DesignPreset.typeDefaults` + `DesignPreset.sceneOverrides[sceneId]`.
+- تصدير منفصل: Blueprint / Preset / InvitationData / Resolved Config.
+- اختبار Gallery مكررة: `gallery-childhood` + `gallery-wedding-day`.
+- سياسة `resolvedConfigSnapshot` للدعوات المنشورة.
+
+معيار القبول:
+
+- يمكن تكرار `gallery_media` مرتين وتعديل كل نسخة مستقلاً في Composer.
+- نفس Blueprint + 3 Presets = 3 دعوات مختلفة جذرياً بدون تعطيل مشاهد مختلفة.
+- `npm run build` و `tsc --noEmit` ينجحان.
+
+**قاعدة معمارية نهائية:**
+
+> assets جديدة أو تصميم جديد لا يعني Sequence جديدة.
+> Sequence جديدة تُبنى فقط عندما تتغير رحلة الدعوة: عدد المشاهد، ترتيبها، تكرارها، أنواعها.
+
 
 ### المرحلة 3: Supabase + RSVP Public Request + صفحة الحالة
 

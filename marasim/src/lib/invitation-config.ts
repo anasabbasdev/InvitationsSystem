@@ -5,9 +5,15 @@ import { noorBirthConfig } from "@/data/demo-invitations/noor-birth";
 import { noorWeddingAltConfig } from "@/data/demo-invitations/noor-wedding-alt";
 import { noorWeddingMediaConfig } from "@/data/demo-invitations/noor-wedding-media";
 import { noorBirthMediaConfig } from "@/data/demo-invitations/noor-birth-media";
+// Phase 2.10 — SequenceBlueprint + DesignPreset architecture proofs
+import { wsRoyalConfig } from "@/data/demo-invitations/ws-royal";
+import { wsFloralConfig } from "@/data/demo-invitations/ws-floral";
+import { wsMinimalConfig } from "@/data/demo-invitations/ws-minimal";
+import { wsShortConfig } from "@/data/demo-invitations/ws-short";
+import { wsGalleryRepeatConfig } from "@/data/demo-invitations/ws-gallery-repeat";
 
-// Re-export the builder so callers only need one import
-export { buildInvitationConfig } from "@/lib/build-config";
+// Re-export both builders so callers only need one import
+export { buildInvitationConfig, buildInvitationConfigV2, createPublishedSnapshot } from "@/lib/build-config";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Registry — maps URL slugs to their built InvitationConfig.
@@ -28,6 +34,18 @@ const INVITATION_REGISTRY: Record<string, InvitationConfig> = {
   // Phase 2.8 — Asset-driven scene player demos
   "noor-wedding-media-demo": noorWeddingMediaConfig,
   "noor-birth-media-demo": noorBirthMediaConfig,
+
+  // Phase 2.10 — SequenceBlueprint + DesignPreset architecture proofs
+  // Three invitations from one wedding-standard blueprint:
+  "ws-royal-demo": wsRoyalConfig,       // Invitation A: dark gold, web_layout
+  "ws-floral-demo": wsFloralConfig,     // Invitation B: cinematic assets, full_media
+  "ws-minimal-demo": wsMinimalConfig,   // Invitation C: light, no icons, modern
+
+  // Journey variation proof:
+  "ws-short-demo": wsShortConfig,       // 6-scene journey, same components
+
+  // Repeated SceneType proof:
+  "ws-gallery-repeat-demo": wsGalleryRepeatConfig, // gallery_media × 2 with different IDs
 };
 
 export function getInvitationBySlug(slug: string): InvitationConfig | null {

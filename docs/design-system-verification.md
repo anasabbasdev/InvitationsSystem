@@ -277,3 +277,52 @@ The engine now supports three composition modes per scene via `scene.media`:
 ### Build status (Phase 2.8)
 
 All routes including legacy demos + 2 new media demos: `npm run build` ✅
+
+---
+
+## 11. Phase 2.10 — Journey Foundation
+
+### Architecture layers
+
+| Layer | File location | Contains |
+|---|---|---|
+| **SequenceBlueprint** | `data/blueprints/*.blueprint.ts` | Scene IDs, types, order, `enabledByDefault`, `required` |
+| **DesignPreset** | `data/presets/*.preset.ts` | `theme`, `typeDefaults[sceneType]`, `sceneOverrides[sceneId]` |
+| **InvitationData** | `data/invitations/*.ts` | Client content, RSVP, `sceneOverrides[sceneId]` |
+| **InvitationConfig** | built at runtime | Resolved output for `InvitationRenderer` |
+
+### Same blueprint, three designs (all 10 scenes enabled)
+
+| Route | Blueprint | Preset | Visual |
+|---|---|---|---|
+| `/i/ws-royal-demo` | `wedding-standard` | `wedding-royal-dark` | Dark gold, web_layout, framed cards |
+| `/i/ws-floral-demo` | `wedding-standard` | `wedding-cinematic-floral` | Designer video/image, full_media |
+| `/i/ws-minimal-demo` | `wedding-standard` | `wedding-minimal-modern` | Light theme, Tajawal, no icons |
+
+---
+
+## 12. Phase 2.11 — Scene Instance Composer
+
+### Composer capabilities (`/lab/composer`)
+
+| Feature | Status |
+|---|---|
+| State keyed by `sceneId` | ✅ |
+| Add Scene (pick type → auto ID) | ✅ |
+| Duplicate (independent copy) | ✅ |
+| Remove / Enable / Disable | ✅ |
+| Move Up / Move Down | ✅ |
+| Edit scene ID + label | ✅ |
+| Separate exports (Blueprint / Preset / Data / Config) | ✅ |
+
+### Gallery repeat acceptance
+
+| Route | Blueprint | Proof |
+|---|---|---|
+| `/i/ws-gallery-repeat-demo` | `gallery-repeat-acceptance` | `gallery-childhood` (image) + `gallery-wedding-day` (video) — independent `preset.sceneOverrides` + `data.sceneOverrides` |
+
+### Published snapshot policy
+
+- **Draft:** resolves latest blueprint + preset + data via `buildInvitationConfigV2()`.
+- **Published:** `createPublishedSnapshot(config)` freezes `InvitationConfig` with `snapshotAt`, `blueprintRef`, `presetRef`, `dataRef`.
+- Later blueprint/preset edits do not affect published invitations.
