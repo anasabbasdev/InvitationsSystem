@@ -25,10 +25,10 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
 
   theme: {
     family: "cinematic",
-    primaryColor: "#C8843A",
-    secondaryColor: "#F0C98A",
-    backgroundColor: "#0C0905",
-    textColor: "#F2E8DC",
+    primaryColor: "#B8722E",
+    secondaryColor: "#E8C98A",
+    backgroundColor: "#FAF6F1",
+    textColor: "#2C2419",
     fontHeading: "CustomArabicFont",
     fontBody: "Tajawal",
     design: {
@@ -58,12 +58,12 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "full_video_intro",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #1A0E06 0%, #0C0905 50%, #0A0704 100%)",
+        value: "linear-gradient(160deg, #F5EEE4 0%, #FAF6F1 50%, #F2EBE2 100%)",
         // Replace with: { type: "video", src: "/assets/demo/noor/wedding/opening-bg.mp4", fit: "cover", position: "full" }
       },
       overlay: {
         type: "gradient",
-        value: "linear-gradient(180deg, rgba(12,9,5,0.4) 0%, transparent 35%, rgba(12,9,5,0.65) 80%, rgba(12,9,5,0.9) 100%)",
+        value: "linear-gradient(180deg, rgba(250,246,241,0.4) 0%, transparent 35%, rgba(250,246,241,0.65) 80%, rgba(250,246,241,0.9) 100%)",
       },
       defaultContent: {
         label: "دعوة زفاف",
@@ -78,11 +78,11 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "split_names",
       background: {
         type: "gradient",
-        value: "linear-gradient(145deg, #110A04 0%, #0C0905 60%, #0A0703 100%)",
+        value: "linear-gradient(145deg, #F5EEE4 0%, #FAF6F1 60%, #F2EBE2 100%)",
       },
       overlay: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, transparent 10%, transparent 90%, #0C0905 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, transparent 10%, transparent 90%, #FAF6F1 100%)",
       },
       defaultContent: {
         primaryName: "الاسم الأول",
@@ -97,7 +97,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "full_bleed_text",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, #100C07 50%, #0C0905 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, #F7F0E6 50%, #FAF6F1 100%)",
       },
       defaultContent: {
         title: "دعوة كريمة",
@@ -111,7 +111,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "minimal_rows",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: {
         sectionLabel: "تفاصيل المناسبة",
@@ -127,7 +127,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "minimal_digits",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 70% 50% at 50% 50%, #130C06 0%, #0C0905 70%)",
+        value: "radial-gradient(ellipse 70% 50% at 50% 50%, #F3E9DC 0%, #FAF6F1 70%)",
       },
       defaultContent: {
         sectionLabel: "يوم المناسبة",
@@ -141,7 +141,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "full_bleed_media",
       background: {
         type: "gradient",
-        value: "linear-gradient(145deg, #110A04 0%, #0C0905 100%)",
+        value: "linear-gradient(145deg, #F5EEE4 0%, #FAF6F1 100%)",
         // Replace with: { type: "image", src: "/assets/demo/noor/wedding/gallery-01.webp", fit: "cover", position: "full" }
       },
       defaultContent: {
@@ -156,7 +156,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "minimal_link",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: {
         sectionLabel: "موقع المناسبة",
@@ -172,7 +172,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "simple_list",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(160deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: {
         sectionLabel: "تنبيهات",
@@ -186,7 +186,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "minimal_form",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: {
         sectionLabel: "تأكيد الحضور",
@@ -199,7 +199,7 @@ export const noorWeddingLuxurySequence: InvitationSequence = {
       variant: "minimal_thank_you",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #120C06 0%, #0C0905 60%, #09070400 100%)",
+        value: "linear-gradient(160deg, #F4EDE3 0%, #FAF6F1 60%, transparent 100%)",
       },
       defaultContent: {},
     },

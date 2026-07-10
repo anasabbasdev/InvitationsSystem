@@ -15,24 +15,24 @@ export default function TicketPageView({ info }: Props) {
   return (
     <main
       className="min-h-dvh flex items-center justify-center px-6 py-12"
-      style={{ backgroundColor: "#0E0C0A", color: "#F5F0E8" }}
+      style={{ backgroundColor: "#FBF7F2", color: "#3D3229" }}
       dir="rtl"
     >
-      <div className="w-full max-w-[390px] flex flex-col gap-6 rounded-sm border border-zinc-800 bg-zinc-950/80 p-8">
+      <div className="w-full max-w-[390px] flex flex-col gap-6 rounded-sm border border-stone-200 bg-white/90 p-8">
         <div className="text-center space-y-1">
-          <p className="text-xs text-zinc-500 uppercase tracking-widest">تذكرة الدخول</p>
+          <p className="text-xs text-stone-500 uppercase tracking-widest">تذكرة الدخول</p>
           <h1 className="text-xl font-bold" style={{ color: "#C9A84C" }}>
             {event.title}
           </h1>
           {event.eventDate && (
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-stone-600">
               {new Date(event.eventDate).toLocaleString("ar-SA", {
                 dateStyle: "long",
                 timeStyle: "short",
               })}
             </p>
           )}
-          {event.venueName && <p className="text-xs text-zinc-500">{event.venueName}</p>}
+          {event.venueName && <p className="text-xs text-stone-500">{event.venueName}</p>}
         </div>
 
         {isRevoked ? (
@@ -54,7 +54,7 @@ export default function TicketPageView({ info }: Props) {
 
         {guestCode && (
           <div className="flex flex-col items-center gap-2">
-            <p className="text-xs text-zinc-500">رمز الدعوة</p>
+            <p className="text-xs text-stone-500">رمز الدعوة</p>
             <div className="flex items-center gap-2" dir="ltr">
               <span className="text-lg font-bold tracking-[0.2em] text-amber-400">{guestCode}</span>
               <CopyCodeButton
@@ -68,7 +68,7 @@ export default function TicketPageView({ info }: Props) {
         {!isRevoked && !isFullyUsed && guestCode && (
           <div className="flex flex-col items-center gap-3 pt-2">
             <TicketQR value={guestCode} size={200} />
-            <p className="text-[11px] text-zinc-500 text-center">اعرض هذا الرمز عند المدخل</p>
+            <p className="text-[11px] text-stone-500 text-center">اعرض هذا الرمز عند المدخل</p>
           </div>
         )}
       </div>
@@ -101,8 +101,8 @@ function StatusBanner({
 
 function Info({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md bg-zinc-900/80 px-3 py-2">
-      <div className="text-[10px] text-zinc-500">{label}</div>
+    <div className="rounded-md bg-white/80 px-3 py-2">
+      <div className="text-[10px] text-stone-500">{label}</div>
       <div className="font-medium">{value}</div>
     </div>
   );

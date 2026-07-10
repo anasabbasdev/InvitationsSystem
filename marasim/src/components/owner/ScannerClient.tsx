@@ -187,10 +187,10 @@ export default function ScannerClient({
   return (
     <div className="flex flex-col gap-4">
       {eventTitle && (
-        <p className="text-center text-sm text-zinc-400">{eventTitle}</p>
+        <p className="text-center text-sm text-stone-600">{eventTitle}</p>
       )}
 
-      <div className="flex flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-900 p-4">
+      <div className="flex flex-col gap-2 rounded-lg border border-stone-200 bg-white p-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -202,7 +202,7 @@ export default function ScannerClient({
             value={manualInput}
             onChange={(e) => setManualInput(e.target.value)}
             placeholder="رمز الدعوة / الجوال / QR"
-            className="flex-1 rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white outline-none focus:border-amber-500"
+            className="flex-1 rounded-md border border-stone-300 bg-stone-50 px-3 py-2 text-sm text-stone-800 outline-none focus:border-amber-500"
             dir="ltr"
           />
           <button
@@ -218,12 +218,12 @@ export default function ScannerClient({
           <button
             type="button"
             onClick={() => (cameraOn ? stopCamera() : startCamera())}
-            className="rounded-md border border-zinc-700 px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-800"
+            className="rounded-md border border-stone-300 px-3 py-2 text-xs text-stone-700 hover:bg-stone-100"
           >
             {cameraOn ? "إيقاف الكاميرا" : "مسح بالكاميرا (QR)"}
           </button>
         ) : (
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-stone-500">
             المسح بالكاميرا غير مدعوم — استخدم الإدخال اليدوي.
           </p>
         )}
@@ -234,11 +234,11 @@ export default function ScannerClient({
       </div>
 
       {error && (
-        <p className="rounded-md bg-red-950/50 px-3 py-2 text-sm text-red-300">{error}</p>
+        <p className="rounded-md bg-red-950/50 px-3 py-2 text-sm text-red-700">{error}</p>
       )}
 
       {result && statusInfo && (
-        <div className="flex flex-col gap-3 rounded-lg border border-zinc-800 bg-zinc-900 p-4">
+        <div className="flex flex-col gap-3 rounded-lg border border-stone-200 bg-white p-4">
           <div className="flex items-center justify-between">
             <span className="text-lg font-bold" style={{ color: statusInfo.color }}>
               {statusInfo.label}
@@ -246,14 +246,14 @@ export default function ScannerClient({
             <button
               type="button"
               onClick={reset}
-              className="rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
+              className="rounded-md border border-stone-300 px-3 py-1.5 text-xs text-stone-700 hover:bg-stone-100"
             >
               مسح جديد
             </button>
           </div>
 
           {result.info && (
-            <div className="grid grid-cols-2 gap-2 text-sm text-zinc-300">
+            <div className="grid grid-cols-2 gap-2 text-sm text-stone-700">
               <Info label="المناسبة" value={result.info.event.title} />
               <Info label="الضيف" value={result.info.guest.name || "—"} />
               {result.info.guest.side && <Info label="الطرف" value={result.info.guest.side} />}
@@ -297,7 +297,7 @@ export default function ScannerClient({
 function Info({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col">
-      <span className="text-[11px] text-zinc-500">{label}</span>
+      <span className="text-[11px] text-stone-500">{label}</span>
       <span className="font-medium">{value}</span>
     </div>
   );

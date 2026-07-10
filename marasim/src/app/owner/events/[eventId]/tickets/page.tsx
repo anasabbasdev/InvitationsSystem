@@ -24,7 +24,7 @@ export default async function OwnerTicketsPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href={`/owner/events/${eventId}`} className="text-xs text-zinc-500 hover:text-zinc-300">
+        <Link href={`/owner/events/${eventId}`} className="text-xs text-stone-500 hover:text-stone-700">
           ← المناسبة
         </Link>
         <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
@@ -33,7 +33,7 @@ export default async function OwnerTicketsPage({
       </div>
 
       {tickets.length === 0 ? (
-        <p className="rounded-lg border border-zinc-800 bg-zinc-900 p-6 text-center text-sm text-zinc-500">
+        <p className="rounded-lg border border-stone-200 bg-white p-6 text-center text-sm text-stone-500">
           لا توجد تذاكر بعد — تُنشأ التذكرة تلقائياً عند الموافقة على طلب حضور.
         </p>
       ) : (
@@ -43,11 +43,11 @@ export default async function OwnerTicketsPage({
             return (
               <li
                 key={ticket.id}
-                className="flex items-center justify-between gap-2 rounded-lg border border-zinc-800 bg-zinc-900 p-3 text-sm"
+                className="flex items-center justify-between gap-2 rounded-lg border border-stone-200 bg-white p-3 text-sm"
               >
                 <div>
-                  <p className="font-medium text-white">{ticket.guestName || "—"}</p>
-                  <p className="text-xs text-zinc-500">
+                  <p className="font-medium text-stone-800">{ticket.guestName || "—"}</p>
+                  <p className="text-xs text-stone-500">
                     {ticket.usedEntries} / {ticket.maxEntries} مستخدم
                   </p>
                 </div>
@@ -64,9 +64,9 @@ export default async function OwnerTicketsPage({
       )}
 
       <div>
-        <h2 className="mb-2 text-sm font-semibold text-zinc-300">سجل تسجيل الدخول (Check-in)</h2>
+        <h2 className="mb-2 text-sm font-semibold text-stone-700">سجل تسجيل الدخول (Check-in)</h2>
         {checkins.length === 0 ? (
-          <p className="rounded-lg border border-zinc-800 bg-zinc-900 p-4 text-center text-xs text-zinc-500">
+          <p className="rounded-lg border border-stone-200 bg-white p-4 text-center text-xs text-stone-500">
             لا يوجد تسجيل دخول بعد.
           </p>
         ) : (
@@ -74,11 +74,11 @@ export default async function OwnerTicketsPage({
             {checkins.map((c) => (
               <li
                 key={c.id}
-                className="flex items-center justify-between rounded-md border border-zinc-800 bg-zinc-900 px-3 py-2"
+                className="flex items-center justify-between rounded-md border border-stone-200 bg-white px-3 py-2"
               >
-                <span className="text-zinc-300">{c.guestName || "—"}</span>
-                <span className="text-zinc-500">{c.entriesCount} داخل</span>
-                <span className="text-zinc-500" dir="ltr">
+                <span className="text-stone-700">{c.guestName || "—"}</span>
+                <span className="text-stone-500">{c.entriesCount} داخل</span>
+                <span className="text-stone-500" dir="ltr">
                   {new Date(c.createdAt).toLocaleString("ar-SA", { dateStyle: "short", timeStyle: "short" })}
                 </span>
               </li>

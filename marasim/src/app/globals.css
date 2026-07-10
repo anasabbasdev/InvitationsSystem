@@ -6,8 +6,13 @@
 }
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
+  --background: #fbf7f2;
+  --foreground: #3d3229;
+  --surface: #ffffff;
+  --surface-muted: #f5ede3;
+  --border: #e8ddd0;
+  --muted: #6b5e52;
+  --accent: #c9a24d;
 }
 
 *,
@@ -43,11 +48,11 @@ body {
 
 /* Text selection color inside invitations */
 .inv-root ::selection {
-  background-color: rgba(201, 162, 77, 0.25);
-  color: #f7e7b4;
+  background-color: rgba(201, 162, 77, 0.28);
+  color: #3d3229;
 }
 
-/* Input/select focus styles for dark-themed invitation form */
+/* Input/select focus styles for invitation forms */
 .inv-input {
   transition: border-color 0.2s, box-shadow 0.2s;
 }

@@ -12,7 +12,7 @@ export default async function OwnerEventsPage() {
         <h1 className="text-xl font-bold" style={{ color: "#C9A24D" }}>
           مناسباتي
         </h1>
-        <p className="max-w-xs text-sm text-zinc-500">
+        <p className="max-w-xs text-sm text-stone-500">
           لا توجد مناسبات مرتبطة بحسابك حتى الآن. تواصل مع الإدارة لربط مناسبتك.
         </p>
       </div>
@@ -43,12 +43,12 @@ export default async function OwnerEventsPage() {
             <Link
               key={event.id}
               href={`/owner/events/${event.id}`}
-              className="flex flex-col gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-4 transition hover:border-amber-600/50"
+              className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 transition hover:border-amber-600/50"
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h2 className="font-semibold text-white">{event.title}</h2>
-                  <p className="text-xs text-zinc-500">
+                  <h2 className="font-semibold text-stone-800">{event.title}</h2>
+                  <p className="text-xs text-stone-500">
                     {event.eventDate
                       ? new Date(event.eventDate).toLocaleDateString("ar-SA", {
                           year: "numeric",
@@ -101,7 +101,7 @@ function Stat({
       >
         {value}
       </div>
-      <div className="text-[10px] text-zinc-500">{label}</div>
+      <div className="text-[10px] text-stone-500">{label}</div>
     </div>
   );
 }

@@ -7,13 +7,13 @@ export default async function AdminPage() {
   const [events, invitations] = await Promise.all([listAllEvents(), listAllInvitations()]);
 
   return (
-    <main className="min-h-dvh bg-zinc-950 px-6 py-10 text-white">
+    <main className="min-h-dvh bg-stone-50 px-6 py-10 text-stone-800">
       <div className="mx-auto max-w-3xl space-y-8">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: "#C9A24D" }}>
             لوحة الإدارة الداخلية
           </h1>
-          <p className="text-sm text-zinc-500">إدارة المناسبات والدعوات — MVP</p>
+          <p className="text-sm text-stone-500">إدارة المناسبات والدعوات — MVP</p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
@@ -21,7 +21,7 @@ export default async function AdminPage() {
           <StatCard label="الدعوات" value={invitations.length} />
           <Link
             href="/lab/composer"
-            className="flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-sm text-amber-400 hover:border-amber-600/40"
+            className="flex items-center justify-center rounded-xl border border-stone-200 bg-white p-4 text-sm text-amber-400 hover:border-amber-600/40"
           >
             Composer →
           </Link>
@@ -43,9 +43,9 @@ export default async function AdminPage() {
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-center">
+    <div className="rounded-xl border border-stone-200 bg-white p-4 text-center">
       <div className="text-2xl font-bold">{value}</div>
-      <div className="text-xs text-zinc-500">{label}</div>
+      <div className="text-xs text-stone-500">{label}</div>
     </div>
   );
 }
@@ -54,7 +54,7 @@ function AdminLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="rounded-md border border-zinc-700 px-4 py-2 text-sm hover:bg-zinc-900"
+      className="rounded-md border border-stone-300 px-4 py-2 text-sm hover:bg-white"
     >
       {label}
     </Link>

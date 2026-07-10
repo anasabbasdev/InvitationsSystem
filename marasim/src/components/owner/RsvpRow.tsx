@@ -40,12 +40,12 @@ export default function RsvpRow({
   const canReject = rsvp.status === "pending" || rsvp.status === "approved";
 
   return (
-    <li className="flex flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-900 p-4">
+    <li className="flex flex-col gap-2 rounded-lg border border-stone-200 bg-white p-4">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-medium text-white">{rsvp.name}</p>
-          {rsvp.phone && <p className="text-xs text-zinc-500" dir="ltr">{rsvp.phone}</p>}
-          <p className="text-xs text-zinc-500">
+          <p className="font-medium text-stone-800">{rsvp.name}</p>
+          {rsvp.phone && <p className="text-xs text-stone-500" dir="ltr">{rsvp.phone}</p>}
+          <p className="text-xs text-stone-500">
             {new Date(rsvp.createdAt).toLocaleString("ar-SA", { dateStyle: "medium", timeStyle: "short" })}
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function RsvpRow({
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
+      <div className="flex flex-wrap gap-4 text-xs text-stone-600">
         <span>مطلوب: {rsvp.requestedSeats} مقعد</span>
         {rsvp.approvedSeats != null && <span>معتمد: {rsvp.approvedSeats} مقعد</span>}
         {rsvp.guestCode && (
@@ -69,7 +69,7 @@ export default function RsvpRow({
       </div>
 
       {rsvp.guestNote && (
-        <p className="rounded-md bg-zinc-800/60 p-2 text-xs text-zinc-400">{rsvp.guestNote}</p>
+        <p className="rounded-md bg-zinc-800/60 p-2 text-xs text-stone-600">{rsvp.guestNote}</p>
       )}
 
       <div className="flex flex-wrap items-center gap-2 pt-1">
@@ -84,7 +84,7 @@ export default function RsvpRow({
               max={rsvp.requestedSeats}
               value={seats}
               onChange={(e) => setSeats(e.target.value)}
-              className="w-16 rounded-md border border-zinc-700 bg-zinc-950 px-2 py-1.5 text-xs text-white outline-none focus:border-amber-500"
+              className="w-16 rounded-md border border-stone-300 bg-stone-50 px-2 py-1.5 text-xs text-stone-800 outline-none focus:border-amber-500"
             />
             <button
               type="submit"
@@ -103,7 +103,7 @@ export default function RsvpRow({
             <button
               type="submit"
               disabled={rejectPending}
-              className="rounded-md border border-red-900 px-3 py-1.5 text-xs text-red-300 hover:bg-red-950/50 disabled:opacity-50"
+              className="rounded-md border border-red-900 px-3 py-1.5 text-xs text-red-700 hover:bg-red-950/50 disabled:opacity-50"
             >
               {rejectPending ? "..." : "رفض"}
             </button>

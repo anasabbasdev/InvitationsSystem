@@ -29,7 +29,7 @@ export default async function PublicScannerPage({ params }: Props) {
   return (
     <main
       className="min-h-dvh px-4 py-8"
-      style={{ backgroundColor: "#0a0a0a", color: "#f5f5f5" }}
+      style={{ backgroundColor: "#FBF7F2", color: "#3D3229" }}
       dir="rtl"
     >
       <div className="mx-auto flex w-full max-w-md flex-col gap-4">

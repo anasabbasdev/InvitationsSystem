@@ -16,7 +16,7 @@ export default async function OwnerRSVPsPage({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Link href={`/owner/events/${eventId}`} className="text-xs text-zinc-500 hover:text-zinc-300">
+        <Link href={`/owner/events/${eventId}`} className="text-xs text-stone-500 hover:text-stone-700">
           ← المناسبة
         </Link>
         <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
@@ -25,7 +25,7 @@ export default async function OwnerRSVPsPage({
       </div>
 
       {rsvps.length === 0 ? (
-        <p className="rounded-lg border border-zinc-800 bg-zinc-900 p-6 text-center text-sm text-zinc-500">
+        <p className="rounded-lg border border-stone-200 bg-white p-6 text-center text-sm text-stone-500">
           لا توجد طلبات حضور حتى الآن.
         </p>
       ) : (

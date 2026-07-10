@@ -101,10 +101,10 @@ export const noorWeddingMediaSequence: InvitationSequence = {
 
   theme: {
     family: "media-wedding",
-    primaryColor: "#C8843A",
-    secondaryColor: "#F0C98A",
-    backgroundColor: "#0C0905",
-    textColor: "#F2E8DC",
+    primaryColor: "#B8722E",
+    secondaryColor: "#E8C98A",
+    backgroundColor: "#FAF6F1",
+    textColor: "#2C2419",
     fontHeading: "CustomArabicFont",
     fontBody: "Tajawal",
     design: {
@@ -154,7 +154,7 @@ export const noorWeddingMediaSequence: InvitationSequence = {
       variant: "minimal_rows",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: { sectionLabel: "تفاصيل المناسبة" },
     },
@@ -163,7 +163,7 @@ export const noorWeddingMediaSequence: InvitationSequence = {
       variant: "minimal_digits",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 70% 50% at 50% 50%, #130C06 0%, #0C0905 70%)",
+        value: "radial-gradient(ellipse 70% 50% at 50% 50%, #F3E9DC 0%, #FAF6F1 70%)",
       },
       defaultContent: { sectionLabel: "يوم المناسبة", targetDate: "" },
     },
@@ -178,7 +178,7 @@ export const noorWeddingMediaSequence: InvitationSequence = {
       variant: "minimal_link",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: { sectionLabel: "موقع المناسبة" },
     },
@@ -187,7 +187,7 @@ export const noorWeddingMediaSequence: InvitationSequence = {
       variant: "simple_list",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(160deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: { sectionLabel: "تنبيهات", items: [] },
     },
@@ -196,7 +196,7 @@ export const noorWeddingMediaSequence: InvitationSequence = {
       variant: "minimal_form",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0C0905 0%, #0A0703 100%)",
+        value: "linear-gradient(180deg, #FAF6F1 0%, #F2EBE2 100%)",
       },
       defaultContent: { sectionLabel: "تأكيد الحضور" },
     },

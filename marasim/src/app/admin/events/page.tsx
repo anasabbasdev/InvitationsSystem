@@ -7,11 +7,11 @@ export default async function AdminEventsPage() {
   const events = await listAllEvents();
 
   return (
-    <main className="min-h-dvh bg-zinc-950 px-6 py-10 text-white">
+    <main className="min-h-dvh bg-stone-50 px-6 py-10 text-stone-800">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <Link href="/admin" className="text-xs text-zinc-500 hover:text-zinc-300">
+            <Link href="/admin" className="text-xs text-stone-500 hover:text-stone-700">
               ← Admin
             </Link>
             <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
@@ -30,11 +30,11 @@ export default async function AdminEventsPage() {
           {events.map((e) => (
             <li
               key={e.id}
-              className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-stone-200 bg-white px-4 py-3"
             >
               <div>
                 <p className="font-medium">{e.title}</p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-stone-500">
                   {e.slug} · {e.confirmed_seats}/{e.total_capacity ?? "∞"} مقعد
                 </p>
               </div>

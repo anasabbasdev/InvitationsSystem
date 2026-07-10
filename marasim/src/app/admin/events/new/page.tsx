@@ -8,10 +8,10 @@ export default function AdminNewEventPage() {
   const [state, formAction, pending] = useActionState(createEventAction, null);
 
   return (
-    <main className="min-h-dvh bg-zinc-950 px-6 py-10 text-white">
+    <main className="min-h-dvh bg-stone-50 px-6 py-10 text-stone-800">
       <div className="mx-auto max-w-md space-y-6">
         <div>
-          <Link href="/admin/events" className="text-xs text-zinc-500 hover:text-zinc-300">
+          <Link href="/admin/events" className="text-xs text-stone-500 hover:text-stone-700">
             ← المناسبات
           </Link>
           <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
@@ -25,10 +25,10 @@ export default function AdminNewEventPage() {
           <Field name="ownerEmail" label="بريد المالك" required dir="ltr" placeholder="owner@marasim.local" />
           <Field name="totalCapacity" label="السعة" type="number" dir="ltr" />
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-zinc-400">RSVP Mode</span>
+            <span className="text-stone-600">RSVP Mode</span>
             <select
               name="rsvpMode"
-              className="rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2"
+              className="rounded-md border border-stone-300 bg-white px-3 py-2"
               defaultValue="public_request"
             >
               <option value="public_request">Public Request</option>
@@ -72,14 +72,14 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-1 text-sm">
-      <span className="text-zinc-400">{label}</span>
+      <span className="text-stone-600">{label}</span>
       <input
         name={name}
         type={type}
         required={required}
         dir={dir}
         placeholder={placeholder}
-        className="rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 outline-none focus:border-amber-500"
+        className="rounded-md border border-stone-300 bg-white px-3 py-2 outline-none focus:border-amber-500"
       />
     </label>
   );

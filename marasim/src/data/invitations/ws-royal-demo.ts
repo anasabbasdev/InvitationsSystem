@@ -1,10 +1,10 @@
 import { InvitationData } from "@/types/invitation";
 
 /**
- * Invitation A — Royal Dark Demo
+ * Invitation A — Royal Light Demo
  *
  * Journey:  weddingStandardBlueprint  (10 scenes, all enabled)
- * Design:   weddingRoyalDarkPreset    (dark gold, framed cards, calligraphy)
+ * Design:   weddingRoyalDarkPreset    (light gold, framed cards, calligraphy)
  * Content:  Ahmad & Sara — classic Arabic wedding
  *
  * PROOF: Same wedding-standard blueprint → radically different visual (A)

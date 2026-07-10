@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: APP_NAME,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
   },
 };
 
@@ -42,7 +42,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#000000",
+  themeColor: "#FBF7F2",
 };
 
 export default function RootLayout({
@@ -54,7 +54,7 @@ export default function RootLayout({
       dir="rtl"
       className={`${tajawal.variable} ${amiri.variable} h-full`}
     >
-      <body className="min-h-full bg-black text-white antialiased">
+      <body className="min-h-full bg-[var(--background)] text-[var(--foreground)] antialiased">
         {children}
       </body>
     </html>

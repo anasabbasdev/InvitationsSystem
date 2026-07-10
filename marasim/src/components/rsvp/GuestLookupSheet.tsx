@@ -12,7 +12,7 @@ interface Props {
   textColor?: string;
 }
 
-export default function GuestLookupSheet({ slug, primaryColor = "#C9A84C", textColor = "#F5F0E8" }: Props) {
+export default function GuestLookupSheet({ slug, primaryColor = "#A67C2E", textColor = "#3D3229" }: Props) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"phone" | "code">("phone");
   const [phone, setPhone] = useState(defaultPhoneValue);
@@ -67,7 +67,7 @@ export default function GuestLookupSheet({ slug, primaryColor = "#C9A84C", textC
         onClick={handleOpen}
         className="fixed bottom-0 left-0 right-0 z-40 mx-auto flex w-full max-w-[430px] items-center justify-center gap-2 border-t px-4 py-3 text-sm font-medium shadow-lg backdrop-blur-md"
         style={{
-          backgroundColor: "rgba(14, 12, 10, 0.92)",
+          backgroundColor: "rgba(255, 255, 255, 0.94)",
           borderColor: `${primaryColor}44`,
           color: textColor,
         }}
@@ -84,7 +84,7 @@ export default function GuestLookupSheet({ slug, primaryColor = "#C9A84C", textC
         >
           <div
             className="w-full max-w-[390px] rounded-t-2xl sm:rounded-2xl p-5 pb-8 shadow-xl"
-            style={{ backgroundColor: "#141210", color: textColor }}
+            style={{ backgroundColor: "#FFFBF7", color: textColor, border: "1px solid #E8DDD0" }}
             onClick={(e) => e.stopPropagation()}
             dir="rtl"
           >
@@ -121,8 +121,8 @@ export default function GuestLookupSheet({ slug, primaryColor = "#C9A84C", textC
                     disabled={loading}
                     inputStyle={{
                       padding: "12px 14px",
-                      backgroundColor: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.15)",
+                      backgroundColor: "#FFFFFF",
+                      border: "1px solid #E8DDD0",
                       color: textColor,
                       borderRadius: 8,
                       fontSize: "0.9rem",
@@ -136,14 +136,14 @@ export default function GuestLookupSheet({ slug, primaryColor = "#C9A84C", textC
                     placeholder="مثال: K7M3X2"
                     maxLength={6}
                     dir="ltr"
-                    className="rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center text-lg tracking-[0.3em] outline-none"
+                    className="rounded-lg border border-stone-300 bg-white px-4 py-3 text-center text-lg tracking-[0.3em] outline-none"
                     style={{ color: textColor }}
                     disabled={loading}
                     required
                   />
                 )}
 
-                {error && <p className="text-sm text-red-300 text-center">{error}</p>}
+                {error && <p className="text-sm text-red-700 text-center">{error}</p>}
 
                 <button
                   type="submit"
@@ -182,7 +182,7 @@ function TabButton({
       className="flex-1 rounded-md py-2 transition-opacity"
       style={{
         backgroundColor: active ? `${color}33` : "transparent",
-        border: `1px solid ${active ? color : "rgba(255,255,255,0.15)"}`,
+        border: `1px solid ${active ? color : "#E8DDD0"}`,
         color: active ? color : "inherit",
       }}
     >

@@ -1,9 +1,9 @@
 import { DesignPreset } from "@/types/invitation";
 
 /**
- * Wedding Royal Dark — Design Preset A
+ * Wedding Royal Light — Design Preset A
  *
- * Visual identity: dark gold luxury, ornate calligraphy, framed cards.
+ * Visual identity: light gold luxury, ornate calligraphy, framed cards.
  * Composition: web_layout with gradient backgrounds + layered ornaments.
  * Typography: Amiri (Calligraphic Arabic) headings + Tajawal body.
  * Icons: line style, visible.
@@ -15,17 +15,17 @@ import { DesignPreset } from "@/types/invitation";
  */
 export const weddingRoyalDarkPreset: DesignPreset = {
   id: "wedding-royal-dark",
-  label: "Wedding Royal Dark",
+  label: "Wedding Royal Light",
   version: "1.0.0",
-  description: "Dark gold luxury — ornate cards, diamond dividers, calligraphy fonts",
+  description: "Light gold luxury — ornate cards, diamond dividers, calligraphy fonts",
 
   theme: {
-    family: "royal-dark",
-    primaryColor: "#C9A24D",
-    secondaryColor: "#F7E7B4",
-    backgroundColor: "#0F0B08",
-    textColor: "#F5F0E8",
-    mutedTextColor: "#A89F8F",
+    family: "royal-light",
+    primaryColor: "#A67C2E",
+    secondaryColor: "#D4AF6A",
+    backgroundColor: "#FBF7F2",
+    textColor: "#3D3229",
+    mutedTextColor: "#7A6E62",
     accentColor: "#C9A24D",
     fontHeading: "CustomArabicFont",
     fontBody: "Tajawal",
@@ -47,12 +47,12 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       background: {
         type: "gradient",
         value:
-          "radial-gradient(ellipse 80% 60% at 50% 45%, #1C1409 0%, #0F0B08 65%, #080604 100%)",
+          "radial-gradient(ellipse 80% 60% at 50% 45%, #FFF6EB 0%, #FBF7F2 65%, #F0E6D8 100%)",
       },
       overlay: {
         type: "gradient",
         value:
-          "linear-gradient(180deg, rgba(15,11,8,0.3) 0%, transparent 40%, rgba(15,11,8,0.5) 100%)",
+          "linear-gradient(180deg, rgba(251,247,242,0.3) 0%, transparent 40%, rgba(251,247,242,0.5) 100%)",
       },
       defaultContent: {
         label: "دعوة زفاف",
@@ -66,12 +66,12 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       background: {
         type: "gradient",
         value:
-          "radial-gradient(ellipse 75% 55% at 50% 42%, #1A1208 0%, #0F0B08 60%, #080604 100%)",
+          "radial-gradient(ellipse 75% 55% at 50% 42%, #FFF4E6 0%, #FBF7F2 60%, #F0E6D8 100%)",
       },
       overlay: {
         type: "gradient",
         value:
-          "linear-gradient(180deg, #0F0B08 0%, transparent 12%, transparent 88%, #0F0B08 100%)",
+          "linear-gradient(180deg, #FBF7F2 0%, transparent 12%, transparent 88%, #FBF7F2 100%)",
       },
       defaultContent: {
         primaryName: "الاسم الأول",
@@ -86,7 +86,7 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       variant: "classic_card",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #0F0B08 0%, #130E0A 50%, #0F0B08 100%)",
+        value: "linear-gradient(160deg, #FBF7F2 0%, #F7F0E6 50%, #FBF7F2 100%)",
       },
       defaultContent: {
         title: "دعوة كريمة",
@@ -98,7 +98,7 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       variant: "stacked_cards",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0F0B08 0%, #0D0A07 100%)",
+        value: "linear-gradient(180deg, #FBF7F2 0%, #F2EAE0 100%)",
       },
       defaultContent: { sectionLabel: "تفاصيل المناسبة" },
     },
@@ -107,7 +107,7 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       variant: "boxed_luxury",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 70% 50% at 50% 50%, #141008 0%, #0F0B08 70%)",
+        value: "radial-gradient(ellipse 70% 50% at 50% 50%, #F8F0E5 0%, #FBF7F2 70%)",
       },
       defaultContent: { sectionLabel: "العد التنازلي" },
     },
@@ -116,7 +116,7 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       variant: "single_card",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #0F0B08 0%, #100C08 100%)",
+        value: "linear-gradient(160deg, #FBF7F2 0%, #F5EDE3 100%)",
       },
       defaultContent: { label: "لحظات", media: [] },
     },
@@ -125,7 +125,7 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       variant: "map_button_card",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0F0B08 0%, #0D0A07 100%)",
+        value: "linear-gradient(180deg, #FBF7F2 0%, #F2EAE0 100%)",
       },
       defaultContent: { sectionLabel: "موقع المناسبة" },
     },
@@ -134,7 +134,7 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       variant: "simple_list",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #0F0B08 0%, #100C08 100%)",
+        value: "linear-gradient(160deg, #FBF7F2 0%, #F5EDE3 100%)",
       },
       defaultContent: { sectionLabel: "تنبيهات", items: [] },
     },
@@ -143,7 +143,7 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       variant: "luxury_form",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0F0B08 0%, #0D0A07 100%)",
+        value: "linear-gradient(180deg, #FBF7F2 0%, #F2EAE0 100%)",
       },
       defaultContent: { sectionLabel: "تأكيد الحضور" },
     },
@@ -153,11 +153,11 @@ export const weddingRoyalDarkPreset: DesignPreset = {
       background: {
         type: "gradient",
         value:
-          "radial-gradient(ellipse 80% 60% at 50% 55%, #1A1208 0%, #0F0B08 65%, #080604 100%)",
+          "radial-gradient(ellipse 80% 60% at 50% 55%, #FFF4E6 0%, #FBF7F2 65%, #F0E6D8 100%)",
       },
       overlay: {
         type: "gradient",
-        value: "linear-gradient(180deg, #0F0B08 0%, transparent 15%)",
+        value: "linear-gradient(180deg, #FBF7F2 0%, transparent 15%)",
       },
       defaultContent: {},
     },

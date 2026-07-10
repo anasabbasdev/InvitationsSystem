@@ -91,10 +91,10 @@ export const noorBirthMediaSequence: InvitationSequence = {
 
   theme: {
     family: "media-birth",
-    primaryColor: "#C48B9F",
-    secondaryColor: "#F2D4DD",
-    backgroundColor: "#1A0F14",
-    textColor: "#F5EEF0",
+    primaryColor: "#B86B85",
+    secondaryColor: "#E8B8C8",
+    backgroundColor: "#FDF5F7",
+    textColor: "#4A3040",
     fontHeading: "CustomArabicFont",
     fontBody: "Tajawal",
     design: {
@@ -139,7 +139,7 @@ export const noorBirthMediaSequence: InvitationSequence = {
       variant: "timeline",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: { sectionLabel: "تفاصيل المناسبة" },
     },
@@ -148,7 +148,7 @@ export const noorBirthMediaSequence: InvitationSequence = {
       variant: "boxed_luxury",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 65% 50% at 50% 50%, #221219 0%, #1A0F14 70%)",
+        value: "radial-gradient(ellipse 65% 50% at 50% 50%, #F5E0E8 0%, #FDF5F7 70%)",
       },
       defaultContent: { sectionLabel: "يوم المناسبة", targetDate: "" },
     },
@@ -163,7 +163,7 @@ export const noorBirthMediaSequence: InvitationSequence = {
       variant: "map_button_card",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: { sectionLabel: "موقع المناسبة" },
     },
@@ -172,7 +172,7 @@ export const noorBirthMediaSequence: InvitationSequence = {
       variant: "elegant_cards",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(160deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: { sectionLabel: "ملاحظات", items: [] },
     },
@@ -181,7 +181,7 @@ export const noorBirthMediaSequence: InvitationSequence = {
       variant: "luxury_form",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: { sectionLabel: "تأكيد الحضور" },
     },

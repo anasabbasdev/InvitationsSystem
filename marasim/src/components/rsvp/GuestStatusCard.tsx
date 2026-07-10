@@ -45,7 +45,7 @@ export default function GuestStatusCard({
 }) {
   if (!result.found || !result.status) {
     return (
-      <div className="rounded-lg border border-red-500/30 bg-red-950/30 p-4 text-center text-sm text-red-200">
+      <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-center text-sm text-red-700">
         {result.message ?? "لم يُعثر على طلب مطابق"}
       </div>
     );

@@ -49,7 +49,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="flex w-full max-w-sm flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="email" className="text-sm text-zinc-400">
+        <label htmlFor="email" className="text-sm text-stone-600">
           البريد الإلكتروني
         </label>
         <input
@@ -60,14 +60,14 @@ export default function LoginForm() {
           disabled={loading}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded-md border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-white outline-none focus:border-amber-500"
+          className="rounded-md border border-stone-300 bg-white px-4 py-3 text-sm text-stone-800 outline-none focus:border-amber-500"
           dir="ltr"
           placeholder="owner@marasim.local"
         />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="password" className="text-sm text-zinc-400">
+        <label htmlFor="password" className="text-sm text-stone-600">
           كلمة المرور
         </label>
         <input
@@ -78,17 +78,17 @@ export default function LoginForm() {
           disabled={loading}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="rounded-md border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-white outline-none focus:border-amber-500"
+          className="rounded-md border border-stone-300 bg-white px-4 py-3 text-sm text-stone-800 outline-none focus:border-amber-500"
           dir="ltr"
         />
       </div>
 
       {configError && (
-        <p className="rounded-md bg-amber-950/50 px-3 py-2 text-sm text-amber-200">{configError}</p>
+        <p className="rounded-md bg-amber-950/50 px-3 py-2 text-sm text-amber-800">{configError}</p>
       )}
 
       {error && (
-        <p className="rounded-md bg-red-950/50 px-3 py-2 text-sm text-red-300">{error}</p>
+        <p className="rounded-md bg-red-950/50 px-3 py-2 text-sm text-red-700">{error}</p>
       )}
 
       <button

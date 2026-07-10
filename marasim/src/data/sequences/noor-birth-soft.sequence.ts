@@ -25,10 +25,10 @@ export const noorBirthSoftSequence: InvitationSequence = {
 
   theme: {
     family: "soft",
-    primaryColor: "#C48B9F",
-    secondaryColor: "#F2D4DD",
-    backgroundColor: "#1A0F14",
-    textColor: "#F5EEF0",
+    primaryColor: "#B86B85",
+    secondaryColor: "#E8B8C8",
+    backgroundColor: "#FDF5F7",
+    textColor: "#4A3040",
     fontHeading: "CustomArabicFont",
     fontBody: "Tajawal",
     design: {
@@ -56,11 +56,11 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "minimal_tap",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 80% 70% at 50% 40%, #2E1520 0%, #1A0F14 55%, #130B0F 100%)",
+        value: "radial-gradient(ellipse 80% 70% at 50% 40%, #FAE8EE 0%, #FDF5F7 55%, #EDE0E6 100%)",
       },
       overlay: {
         type: "gradient",
-        value: "linear-gradient(180deg, rgba(26,15,20,0.2) 0%, transparent 50%)",
+        value: "linear-gradient(180deg, rgba(253,245,247,0.2) 0%, transparent 50%)",
       },
       defaultContent: {
         label: "مناسبة مباركة",
@@ -75,11 +75,11 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "single_name_centered",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 75% 60% at 50% 44%, #291420 0%, #1A0F14 60%, #120B0E 100%)",
+        value: "radial-gradient(ellipse 75% 60% at 50% 44%, #F8E4EA 0%, #FDF5F7 60%, #F9EEF2 100%)",
       },
       overlay: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, transparent 14%, transparent 86%, #1A0F14 100%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, transparent 14%, transparent 86%, #FDF5F7 100%)",
       },
       defaultContent: {
         primaryName: "الاسم",
@@ -93,7 +93,7 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "minimal_quote",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #1A0F14 0%, #1E1218 50%, #1A0F14 100%)",
+        value: "linear-gradient(160deg, #FDF5F7 0%, #F3DCE5 50%, #FDF5F7 100%)",
       },
       defaultContent: {
         body: "يسعدنا دعوتكم للاحتفال بهذه المناسبة المباركة.",
@@ -106,7 +106,7 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "timeline",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: {
         sectionLabel: "تفاصيل المناسبة",
@@ -122,7 +122,7 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "boxed_luxury",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 65% 50% at 50% 50%, #221219 0%, #1A0F14 70%)",
+        value: "radial-gradient(ellipse 65% 50% at 50% 50%, #F5E0E8 0%, #FDF5F7 70%)",
       },
       defaultContent: {
         sectionLabel: "يوم المناسبة",
@@ -137,7 +137,7 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "polaroid_stack",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(160deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: {
         label: "لحظات البهجة",
@@ -151,7 +151,7 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "map_button_card",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: {
         sectionLabel: "موقع المناسبة",
@@ -167,7 +167,7 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "elegant_cards",
       background: {
         type: "gradient",
-        value: "linear-gradient(160deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(160deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: {
         sectionLabel: "ملاحظات",
@@ -183,7 +183,7 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "luxury_form",
       background: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, #170C11 100%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, #F0D8E2 100%)",
       },
       defaultContent: {
         sectionLabel: "تأكيد الحضور",
@@ -196,11 +196,11 @@ export const noorBirthSoftSequence: InvitationSequence = {
       variant: "brand_signature",
       background: {
         type: "gradient",
-        value: "radial-gradient(ellipse 80% 65% at 50% 55%, #2A1420 0%, #1A0F14 65%, #110B0E 100%)",
+        value: "radial-gradient(ellipse 80% 65% at 50% 55%, #F6E4EC 0%, #FDF5F7 65%, #E8D8DE 100%)",
       },
       overlay: {
         type: "gradient",
-        value: "linear-gradient(180deg, #1A0F14 0%, transparent 15%)",
+        value: "linear-gradient(180deg, #FDF5F7 0%, transparent 15%)",
       },
       defaultContent: {},
     },

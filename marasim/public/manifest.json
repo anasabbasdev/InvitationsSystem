@@ -5,7 +5,7 @@
   "start_url": "/owner/events",
   "scope": "/owner/",
   "display": "standalone",
-  "background_color": "#09090b",
+  "background_color": "#FBF7F2",
   "theme_color": "#C9A24D",
   "lang": "ar",
   "dir": "rtl",

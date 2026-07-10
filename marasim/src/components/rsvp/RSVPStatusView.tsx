@@ -67,7 +67,7 @@ export default function RSVPStatusView({ view }: Props) {
   return (
     <main
       className="min-h-dvh flex items-center justify-center px-6 py-12"
-      style={{ backgroundColor: "#0E0C0A", color: "#F5F0E8" }}
+      style={{ backgroundColor: "#FBF7F2", color: "#3D3229" }}
       dir="rtl"
     >
       <div
@@ -151,10 +151,10 @@ export default function RSVPStatusView({ view }: Props) {
             style={{ borderColor: tone.border }}
           >
             {ticketRevoked && (
-              <p className="text-sm text-red-300 text-center">تم إلغاء التذكرة.</p>
+              <p className="text-sm text-red-700 text-center">تم إلغاء التذكرة.</p>
             )}
             {ticketFullyUsed && (
-              <p className="text-sm text-amber-200 text-center">تم استخدام جميع المقاعد.</p>
+              <p className="text-sm text-amber-800 text-center">تم استخدام جميع المقاعد.</p>
             )}
             {!ticketRevoked && !ticketFullyUsed && (
               <>

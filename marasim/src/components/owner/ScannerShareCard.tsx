@@ -32,12 +32,12 @@ export default function ScannerShareCard({
     <div className="flex flex-col gap-3 rounded-lg border border-amber-500/30 bg-amber-500/5 p-4">
       <div>
         <h2 className="text-sm font-semibold text-amber-400">رابط الماسح للموظفين</h2>
-        <p className="mt-1 text-xs text-zinc-400 leading-relaxed">
+        <p className="mt-1 text-xs text-stone-600 leading-relaxed">
           شارك هذا الرابط مع موظف الاستقبال. لا يحتاج تسجيل دخول — خاص بهذه المناسبة فقط.
         </p>
       </div>
       <code
-        className="block break-all rounded-md bg-zinc-950 px-3 py-2 text-xs text-zinc-300"
+        className="block break-all rounded-md bg-stone-50 px-3 py-2 text-xs text-stone-700"
         dir="ltr"
       >
         {scannerUrl}

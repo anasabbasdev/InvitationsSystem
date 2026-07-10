@@ -26,13 +26,13 @@ export default async function ScannerPage({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <Link href={`/owner/events/${eventId}`} className="text-xs text-zinc-500 hover:text-zinc-300">
+        <Link href={`/owner/events/${eventId}`} className="text-xs text-stone-500 hover:text-stone-700">
           ← المناسبة
         </Link>
         <h1 className="mt-1 text-xl font-bold" style={{ color: "#C9A24D" }}>
           فحص التذاكر
         </h1>
-        {event && <p className="text-xs text-zinc-500">{event.title}</p>}
+        {event && <p className="text-xs text-stone-500">{event.title}</p>}
       </div>
 
       {scannerUrl ? (
