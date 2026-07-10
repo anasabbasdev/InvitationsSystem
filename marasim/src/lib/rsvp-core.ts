@@ -9,6 +9,8 @@ import {
   fetchInvitationBySlug,
   fetchInviteLinkByToken,
   fetchRsvpByViewToken,
+  fetchRsvpByGuestCode,
+  fetchRsvpByPhoneE164,
   createPublicRsvp,
   createEventNotification,
   approveRsvp as approveRsvpRepo,
@@ -18,16 +20,24 @@ import {
   fetchTicketTokenByRsvpId,
 } from "@/lib/repositories";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
-import { parsePublicRsvpBody } from "@/lib/validation/rsvp-schemas";
+import { parsePublicRsvpBody, guestLookupSchema } from "@/lib/validation/rsvp-schemas";
+import { normalizePhoneToE164, PhoneValidationError } from "@/lib/phone";
+import { normalizeGuestCodeInput } from "@/lib/guest-code";
 import type {
   ControlledRSVPSubmission,
+  GuestLookupResult,
   PublicRSVPResult,
   PublicRSVPSubmission,
   RSVPStatusView,
 } from "@/types/rsvp";
 import type { DbInviteLinkRow } from "@/types/persistence";
 
-export type { PublicRSVPSubmission, PublicRSVPResult, RSVPStatusView } from "@/types/rsvp";
+export type {
+  PublicRSVPSubmission,
+  PublicRSVPResult,
+  RSVPStatusView,
+  GuestLookupResult,
+} from "@/types/rsvp";
 
 export class RsvpError extends Error {
   constructor(
@@ -40,6 +50,77 @@ export class RsvpError extends Error {
   }
 }
 
+const NOT_FOUND_MESSAGE = "لم يُعثر على طلب مطابق لهذه الدعوة";
+
+async function buildStatusViewFromRsvp(rsvp: Awaited<ReturnType<typeof fetchRsvpByViewToken>> & object): Promise<GuestLookupResult> {
+  const event = await fetchEventById(rsvp.eventId);
+
+  let ticket: RSVPStatusView["ticket"] = null;
+  if (rsvp.status === "approved" || rsvp.status === "confirmed") {
+    const ticketInfo = await findTicketForRsvp(rsvp.id);
+    if (ticketInfo) {
+      ticket = {
+        token: ticketInfo.ticket.token,
+        maxEntries: ticketInfo.ticket.maxEntries,
+        usedEntries: ticketInfo.ticket.usedEntries,
+        remainingEntries: ticketInfo.ticket.remainingEntries,
+        status: ticketInfo.ticket.status,
+      };
+    }
+  }
+
+  return {
+    found: true,
+    status: rsvp.status,
+    name: rsvp.name,
+    guestCode: rsvp.guestCode ?? undefined,
+    requestedSeats: rsvp.requestedSeats,
+    approvedSeats: rsvp.approvedSeats,
+    eventTitle: event?.title,
+    eventDate: event?.event_date,
+    venueName: event?.venue_name,
+    guestNote: rsvp.guestNote,
+    ticket,
+  };
+}
+
+export async function lookupGuestBySlug(
+  slug: string,
+  input: { phone?: string; guestCode?: string }
+): Promise<GuestLookupResult> {
+  if (!isSupabaseConfigured()) {
+    return { found: false, message: "الخدمة غير متاحة حالياً" };
+  }
+
+  const parsed = guestLookupSchema.parse({ slug, ...input });
+
+  const invitation = await fetchInvitationBySlug(parsed.slug);
+  if (!invitation?.event_id) {
+    return { found: false, message: NOT_FOUND_MESSAGE };
+  }
+
+  const eventId = invitation.event_id;
+  let rsvp = null;
+
+  if (parsed.guestCode?.trim()) {
+    const code = normalizeGuestCodeInput(parsed.guestCode);
+    rsvp = await fetchRsvpByGuestCode(eventId, code);
+  } else if (parsed.phone?.trim()) {
+    try {
+      const e164 = normalizePhoneToE164(parsed.phone);
+      rsvp = await fetchRsvpByPhoneE164(eventId, e164);
+    } catch {
+      return { found: false, message: NOT_FOUND_MESSAGE };
+    }
+  }
+
+  if (!rsvp) {
+    return { found: false, message: NOT_FOUND_MESSAGE };
+  }
+
+  return buildStatusViewFromRsvp(rsvp);
+}
+
 export async function submitPublicRSVP(
   input: PublicRSVPSubmission
 ): Promise<PublicRSVPResult> {
@@ -47,7 +128,15 @@ export async function submitPublicRSVP(
     throw new RsvpError("RSVP is not available", "NOT_CONFIGURED", 503);
   }
 
-  const body = parsePublicRsvpBody(input);
+  let body: ReturnType<typeof parsePublicRsvpBody>;
+  try {
+    body = parsePublicRsvpBody(input);
+  } catch (error) {
+    if (error instanceof PhoneValidationError) {
+      throw new RsvpError(error.message, "INVALID_PHONE", 400);
+    }
+    throw error;
+  }
 
   const invitation = await fetchInvitationBySlug(body.slug);
   if (!invitation) {
@@ -85,14 +174,27 @@ export async function submitPublicRSVP(
     );
   }
 
-  const rsvp = await createPublicRsvp({
-    name: body.name,
-    requestedSeats: body.requestedSeats,
-    guestNote: body.guestNote,
-    phone: body.phone,
-    eventId: invitation.event_id,
-    invitationId: invitation.id,
-  });
+  let rsvp;
+  try {
+    rsvp = await createPublicRsvp({
+      name: body.name,
+      requestedSeats: body.requestedSeats,
+      guestNote: body.guestNote,
+      phone: body.phone,
+      phoneE164: body.phoneE164,
+      eventId: invitation.event_id,
+      invitationId: invitation.id,
+    });
+  } catch (error) {
+    if ((error as Error).name === "DuplicatePhoneError") {
+      throw new RsvpError(
+        "يوجد طلب حضور مسجّل مسبقاً بهذا الرقم لهذه المناسبة",
+        "DUPLICATE_PHONE",
+        409
+      );
+    }
+    throw error;
+  }
 
   await createEventNotification({
     eventId: invitation.event_id,
@@ -104,11 +206,13 @@ export async function submitPublicRSVP(
       name: rsvp.name,
       requestedSeats: rsvp.requestedSeats,
       invitationSlug: body.slug,
+      guestCode: rsvp.guestCode,
     },
   });
 
   return {
     rsvpViewToken: rsvp.rsvpViewToken,
+    guestCode: rsvp.guestCode!,
     status: rsvp.status,
   };
 }
@@ -121,33 +225,20 @@ export async function getRSVPStatusView(
   const rsvp = await fetchRsvpByViewToken(token);
   if (!rsvp) return null;
 
-  const event = await fetchEventById(rsvp.eventId);
-
-  let ticket: RSVPStatusView["ticket"] = null;
-  const ticketInfo =
-    rsvp.status === "approved" || rsvp.status === "confirmed"
-      ? await findTicketForRsvp(rsvp.id)
-      : null;
-  if (ticketInfo) {
-    ticket = {
-      token: ticketInfo.ticket.token,
-      maxEntries: ticketInfo.ticket.maxEntries,
-      usedEntries: ticketInfo.ticket.usedEntries,
-      remainingEntries: ticketInfo.ticket.remainingEntries,
-      status: ticketInfo.ticket.status,
-    };
-  }
+  const result = await buildStatusViewFromRsvp(rsvp);
+  if (!result.found) return null;
 
   return {
-    status: rsvp.status,
-    name: rsvp.name,
-    requestedSeats: rsvp.requestedSeats,
-    approvedSeats: rsvp.approvedSeats,
-    eventTitle: event?.title,
-    eventDate: event?.event_date,
-    venueName: event?.venue_name,
-    guestNote: rsvp.guestNote,
-    ticket,
+    status: result.status!,
+    name: result.name!,
+    guestCode: result.guestCode,
+    requestedSeats: result.requestedSeats!,
+    approvedSeats: result.approvedSeats,
+    eventTitle: result.eventTitle,
+    eventDate: result.eventDate,
+    venueName: result.venueName,
+    guestNote: result.guestNote,
+    ticket: result.ticket,
   };
 }
 
@@ -198,7 +289,7 @@ export async function validateInviteLink(
 
 export async function confirmControlledRSVP(
   input: ControlledRSVPSubmission
-): Promise<{ rsvpViewToken: string; ticketToken: string }> {
+): Promise<{ rsvpViewToken: string; guestCode: string; ticketToken: string }> {
   if (!isSupabaseConfigured()) {
     throw new RsvpError("RSVP is not available", "NOT_CONFIGURED", 503);
   }
@@ -215,10 +306,20 @@ export async function confirmControlledRSVP(
     throw new RsvpError("عدد المقاعد غير صالح", "VALIDATION_ERROR", 400);
   }
 
+  let phoneE164: string | null = null;
+  if (input.phone?.trim()) {
+    try {
+      phoneE164 = normalizePhoneToE164(input.phone);
+    } catch {
+      throw new RsvpError("رقم الجوال غير صالح", "INVALID_PHONE", 400);
+    }
+  }
+
   const result = await confirmInviteLinkRpc(
     input.inviteToken,
     input.name.trim(),
     input.phone?.trim() || null,
+    phoneE164,
     input.seats
   );
 
@@ -226,5 +327,9 @@ export async function confirmControlledRSVP(
     throw new RsvpError(result.message, result.code, 400);
   }
 
-  return { rsvpViewToken: result.rsvpViewToken, ticketToken: result.ticketToken };
+  return {
+    rsvpViewToken: result.rsvpViewToken,
+    guestCode: result.guestCode,
+    ticketToken: result.ticketToken,
+  };
 }

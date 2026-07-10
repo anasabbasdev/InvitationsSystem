@@ -5,6 +5,7 @@ import type {
   UpsertEventInput,
 } from "@/types/persistence";
 import type { AppEvent, EventSettings } from "@/types/events";
+import { generateScannerPublicToken } from "@/lib/guest-code";
 
 export function mapEventRow(row: DbEventRow): AppEvent {
   return {
@@ -18,6 +19,7 @@ export function mapEventRow(row: DbEventRow): AppEvent {
     totalCapacity: row.total_capacity,
     confirmedSeats: row.confirmed_seats,
     status: row.status as AppEvent["status"],
+    scannerPublicToken: row.scanner_public_token,
     createdAt: row.created_at,
   };
 }
@@ -32,6 +34,19 @@ export function mapEventSettingsRow(row: DbEventSettingsRow): EventSettings {
     approvalRequired: row.approval_required,
     cancellationDeadlineHours: row.cancellation_deadline_hours,
   };
+}
+
+export async function fetchEventByScannerToken(
+  token: string
+): Promise<DbEventRow | null> {
+  const { data, error } = await createSupabaseAdminClient()
+    .from("events")
+    .select("*")
+    .eq("scanner_public_token", token)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data as DbEventRow | null;
 }
 
 export async function fetchEventBySlug(slug: string): Promise<DbEventRow | null> {
@@ -90,7 +105,7 @@ export async function upsertEventWithSettings(
   const admin = createSupabaseAdminClient();
   const existing = await fetchEventBySlug(input.slug);
 
-  const eventPayload = {
+  const eventPayload: Record<string, unknown> = {
     slug: input.slug,
     title: input.title,
     event_date: input.eventDate ?? null,
@@ -98,6 +113,10 @@ export async function upsertEventWithSettings(
     total_capacity: input.totalCapacity ?? null,
     status: "published",
   };
+
+  if (!existing?.scanner_public_token) {
+    eventPayload.scanner_public_token = generateScannerPublicToken();
+  }
 
   const { data: event, error: eventError } = await admin
     .from("events")
@@ -157,6 +176,7 @@ export async function createEventWithOwner(input: CreateEventInput): Promise<DbE
       map_url: input.mapUrl ?? null,
       total_capacity: input.totalCapacity ?? null,
       status: "published",
+      scanner_public_token: generateScannerPublicToken(),
     })
     .select("*")
     .single();

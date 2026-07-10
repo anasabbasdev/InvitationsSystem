@@ -39,6 +39,7 @@ export {
   mapEventSettingsRow,
   fetchEventBySlug,
   fetchEventById,
+  fetchEventByScannerToken,
   fetchEventSettings,
   listAllEvents,
   upsertEventWithSettings,
@@ -48,6 +49,8 @@ export {
 
 export {
   fetchRsvpByViewToken,
+  fetchRsvpByGuestCode,
+  fetchRsvpByPhoneE164,
   fetchRsvpById,
   listRsvpsForEvent,
   listOwnerRsvpsForEvent,

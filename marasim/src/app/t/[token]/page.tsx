@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getTicketByToken } from "@/lib/tickets";
-import { getSiteOrigin } from "@/lib/site-url";
 import TicketPageView from "@/components/rsvp/TicketPageView";
 
 interface Props {
@@ -27,11 +26,7 @@ export default async function TicketPage({ params }: Props) {
     notFound();
   }
 
-  const origin = await getSiteOrigin();
-  const ticketPageUrl = `${origin}/t/${token}`;
-  const ticketQrUrl = ticketPageUrl;
-
   return (
-    <TicketPageView info={info} ticketPageUrl={ticketPageUrl} ticketQrUrl={ticketQrUrl} />
+    <TicketPageView info={info} />
   );
 }

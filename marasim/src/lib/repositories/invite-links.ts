@@ -68,20 +68,23 @@ export async function disableInviteLink(id: string): Promise<void> {
 export type ConfirmInviteLinkResult = {
   rsvpId: string;
   rsvpViewToken: string;
+  guestCode: string;
   ticketToken: string;
 };
 
-/** Atomic confirmation via Postgres function — see migration 005. */
+/** Atomic confirmation via Postgres function — see migration 005/007. */
 export async function confirmInviteLinkRpc(
   token: string,
   name: string,
   phone: string | null,
+  phoneE164: string | null,
   seats: number
 ) {
   return callRpc<ConfirmInviteLinkResult>("confirm_invite_link", {
     p_token: token,
     p_name: name,
     p_phone: phone,
+    p_phone_e164: phoneE164,
     p_seats: seats,
   });
 }

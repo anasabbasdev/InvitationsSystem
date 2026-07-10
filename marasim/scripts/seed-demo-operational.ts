@@ -19,6 +19,15 @@ import {
 } from "@/lib/repositories";
 import { generateSecureToken } from "@/lib/secure-token";
 
+const SEED_PHONES: Record<string, string> = {
+  pending: "+971501111101",
+  approved: "+971501111102",
+  rejected: "+971501111103",
+  "partial-ticket": "+971501111104",
+  "full-ticket": "+971501111105",
+  "wrong-event": "+971501111106",
+};
+
 const SEED_DATA_FILE = resolve(process.cwd(), ".seed-data.local");
 
 export type SeedOperationalResult = {
@@ -81,13 +90,13 @@ async function seedRsvpIfMissing(
     action: "pending" | "approve" | "reject";
     checkIn?: number;
   }
-): Promise<{ rsvpViewToken?: string; ticketToken?: string }> {
+): Promise<{ rsvpViewToken?: string; ticketToken?: string; guestCode?: string }> {
   const admin = createSupabaseAdminClient();
   const marker = `[seed:${seedKey}]`;
 
   const { data: existing } = await admin
     .from("rsvps")
-    .select("id, rsvp_view_token, status")
+    .select("id, rsvp_view_token, guest_code, status")
     .eq("event_id", eventId)
     .eq("guest_note", marker)
     .maybeSingle();
@@ -103,21 +112,28 @@ async function seedRsvpIfMissing(
       ticketToken = ticket?.token as string | undefined;
     }
     log(`○ rsvp ${seedKey} (existing)`);
-    return { rsvpViewToken: existing.rsvp_view_token as string, ticketToken };
+    return {
+      rsvpViewToken: existing.rsvp_view_token as string,
+      ticketToken,
+      guestCode: existing.guest_code as string | undefined,
+    };
   }
 
+  const phoneE164 = SEED_PHONES[seedKey] ?? `+97150${String(Date.now()).slice(-7)}`;
   const rsvp = await createPublicRsvp({
     eventId,
     invitationId,
     name: data.name,
     requestedSeats: data.requestedSeats,
     guestNote: marker,
+    phone: phoneE164,
+    phoneE164,
   });
 
   if (data.action === "reject") {
     await rejectRsvp(rsvp.id);
     log(`+ rsvp ${seedKey} rejected`);
-    return { rsvpViewToken: rsvp.rsvpViewToken };
+    return { rsvpViewToken: rsvp.rsvpViewToken, guestCode: rsvp.guestCode ?? undefined };
   }
 
   if (data.action === "approve") {
@@ -134,11 +150,15 @@ async function seedRsvpIfMissing(
     }
 
     log(`+ rsvp ${seedKey} approved${data.checkIn ? ` (checked in ${data.checkIn})` : ""}`);
-    return { rsvpViewToken: rsvp.rsvpViewToken, ticketToken };
+    return {
+      rsvpViewToken: rsvp.rsvpViewToken,
+      ticketToken,
+      guestCode: rsvp.guestCode ?? undefined,
+    };
   }
 
   log(`+ rsvp ${seedKey} pending`);
-  return { rsvpViewToken: rsvp.rsvpViewToken };
+  return { rsvpViewToken: rsvp.rsvpViewToken, guestCode: rsvp.guestCode ?? undefined };
 }
 
 export async function seedOperationalDemoData(): Promise<SeedOperationalResult> {
@@ -237,6 +257,11 @@ export async function seedOperationalDemoData(): Promise<SeedOperationalResult> 
   if (controlledToken) {
     writeSeedLine("controlled_invitation_url", `/i/ws-royal-demo?t=${controlledToken}`);
   }
+  if (royalEvent.scanner_public_token) {
+    writeSeedLine("royal_scanner_url", `/scan/${royalEvent.scanner_public_token}`);
+  }
+  if (approved.guestCode) writeSeedLine("demo_guest_code_approved", approved.guestCode);
+  if (pending.guestCode) writeSeedLine("demo_guest_code_pending", pending.guestCode);
 
   return {
     ownerEmail: owner.email,
@@ -248,12 +273,15 @@ export async function seedOperationalDemoData(): Promise<SeedOperationalResult> 
 
 /** Creates a one-off pending RSVP for capacity testing (does not persist marker). */
 export async function createCapacityTestRsvp(eventId: string, invitationId: string) {
+  const phoneE164 = `+97150${String(Date.now()).slice(-7)}`;
   return createPublicRsvp({
     eventId,
     invitationId,
     name: `Capacity Test ${Date.now()}`,
     requestedSeats: 2,
     guestNote: "[capacity-test]",
+    phone: phoneE164,
+    phoneE164,
   });
 }
 

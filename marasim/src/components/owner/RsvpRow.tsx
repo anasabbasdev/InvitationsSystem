@@ -60,6 +60,11 @@ export default function RsvpRow({
       <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
         <span>مطلوب: {rsvp.requestedSeats} مقعد</span>
         {rsvp.approvedSeats != null && <span>معتمد: {rsvp.approvedSeats} مقعد</span>}
+        {rsvp.guestCode && (
+          <span dir="ltr" className="font-mono text-amber-400/80">
+            رمز: {rsvp.guestCode}
+          </span>
+        )}
         {rsvp.ticketToken && <span>حالة التذكرة: {rsvp.ticketStatus}</span>}
       </div>
 

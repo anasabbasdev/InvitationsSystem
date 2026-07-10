@@ -10,8 +10,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       rsvpViewToken: result.rsvpViewToken,
+      guestCode: result.guestCode,
       status: result.status,
-      statusUrl: `/s/${result.rsvpViewToken}`,
     });
   } catch (error) {
     if (error instanceof RsvpError) {

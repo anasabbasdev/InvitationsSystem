@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { getSessionUser } from "@/lib/auth";
 import { isEventOwner } from "@/lib/repositories/owners";
-import { lookupTicketForScanner, extractTicketToken } from "@/lib/tickets";
+import { lookupTicketForScanner } from "@/lib/tickets";
+import { resolveLookupToTicketToken } from "@/lib/scanner-resolve";
 import { scannerLookupSchema } from "@/lib/validation/rsvp-schemas";
 
 export async function POST(request: Request) {
@@ -20,12 +21,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Forbidden", code: "FORBIDDEN" }, { status: 403 });
     }
 
-    const token = extractTicketToken(parsed.token);
-    if (!token) {
+    const ticketToken = await resolveLookupToTicketToken(parsed.eventId, parsed.lookup);
+    if (!ticketToken) {
       return NextResponse.json({ status: "INVALID" });
     }
 
-    const result = await lookupTicketForScanner(token, parsed.eventId);
+    const result = await lookupTicketForScanner(ticketToken, parsed.eventId);
     return NextResponse.json(result);
   } catch (error) {
     if (error instanceof ZodError) {

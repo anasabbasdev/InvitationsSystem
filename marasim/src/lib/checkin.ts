@@ -19,3 +19,5 @@ export async function checkIn(
 ): Promise<CheckInResult> {
   return checkInTicketRepo(ticketToken, scannerEventId, entriesCount, checkedBy);
 }
+
+export const checkInTicketForScanner = checkIn;

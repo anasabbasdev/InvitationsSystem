@@ -4,7 +4,7 @@ import type { CheckInResult, ScanResult, TicketDisplayInfo } from "@/types/ticke
 import { callRpc } from "@/lib/repositories/rpc";
 
 type TicketJoinRow = DbTicketRow & {
-  rsvps: { name: string; side: string | null } | null;
+  rsvps: { name: string; side: string | null; guest_code: string | null } | null;
   events: { id: string; title: string; event_date: string | null; venue_name: string | null } | null;
 };
 
@@ -26,6 +26,7 @@ function mapDisplayInfo(row: TicketJoinRow): TicketDisplayInfo {
     guest: {
       name: row.rsvps?.name ?? "",
       side: row.rsvps?.side ?? null,
+      guestCode: row.rsvps?.guest_code ?? null,
     },
   };
 }
@@ -33,7 +34,7 @@ function mapDisplayInfo(row: TicketJoinRow): TicketDisplayInfo {
 async function fetchTicketJoinByToken(token: string): Promise<TicketJoinRow | null> {
   const { data, error } = await createSupabaseAdminClient()
     .from("tickets")
-    .select("*, rsvps(name, side), events(id, title, event_date, venue_name)")
+    .select("*, rsvps(name, side, guest_code), events(id, title, event_date, venue_name)")
     .eq("token", token)
     .maybeSingle();
 

@@ -172,9 +172,11 @@ describe("RSVP validation (Phase 3B)", () => {
       name: "محمد أحمد",
       requestedSeats: 2,
       guestNote: "شكراً",
+      phone: "0501234567",
     });
     assert.equal(parsed.slug, "ws-royal-demo");
     assert.equal(parsed.requestedSeats, 2);
+    assert.equal(parsed.phoneE164, "+971501234567");
   });
 
   it("rejects short name", () => {
@@ -182,6 +184,7 @@ describe("RSVP validation (Phase 3B)", () => {
       slug: "ws-royal-demo",
       name: "م",
       requestedSeats: 1,
+      phone: "+971501234567",
     });
     assert.equal(result.success, false);
   });
@@ -191,6 +194,7 @@ describe("RSVP validation (Phase 3B)", () => {
       slug: "ws-royal-demo",
       name: "سارة",
       requestedSeats: "3",
+      phone: "+971509876543",
     });
     assert.equal(parsed.requestedSeats, 3);
   });

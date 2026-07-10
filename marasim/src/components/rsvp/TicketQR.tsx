@@ -2,11 +2,17 @@
 
 import QRCode from "react-qr-code";
 
-/** Renders a scannable ticket QR. The encoded value is only `/t/[ticketToken]` — never guest data. */
-export default function TicketQR({ url, size = 200 }: { url: string; size?: number }) {
+/** QR encodes the guest code only — scanned at the event door. */
+export default function TicketQR({
+  value,
+  size = 200,
+}: {
+  value: string;
+  size?: number;
+}) {
   return (
     <div className="inline-flex rounded-lg bg-white p-4">
-      <QRCode value={url} size={size} level="M" />
+      <QRCode value={value} size={size} level="M" />
     </div>
   );
 }

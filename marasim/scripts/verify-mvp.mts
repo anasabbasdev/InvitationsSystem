@@ -21,7 +21,8 @@ import {
   confirmInviteLinkRpc,
   fetchTicketDisplayInfo,
 } from "../src/lib/repositories";
-import { submitPublicRSVP, getRSVPStatusView } from "../src/lib/rsvp-core";
+import { submitPublicRSVP, getRSVPStatusView, lookupGuestBySlug } from "../src/lib/rsvp-core";
+import { resolveLookupToTicketToken } from "../src/lib/scanner-resolve";
 
 loadProjectEnv();
 
@@ -55,39 +56,57 @@ async function main() {
   assert.equal(royalInv.status, "published");
 
   console.log("\n── Public RSVP flow ──");
+  const uniquePhone = `+97150${String(Date.now()).slice(-7)}`;
   const submit = await submitPublicRSVP({
     slug: "ws-royal-demo",
     name: `MVP Verify ${Date.now()}`,
     requestedSeats: 1,
+    phone: uniquePhone,
   });
   assert.equal(submit.status, "pending");
+  assert.ok(submit.guestCode);
   const status = await getRSVPStatusView(submit.rsvpViewToken);
   assert.ok(status);
   assert.equal(status?.status, "pending");
+  assert.equal(status?.guestCode, submit.guestCode);
   assert.equal(status?.ticket, null);
-  console.log("  ✓ submit + pending status");
+
+  const byPhone = await lookupGuestBySlug("ws-royal-demo", { phone: uniquePhone });
+  assert.equal(byPhone.found, true);
+  const byCode = await lookupGuestBySlug("ws-royal-demo", { guestCode: submit.guestCode });
+  assert.equal(byCode.found, true);
+  console.log("  ✓ submit + guest code + lookup by phone/code");
 
   console.log("\n── Approve + ticket ──");
+  const approvePhone = `+97150${String(Date.now() + 1).slice(-7)}`;
   const pending = await createPublicRsvp({
     eventId: royal!.id,
     invitationId: royalInv.id,
     name: `Approve Test ${Date.now()}`,
     requestedSeats: 2,
     guestNote: "[verify-mvp]",
+    phone: approvePhone,
+    phoneE164: approvePhone,
   });
+  assert.ok(pending.guestCode);
   const approved = await approveRsvp(pending.id, 2);
   assert.ok(approved.ticketToken);
   const afterApprove = await getRSVPStatusView(pending.rsvpViewToken);
   assert.ok(afterApprove?.ticket);
-  console.log("  ✓ approve creates ticket + status shows QR data");
+  const tokenViaCode = await resolveLookupToTicketToken(royal!.id, pending.guestCode!);
+  assert.equal(tokenViaCode, approved.ticketToken);
+  console.log("  ✓ approve creates ticket + scanner resolves guest code");
 
   console.log("\n── Reject ──");
+  const rejectPhone = `+97150${String(Date.now() + 2).slice(-7)}`;
   const rejectPending = await createPublicRsvp({
     eventId: royal!.id,
     invitationId: royalInv.id,
     name: `Reject Test ${Date.now()}`,
     requestedSeats: 1,
     guestNote: "[verify-mvp-reject]",
+    phone: rejectPhone,
+    phoneE164: rejectPhone,
   });
   await rejectRsvp(rejectPending.id);
   const rejectedView = await getRSVPStatusView(rejectPending.rsvpViewToken);
@@ -113,6 +132,8 @@ async function main() {
     name: `Cap Test ${Date.now()}`,
     requestedSeats: 2,
     guestNote: "[verify-mvp-cap]",
+    phone: `+97150${String(Date.now() + 3).slice(-7)}`,
+    phoneE164: `+97150${String(Date.now() + 3).slice(-7)}`,
   });
   try {
     await approveRsvp(capPending.id, 2);
@@ -134,6 +155,10 @@ async function main() {
   assert.ok(ticketInfo);
   const wrongScan = await scanTicket(approved.ticketToken, floral!.id);
   assert.equal(wrongScan.status, "WRONG_EVENT");
+  const resolvedToken = await resolveLookupToTicketToken(royal!.id, pending.guestCode!);
+  assert.ok(resolvedToken);
+  const codeScan = await scanTicket(resolvedToken!, royal!.id);
+  assert.equal(codeScan.status, "VALID");
   const checkIn = await checkInTicket(approved.ticketToken, royal!.id, 1);
   assert.equal(checkIn.status, "VALID");
   assert.ok(checkIn.info);
@@ -147,10 +172,11 @@ async function main() {
     label: "[verify-mvp-link]",
     maxSeats: 2,
   });
-  const confirm = await confirmInviteLinkRpc(link.token, "Controlled Guest", null, 2);
+  const confirm = await confirmInviteLinkRpc(link.token, "Controlled Guest", null, null, 2);
   assert.equal(confirm.ok, true);
   if (!confirm.ok) throw new Error("confirm failed");
-  const dup = await confirmInviteLinkRpc(link.token, "Again", null, 1);
+  assert.ok(confirm.guestCode);
+  const dup = await confirmInviteLinkRpc(link.token, "Again", null, null, 1);
   assert.equal(dup.ok, false);
   assert.equal(dup.code, "ALREADY_CONFIRMED");
   console.log("  ✓ controlled confirm + duplicate blocked");

@@ -21,6 +21,7 @@ export interface ControlledRSVPSubmission {
 export interface RSVPSubmission {
   name: string;
   phone?: string;
+  phoneE164?: string;
   requestedSeats: number;
   eventId: string;
   invitationId?: string;
@@ -38,6 +39,8 @@ export interface RSVP {
   inviteLinkId?: string | null;
   name: string;
   phone?: string | null;
+  phoneE164?: string | null;
+  guestCode?: string | null;
   guestNote?: string | null;
   side?: string | null;
   requestedSeats: number;
@@ -50,7 +53,23 @@ export interface RSVP {
 
 export interface PublicRSVPResult {
   rsvpViewToken: string;
+  guestCode: string;
   status: RSVPStatus;
+}
+
+export interface GuestLookupResult {
+  found: boolean;
+  message?: string;
+  status?: RSVPStatus;
+  name?: string;
+  guestCode?: string;
+  requestedSeats?: number;
+  approvedSeats?: number | null;
+  eventTitle?: string;
+  eventDate?: string | null;
+  venueName?: string | null;
+  guestNote?: string | null;
+  ticket?: RSVPStatusTicketView | null;
 }
 
 export interface RSVPStatusTicketView {
@@ -64,6 +83,7 @@ export interface RSVPStatusTicketView {
 export interface RSVPStatusView {
   status: RSVPStatus;
   name: string;
+  guestCode?: string | null;
   requestedSeats: number;
   approvedSeats?: number | null;
   eventTitle?: string;

@@ -46,6 +46,7 @@ export interface TicketDisplayInfo {
   guest: {
     name: string;
     side?: string | null;
+    guestCode?: string | null;
   };
 }
 

@@ -67,6 +67,7 @@ export type DbEventRow = {
   total_capacity: number | null;
   confirmed_seats: number;
   status: string;
+  scanner_public_token: string | null;
   created_at: string;
 };
 
@@ -88,6 +89,8 @@ export type DbRsvpRow = {
   invite_link_id: string | null;
   name: string;
   phone: string | null;
+  phone_e164: string | null;
+  guest_code: string | null;
   side: string | null;
   guest_note: string | null;
   requested_seats: number;

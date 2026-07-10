@@ -19,7 +19,17 @@ const STATUS_COPY: Record<string, { label: string; color: string }> = {
   EXCEEDED: { label: "يتجاوز العدد المتبقي", color: "#f87171" },
 };
 
-export default function ScannerClient({ eventId }: { eventId: string }) {
+type ScannerMode =
+  | { type: "owner"; eventId: string }
+  | { type: "public"; scannerToken: string };
+
+export default function ScannerClient({
+  mode,
+  eventTitle,
+}: {
+  mode: ScannerMode;
+  eventTitle?: string;
+}) {
   const [manualInput, setManualInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ScanResponse | CheckinResponse | null>(null);
@@ -27,22 +37,34 @@ export default function ScannerClient({ eventId }: { eventId: string }) {
   const [cameraOn, setCameraOn] = useState(false);
   const [cameraSupported, setCameraSupported] = useState(true);
   const [checkinLoading, setCheckinLoading] = useState(false);
+  const [lastLookup, setLastLookup] = useState("");
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const detectIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastScannedRef = useRef<string>("");
 
+  const scanEndpoint =
+    mode.type === "public" ? "/api/scanner/public/scan" : "/api/scanner/scan";
+  const checkinEndpoint =
+    mode.type === "public" ? "/api/scanner/public/checkin" : "/api/scanner/checkin";
+
   const runScan = useCallback(
-    async (rawToken: string) => {
-      if (!rawToken.trim()) return;
+    async (rawLookup: string) => {
+      if (!rawLookup.trim()) return;
       setLoading(true);
       setError(null);
+      setLastLookup(rawLookup.trim());
       try {
-        const res = await fetch("/api/scanner/scan", {
+        const body =
+          mode.type === "public"
+            ? { scannerToken: mode.scannerToken, lookup: rawLookup.trim() }
+            : { eventId: mode.eventId, lookup: rawLookup.trim() };
+
+        const res = await fetch(scanEndpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ eventId, token: rawToken.trim() }),
+          body: JSON.stringify(body),
         });
         const data = (await res.json()) as ScanResponse;
         if (!res.ok) {
@@ -57,18 +79,23 @@ export default function ScannerClient({ eventId }: { eventId: string }) {
         setLoading(false);
       }
     },
-    [eventId]
+    [mode, scanEndpoint]
   );
 
   async function handleCheckIn(entries: number) {
-    if (!result?.info) return;
+    if (!result?.info || !lastLookup) return;
     setCheckinLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/scanner/checkin", {
+      const body =
+        mode.type === "public"
+          ? { scannerToken: mode.scannerToken, lookup: lastLookup, entries }
+          : { eventId: mode.eventId, lookup: lastLookup, entries };
+
+      const res = await fetch(checkinEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventId, token: result.info.ticket.token, entries }),
+        body: JSON.stringify(body),
       });
       const data = (await res.json()) as CheckinResponse;
       if (!res.ok) {
@@ -87,6 +114,7 @@ export default function ScannerClient({ eventId }: { eventId: string }) {
     setResult(null);
     setError(null);
     setManualInput("");
+    setLastLookup("");
     lastScannedRef.current = "";
   }
 
@@ -137,7 +165,7 @@ export default function ScannerClient({ eventId }: { eventId: string }) {
             await runScan(value);
           }
         } catch {
-          // transient decode failure — ignore and retry next tick
+          // transient decode failure
         }
       }, 400);
     } catch {
@@ -154,11 +182,14 @@ export default function ScannerClient({ eventId }: { eventId: string }) {
   const remaining = result?.info ? result.info.ticket.maxEntries - result.info.ticket.usedEntries : 0;
   const statusInfo = result ? STATUS_COPY[result.status] ?? { label: result.status, color: "#f87171" } : null;
   const canCheckIn = result?.status === "VALID" && remaining > 0;
-
   const checkInOptions = Array.from({ length: Math.min(remaining, 3) }, (_, i) => i + 1);
 
   return (
     <div className="flex flex-col gap-4">
+      {eventTitle && (
+        <p className="text-center text-sm text-zinc-400">{eventTitle}</p>
+      )}
+
       <div className="flex flex-col gap-2 rounded-lg border border-zinc-800 bg-zinc-900 p-4">
         <form
           onSubmit={(e) => {
@@ -170,7 +201,7 @@ export default function ScannerClient({ eventId }: { eventId: string }) {
           <input
             value={manualInput}
             onChange={(e) => setManualInput(e.target.value)}
-            placeholder="ألصق التوكن أو رابط التذكرة /t/..."
+            placeholder="رمز الدعوة / الجوال / QR"
             className="flex-1 rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white outline-none focus:border-amber-500"
             dir="ltr"
           />
@@ -193,17 +224,12 @@ export default function ScannerClient({ eventId }: { eventId: string }) {
           </button>
         ) : (
           <p className="text-xs text-zinc-500">
-            المسح بالكاميرا غير مدعوم على هذا المتصفح — استخدم الإدخال اليدوي أعلاه.
+            المسح بالكاميرا غير مدعوم — استخدم الإدخال اليدوي.
           </p>
         )}
 
         {cameraOn && (
-          <video
-            ref={videoRef}
-            className="w-full rounded-md bg-black"
-            muted
-            playsInline
-          />
+          <video ref={videoRef} className="w-full rounded-md bg-black" muted playsInline />
         )}
       </div>
 

@@ -1,49 +1,32 @@
-# Marasim MVP — Manual Test Guide
+# MVP manual test guide
 
-Run after `npm run db:seed` and `npm run dev`. Open `/lab/test-hub` for quick links.
+## Prerequisites
+
+- Migrations 1–7 applied
+- `npm run db:seed`
+- `npm run dev`
 
 ## Scenario A — Public RSVP → Approve → Check-in
 
 1. Open `/i/ws-royal-demo`
-2. Scroll to RSVP scene
-3. Enter name, select 2 seats, submit
-4. Confirm redirect to `/s/[token]` with **pending**
-5. Login at `/owner/login` (`owner@marasim.local` / see `.seed-data.local`)
-6. Open event → **طلبات الحضور**
-7. Approve the new request with 2 seats
-8. Re-open the guest status URL — **QR appears**
-9. Open **Scanner**, paste ticket URL or scan QR
-10. **Check in 1** — remaining should be 1
-11. Scan again, **Check in remaining**
-12. Scan again — **Fully Used**
+2. Submit RSVP with **name + UAE phone + seats**
+3. Note **guest code** (6 chars) + copy button — no redirect required
+4. Use sticky bar **«تحقق من حالة دعوتك»** → enter phone **or** code → see **pending**
+5. Owner login → approve RSVP
+6. Guest checks status again via sticky bar → sees **approved** + QR (code only)
+7. Owner dashboard → copy **scanner link** (`/scan/...`) → share with door staff
+8. Scanner: scan QR, type code, or type phone → check-in
 
-## Scenario B — Rejection
+## Scenario B — Guest lookup privacy
 
-1. Submit new RSVP from invitation
-2. Reject from dashboard
-3. Status page shows **Rejected**, no QR
+- Wrong phone/code on invitation → generic «لم يُعثر على طلب مطابق»
+- Lookup scoped to invitation event only
 
-## Scenario C — Capacity
+## Scenario C — Public scanner (no login)
 
-1. From Test Hub note remaining seats on Event A
-2. Try approving a pending RSVP that exceeds remaining capacity
-3. Dashboard shows error; confirmed seats unchanged
-
-## Scenario D — Wrong Event
-
-1. Open Scanner for **Event A (Royal)**
-2. Scan/paste ticket from **Event B (Floral)** — use Test Hub link
-3. **WRONG_EVENT** — no check-in buttons
-
-## Scenario E — Controlled Link
-
-1. Open **Controlled invitation** link from Test Hub
-2. Confirm with seats ≤ max
-3. Ticket + QR appear immediately on status page
-4. Re-submit — blocked (already confirmed)
+- Open `/scan/[token]` from owner dashboard share card
+- Works without owner account
 
 ## Demo credentials
 
-See `.seed-data.local` after seed (gitignored).
-
-Environment overrides: `SEED_OWNER_EMAIL`, `SEED_OWNER_PASSWORD`.
+See `.seed-data.local` after seed (`owner_email`, `royal_scanner_url`, `demo_guest_code_approved`).

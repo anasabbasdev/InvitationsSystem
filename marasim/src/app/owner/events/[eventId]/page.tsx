@@ -10,7 +10,9 @@ import {
   listInviteLinksForEvent,
 } from "@/lib/repositories";
 import { mapEventRow, mapEventSettingsRow } from "@/lib/repositories/events";
+import { getSiteOrigin } from "@/lib/site-url";
 import InviteLinksPanel from "@/components/owner/InviteLinksPanel";
+import ScannerShareCard from "@/components/owner/ScannerShareCard";
 
 export default async function OwnerEventPage({
   params,
@@ -30,6 +32,10 @@ export default async function OwnerEventPage({
   const counts = await countRsvpsByStatusForEvent(eventId);
   const unread = await countUnreadNotifications(eventId);
   const inviteLinks = await listInviteLinksForEvent(eventId);
+
+  const origin = await getSiteOrigin();
+  const scannerToken = eventRow.scanner_public_token;
+  const scannerUrl = scannerToken ? `${origin}/scan/${scannerToken}` : null;
 
   const remaining =
     event.totalCapacity != null
@@ -80,9 +86,11 @@ export default async function OwnerEventPage({
           href={`/owner/events/${eventId}/scanner`}
           className="rounded-md border border-zinc-700 px-4 py-2 text-sm text-zinc-200 hover:bg-zinc-800"
         >
-          فتح الماسح (Scanner)
+          فتح الماسح
         </Link>
       </div>
+
+      {scannerUrl && <ScannerShareCard scannerUrl={scannerUrl} eventTitle={event.title} />}
 
       {settings && (
         <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-3 text-xs text-zinc-400">

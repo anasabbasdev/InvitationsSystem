@@ -20,6 +20,7 @@ Copy `.env.local.example` → `.env.local`. Scripts also read `.dev.vars` via `l
 4. `20260710010000_phase4_owner_auth.sql`
 5. `20260710020000_phase4_tickets_and_approval.sql`
 6. `20260710030000_phase6_invite_links.sql`
+7. `20260711030000_guest_identity_scanner.sql` — guest codes, phone E.164, public scanner tokens
 
 ## Commands
 
@@ -40,7 +41,7 @@ After seed: `.seed-data.local` (demo URLs) and `.preview-tokens.local` (draft pr
 | `approve_rsvp(rsvp_id, approved_seats)` | Atomic approve / edit seats + ticket |
 | `reject_rsvp(rsvp_id)` | Reject + free seats + revoke ticket |
 | `check_in_ticket(token, event_id, count, checked_by)` | Partial group check-in |
-| `confirm_invite_link(token, name, phone, seats)` | Controlled link confirmation |
+| `confirm_invite_link(token, name, phone, phone_e164, seats)` | Controlled link confirmation |
 
 ## RLS
 

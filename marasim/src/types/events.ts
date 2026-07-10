@@ -11,6 +11,7 @@ export interface AppEvent {
   totalCapacity?: number | null;
   confirmedSeats: number;
   status: EventStatus;
+  scannerPublicToken?: string | null;
   createdAt: string;
 }
 

@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getRSVPStatusView } from "@/lib/rsvp";
-import { getSiteOrigin } from "@/lib/site-url";
 import RSVPStatusView from "@/components/rsvp/RSVPStatusView";
 
 interface Props {
@@ -27,11 +26,5 @@ export default async function RsvpStatusPage({ params }: Props) {
     notFound();
   }
 
-  const origin = await getSiteOrigin();
-  const ticketPageUrl = view.ticket?.token ? `${origin}/t/${view.ticket.token}` : null;
-  const ticketQrUrl = ticketPageUrl;
-
-  return (
-    <RSVPStatusView view={view} ticketPageUrl={ticketPageUrl} ticketQrUrl={ticketQrUrl} />
-  );
+  return <RSVPStatusView view={view} />;
 }

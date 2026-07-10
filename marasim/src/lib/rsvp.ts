@@ -4,6 +4,7 @@ export {
   RsvpError,
   submitPublicRSVP,
   getRSVPStatusView,
+  lookupGuestBySlug,
   approveRSVP,
   rejectRSVP,
   validateInviteLink,
@@ -12,4 +13,5 @@ export {
   type PublicRSVPSubmission,
   type PublicRSVPResult,
   type RSVPStatusView,
+  type GuestLookupResult,
 } from "@/lib/rsvp-core";

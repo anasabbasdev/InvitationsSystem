@@ -1,17 +1,16 @@
-import Link from "next/link";
 import type { TicketDisplayInfo } from "@/types/tickets";
 import TicketQR from "@/components/rsvp/TicketQR";
+import CopyCodeButton from "@/components/ui/CopyCodeButton";
 
 interface Props {
   info: TicketDisplayInfo;
-  ticketPageUrl: string;
-  ticketQrUrl: string;
 }
 
-export default function TicketPageView({ info, ticketPageUrl, ticketQrUrl }: Props) {
+export default function TicketPageView({ info }: Props) {
   const { ticket, event, guest } = info;
   const isRevoked = ticket.status === "revoked";
   const isFullyUsed = ticket.status === "fully_used";
+  const guestCode = guest.guestCode;
 
   return (
     <main
@@ -53,16 +52,25 @@ export default function TicketPageView({ info, ticketPageUrl, ticketQrUrl }: Pro
           <Info label="الحالة" value={statusLabel(ticket.status)} />
         </div>
 
-        {!isRevoked && !isFullyUsed && (
-          <div className="flex flex-col items-center gap-3 pt-2">
-            <TicketQR url={ticketQrUrl} size={200} />
-            <p className="text-[11px] text-zinc-500 text-center">اعرض هذا الرمز عند المدخل</p>
+        {guestCode && (
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-xs text-zinc-500">رمز الدعوة</p>
+            <div className="flex items-center gap-2" dir="ltr">
+              <span className="text-lg font-bold tracking-[0.2em] text-amber-400">{guestCode}</span>
+              <CopyCodeButton
+                code={guestCode}
+                className="rounded-md bg-amber-500 px-2 py-1 text-[11px] text-black"
+              />
+            </div>
           </div>
         )}
 
-        <p className="text-[10px] text-zinc-600 text-center break-all" dir="ltr">
-          {ticketPageUrl}
-        </p>
+        {!isRevoked && !isFullyUsed && guestCode && (
+          <div className="flex flex-col items-center gap-3 pt-2">
+            <TicketQR value={guestCode} size={200} />
+            <p className="text-[11px] text-zinc-500 text-center">اعرض هذا الرمز عند المدخل</p>
+          </div>
+        )}
       </div>
     </main>
   );

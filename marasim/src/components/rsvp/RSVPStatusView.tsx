@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { RSVPStatusView as RSVPStatusViewType } from "@/types/rsvp";
 import TicketQR from "@/components/rsvp/TicketQR";
+import CopyCodeButton from "@/components/ui/CopyCodeButton";
 
 const STATUS_COPY: Record<
   RSVPStatusViewType["status"],
@@ -8,17 +9,17 @@ const STATUS_COPY: Record<
 > = {
   pending: {
     title: "طلبك قيد المراجعة",
-    body: "تم استلام طلب حضورك. سيتم إعلامك عند موافقة المضيف. احتفظ بهذه الصفحة لمتابعة حالة طلبك.",
+    body: "تم استلام طلب حضورك. يمكنك متابعة الحالة من الدعوة برقم جوالك أو رمز الدعوة.",
     tone: "pending",
   },
   approved: {
     title: "تمت الموافقة على حضورك",
-    body: "يسعدنا تأكيد حضورك. اعرض رمز QR عند المدخل أو افتح صفحة التذكرة أدناه.",
+    body: "اعرض رمز الدعوة أو QR عند المدخل.",
     tone: "success",
   },
   confirmed: {
     title: "تم تأكيد حضورك",
-    body: "تم تأكيد مقاعدك عبر رابط الدعوة الخاص. اعرض رمز QR عند المدخل.",
+    body: "اعرض رمز الدعوة أو QR عند المدخل.",
     tone: "success",
   },
   rejected: {
@@ -48,11 +49,9 @@ const TONE_STYLES = {
 
 interface Props {
   view: RSVPStatusViewType;
-  ticketPageUrl?: string | null;
-  ticketQrUrl?: string | null;
 }
 
-export default function RSVPStatusView({ view, ticketPageUrl, ticketQrUrl }: Props) {
+export default function RSVPStatusView({ view }: Props) {
   const copy = STATUS_COPY[view.status];
   const tone = TONE_STYLES[copy.tone];
   const hasTicket =
@@ -60,7 +59,8 @@ export default function RSVPStatusView({ view, ticketPageUrl, ticketQrUrl }: Pro
     view.ticket &&
     view.ticket.status !== "revoked";
 
-  const showQr = hasTicket && ticketQrUrl && view.ticket!.status === "active";
+  const showQr =
+    hasTicket && view.guestCode && view.ticket!.status === "active";
   const ticketRevoked = view.ticket?.status === "revoked";
   const ticketFullyUsed = view.ticket?.status === "fully_used";
 
@@ -126,6 +126,25 @@ export default function RSVPStatusView({ view, ticketPageUrl, ticketQrUrl }: Pro
           )}
         </div>
 
+        {view.guestCode && (
+          <div
+            className="flex flex-col items-center gap-3 pt-4 border-t"
+            style={{ borderColor: tone.border }}
+          >
+            <p className="text-xs opacity-60">رمز دعوتك</p>
+            <div className="flex items-center gap-3" dir="ltr">
+              <span className="text-xl font-bold tracking-[0.2em]" style={{ color: tone.accent }}>
+                {view.guestCode}
+              </span>
+              <CopyCodeButton
+                code={view.guestCode}
+                className="rounded-md px-3 py-1.5 text-xs font-medium text-black"
+                style={{ backgroundColor: tone.accent }}
+              />
+            </div>
+          </div>
+        )}
+
         {hasTicket && view.ticket && (
           <div
             className="flex flex-col items-center gap-4 pt-4 border-t"
@@ -142,16 +161,7 @@ export default function RSVPStatusView({ view, ticketPageUrl, ticketQrUrl }: Pro
                 <p className="text-xs opacity-60">
                   متبقي {view.ticket.remainingEntries} من {view.ticket.maxEntries} مقعد
                 </p>
-                {showQr && <TicketQR url={ticketQrUrl!} size={180} />}
-                {ticketPageUrl && (
-                  <Link
-                    href={ticketPageUrl}
-                    className="rounded-md px-5 py-2.5 text-sm font-medium text-black"
-                    style={{ backgroundColor: tone.accent }}
-                  >
-                    فتح صفحة التذكرة
-                  </Link>
-                )}
+                {showQr && <TicketQR value={view.guestCode!} size={180} />}
               </>
             )}
           </div>

@@ -7,6 +7,8 @@ import SceneFrame from "../SceneFrame";
 import LayerRenderer from "../LayerRenderer";
 import SceneOrnament from "@/components/ui/SceneOrnament";
 import SectionLabel from "@/components/ui/SectionLabel";
+import PhoneInput, { defaultPhoneValue, phoneValueToRaw, type PhoneInputValue } from "@/components/ui/PhoneInput";
+import RsvpSuccessPanel from "@/components/rsvp/RsvpSuccessPanel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, getButtonStyles, getCardStyles, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
 
@@ -29,18 +31,27 @@ type VProps = {
   controlledLabel?: string;
 };
 
-type FormState = { name: string; guests: string; note: string };
+type FormState = { name: string; guests: string; note: string; phone: PhoneInputValue };
+
+type SubmitSuccess = { guestCode: string; status: string };
 
 function useRSVPForm(
   slug: string,
   maxSeats: number,
   options?: { inviteToken?: string; controlled?: boolean }
 ) {
-  const [form, setForm] = useState<FormState>({ name: "", guests: "1", note: "" });
+  const [form, setForm] = useState<FormState>({
+    name: "",
+    guests: "1",
+    note: "",
+    phone: defaultPhoneValue(),
+  });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<SubmitSuccess | null>(null);
 
   const seatOptions = Array.from({ length: Math.max(1, maxSeats) }, (_, i) => i + 1);
+  const isControlled = Boolean(options?.inviteToken);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -52,7 +63,6 @@ function useRSVPForm(
     setError(null);
 
     try {
-      const isControlled = Boolean(options?.inviteToken);
       const response = await fetch(
         isControlled ? "/api/rsvp/controlled/confirm" : "/api/rsvp/public",
         {
@@ -65,10 +75,14 @@ function useRSVPForm(
                   inviteToken: options!.inviteToken,
                   name: form.name.trim(),
                   seats: Number.parseInt(form.guests, 10),
+                  phone: form.phone.national.trim()
+                    ? phoneValueToRaw(form.phone)
+                    : undefined,
                 }
               : {
                   slug,
                   name: form.name.trim(),
+                  phone: phoneValueToRaw(form.phone),
                   requestedSeats: Number.parseInt(form.guests, 10),
                   guestNote: form.note.trim() || undefined,
                 }
@@ -76,15 +90,22 @@ function useRSVPForm(
         }
       );
 
-      const data = (await response.json()) as { statusUrl?: string; error?: string };
+      const data = (await response.json()) as {
+        guestCode?: string;
+        status?: string;
+        error?: string;
+      };
 
       if (!response.ok) {
         setError(data.error ?? "تعذر إرسال الطلب. حاول مرة أخرى.");
         return;
       }
 
-      if (data.statusUrl) {
-        window.location.href = data.statusUrl;
+      if (data.guestCode) {
+        setSuccess({
+          guestCode: data.guestCode,
+          status: data.status ?? (isControlled ? "confirmed" : "pending"),
+        });
       }
     } catch {
       setError("تعذر الاتصال بالخادم. تحقق من الاتصال وحاول مرة أخرى.");
@@ -93,7 +114,17 @@ function useRSVPForm(
     }
   }
 
-  return { form, submitting, error, seatOptions, handleChange, handleSubmit };
+  return {
+    form,
+    submitting,
+    error,
+    success,
+    seatOptions,
+    handleChange,
+    handleSubmit,
+    setPhone: (phone: PhoneInputValue) => setForm((prev) => ({ ...prev, phone })),
+    isControlled,
+  };
 }
 
 // ─── Variant: luxury_form ─────────────────────────────────────────────────────
@@ -106,7 +137,7 @@ function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
   const label = content.sectionLabel ?? (inviteToken ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
   const maxSeats = inviteToken ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
-  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats, {
+  const { form, submitting, error, success, seatOptions, handleChange, handleSubmit, setPhone, isControlled } = useRSVPForm(slug, maxSeats, {
     inviteToken,
     controlled: Boolean(inviteToken),
   });
@@ -153,7 +184,7 @@ function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats
             viewport={{ once: true }}
             transition={{ duration: 0.9 }}
             style={{
-              display: "flex",
+              display: success ? "none" : "flex",
               flexDirection: "column",
               gap: "1rem",
               width: "100%",
@@ -173,6 +204,14 @@ function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats
               required
               disabled={submitting}
               style={inputStyle}
+            />
+
+            <PhoneInput
+              value={form.phone}
+              onChange={setPhone}
+              disabled={submitting}
+              required={!isControlled}
+              inputStyle={inputStyle}
             />
 
             <select
@@ -226,6 +265,15 @@ function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats
               {submitting ? "جاري الإرسال..." : "تأكيد الحضور"}
             </motion.button>
           </motion.form>
+
+        {success && (
+          <RsvpSuccessPanel
+            guestCode={success.guestCode}
+            status={success.status}
+            primaryColor={theme.primaryColor}
+            textColor={theme.textColor ?? "#F5F0E8"}
+          />
+        )}
       </div>
 
       {scene.foreground?.map((layer, i) => (
@@ -243,7 +291,7 @@ function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeat
   const label = content.sectionLabel ?? (inviteToken ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
   const maxSeats = inviteToken ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
-  const { form, submitting, error, seatOptions, handleChange, handleSubmit } = useRSVPForm(slug, maxSeats, {
+  const { form, submitting, error, success, seatOptions, handleChange, handleSubmit, setPhone, isControlled } = useRSVPForm(slug, maxSeats, {
     inviteToken,
     controlled: Boolean(inviteToken),
   });
@@ -279,7 +327,7 @@ function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeat
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             style={{
-              display: "flex",
+              display: success ? "none" : "flex",
               flexDirection: "column",
               gap: "1.5rem",
               width: "100%",
@@ -296,6 +344,14 @@ function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeat
               required
               disabled={submitting}
               style={inputStyle}
+            />
+
+            <PhoneInput
+              value={form.phone}
+              onChange={setPhone}
+              disabled={submitting}
+              required={!isControlled}
+              inputStyle={inputStyle}
             />
 
             <select
@@ -348,6 +404,15 @@ function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeat
               {submitting ? "جاري الإرسال..." : "تأكيد الحضور"}
             </motion.button>
           </motion.form>
+
+        {success && (
+          <RsvpSuccessPanel
+            guestCode={success.guestCode}
+            status={success.status}
+            primaryColor={theme.primaryColor}
+            textColor={theme.textColor ?? "#F5F0E8"}
+          />
+        )}
       </div>
 
       {scene.foreground?.map((layer, i) => (

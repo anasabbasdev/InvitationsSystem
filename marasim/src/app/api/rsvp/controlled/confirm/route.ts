@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       status: "confirmed",
-      statusUrl: `/s/${result.rsvpViewToken}`,
+      guestCode: result.guestCode,
       ticketToken: result.ticketToken,
     });
   } catch (error) {

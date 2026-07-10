@@ -6,6 +6,7 @@ import { InvitationConfig, InvitationScene } from "@/types/invitation";
 import { buildInvitationCssVars } from "@/lib/theme-vars";
 import MusicGate from "./MusicGate";
 import OpeningScene from "./scenes/OpeningScene";
+import GuestLookupSheet from "@/components/rsvp/GuestLookupSheet";
 import { SCENE_COMPONENTS } from "./scene-registry";
 
 /**
@@ -109,6 +110,7 @@ export default function InvitationRenderer({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.9, delay: 0.15, ease: "easeOut" }}
+              className="pb-20"
             >
               {contentScenes.map((scene) => {
                 const Component = SCENE_COMPONENTS[scene.type];
@@ -136,6 +138,14 @@ export default function InvitationRenderer({
 
         {/* Spacer prevents layout jump while opening gate is visible */}
         {!isOpened && <div style={{ minHeight: "100dvh" }} />}
+
+        {config.rsvp?.enabled && isOpened && (
+          <GuestLookupSheet
+            slug={config.slug}
+            primaryColor={theme.primaryColor}
+            textColor={theme.textColor ?? "#F5F0E8"}
+          />
+        )}
       </div>
     </MusicGate>
   );
