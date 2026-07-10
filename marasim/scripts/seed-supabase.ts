@@ -87,6 +87,23 @@ function logAction(entity: string, key: string, action: SeedAction, detail?: str
   console.log(`  ${action === "skipped" ? "○" : action === "created" ? "+" : "~"} ${entity} ${key}${suffix}`);
 }
 
+function formatSeedError(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === "object") {
+    const e = error as Record<string, unknown>;
+    const parts = [e.message, e.code, e.details, e.hint].filter(
+      (part): part is string => typeof part === "string" && part.length > 0
+    );
+    if (parts.length > 0) return parts.join(" — ");
+    try {
+      return JSON.stringify(error, null, 2);
+    } catch {
+      return String(error);
+    }
+  }
+  return String(error);
+}
+
 function appendPreviewToken(slug: string, token: string) {
   const line = `${slug}=${token}\n`;
   if (!existsSync(PREVIEW_TOKENS_FILE)) {
@@ -112,7 +129,7 @@ async function ensureEventForInvitation(data: InvitationData): Promise<string | 
     title: eventTitleFromData(data),
     eventDate: details?.date ? `${details.date}T00:00:00+03:00` : null,
     venueName: details?.venueName ?? null,
-    totalCapacity: data.slug === "ws-royal-demo" ? 20 : data.slug === "ws-floral-demo" ? 10 : null,
+    totalCapacity: data.slug === "ws-royal-demo" ? 50 : data.slug === "ws-floral-demo" ? 30 : null,
     rsvpEnabled: data.rsvp.enabled,
     rsvpMode: data.rsvp.mode,
     maxPublicRequest: data.rsvp.maxPublicRequest ?? 4,
@@ -280,7 +297,7 @@ async function main() {
 }
 
 main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
+  const message = formatSeedError(error);
   if (message.includes("preview_token_hash")) {
     console.error(
       "\nMissing column preview_token_hash — apply migration:\n" +
@@ -291,6 +308,18 @@ main().catch((error: unknown) => {
     console.error(
       "\nMissing RSVP tables — apply migration:\n" +
         "  supabase/migrations/20260709140000_phase_3b_rsvp.sql\n"
+    );
+  }
+  if (message.includes("events_seats_within_capacity") || message.includes("23514")) {
+    console.error(
+      "\nEvent capacity is lower than confirmed seats already in the database.\n" +
+        "Re-run seed after this fix, or manually raise events.total_capacity in Supabase.\n"
+    );
+  }
+  if (message.includes("scanner_public_token") || message.includes("guest_code") || message.includes("phone_e164")) {
+    console.error(
+      "\nMissing guest identity / scanner columns — apply migration:\n" +
+        "  supabase/migrations/20260711030000_guest_identity_scanner.sql\n"
     );
   }
   console.error(message);

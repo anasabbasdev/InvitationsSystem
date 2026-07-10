@@ -105,12 +105,20 @@ export async function upsertEventWithSettings(
   const admin = createSupabaseAdminClient();
   const existing = await fetchEventBySlug(input.slug);
 
+  let totalCapacity = input.totalCapacity ?? null;
+  if (existing && totalCapacity != null) {
+    const confirmed = existing.confirmed_seats ?? 0;
+    if (confirmed > totalCapacity) {
+      totalCapacity = confirmed;
+    }
+  }
+
   const eventPayload: Record<string, unknown> = {
     slug: input.slug,
     title: input.title,
     event_date: input.eventDate ?? null,
     venue_name: input.venueName ?? null,
-    total_capacity: input.totalCapacity ?? null,
+    total_capacity: totalCapacity,
     status: "published",
   };
 
