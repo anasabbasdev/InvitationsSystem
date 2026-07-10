@@ -7,21 +7,15 @@ import {
 } from "@/lib/invitation-loader";
 import { isInvitationLoaded } from "@/types/invitation-load";
 import InvitationRenderer from "@/components/invitation/InvitationRenderer";
-import { validateInviteLink } from "@/lib/rsvp";
+import { resolveInviteLinkContext } from "@/lib/rsvp";
+import type { InviteLinkContext } from "@/lib/rsvp";
 
 interface Props {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ preview?: string; t?: string }>;
 }
 
-/**
- * Cache policy (Phase 3A.1):
- * - Published snapshots: safe to cache (immutable JSON). Loader reads live snapshot id;
- *   re-publish creates new snapshot row + updates invitation.published_snapshot_id.
- *   Call revalidateTag(`invitation-${slug}`) on republish (see republishInvitation).
- * - Draft preview: `?preview=` forces dynamic render (searchParams) — always fresh merge.
- * - Local registry: statically generated paths from generateStaticParams.
- */
+export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -40,7 +34,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 
 export default async function InvitationPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { preview, t: inviteToken } = await searchParams;
+  const { preview, t: inviteTokenFromUrl } = await searchParams;
 
   const result = await loadInvitation(slug, { previewToken: preview ?? null });
 
@@ -59,26 +53,17 @@ export default async function InvitationPage({ params, searchParams }: Props) {
     notFound();
   }
 
-  let controlledMaxSeats: number | null = null;
-  let controlledLabel: string | null = null;
-  let validInviteToken: string | null = null;
-
-  if (inviteToken) {
-    const validation = await validateInviteLink(inviteToken, slug);
-    if (validation.valid) {
-      validInviteToken = inviteToken;
-      controlledMaxSeats = validation.link.max_seats;
-      controlledLabel = validation.link.label ?? validation.link.guest_name ?? "دعوة خاصة";
-    }
+  let inviteLinkContext: InviteLinkContext | null = null;
+  if (inviteTokenFromUrl) {
+    inviteLinkContext = await resolveInviteLinkContext(inviteTokenFromUrl, slug);
   }
 
   return (
     <div className="min-h-dvh" style={{ backgroundColor: "#000" }}>
       <InvitationRenderer
         config={result.config}
-        inviteToken={validInviteToken}
-        controlledMaxSeats={controlledMaxSeats}
-        controlledLabel={controlledLabel}
+        inviteToken={inviteTokenFromUrl ?? null}
+        inviteLinkContext={inviteLinkContext}
       />
     </div>
   );

@@ -11,6 +11,7 @@ import {
   fetchRsvpByViewToken,
   fetchRsvpByGuestCode,
   fetchRsvpByPhoneE164,
+  fetchRsvpById,
   createPublicRsvp,
   createEventNotification,
   approveRsvp as approveRsvpRepo,
@@ -28,6 +29,7 @@ import type {
   GuestLookupResult,
   PublicRSVPResult,
   PublicRSVPSubmission,
+  RSVP,
   RSVPStatusView,
 } from "@/types/rsvp";
 import type { DbInviteLinkRow } from "@/types/persistence";
@@ -52,7 +54,7 @@ export class RsvpError extends Error {
 
 const NOT_FOUND_MESSAGE = "لم يُعثر على طلب مطابق لهذه الدعوة";
 
-async function buildStatusViewFromRsvp(rsvp: Awaited<ReturnType<typeof fetchRsvpByViewToken>> & object): Promise<GuestLookupResult> {
+async function buildStatusViewFromRsvp(rsvp: RSVP): Promise<GuestLookupResult> {
   const event = await fetchEventById(rsvp.eventId);
 
   let ticket: RSVPStatusView["ticket"] = null;
@@ -81,6 +83,63 @@ async function buildStatusViewFromRsvp(rsvp: Awaited<ReturnType<typeof fetchRsvp
     venueName: event?.venue_name,
     guestNote: rsvp.guestNote,
     ticket,
+  };
+}
+
+export type InviteLinkContext =
+  | {
+      status: "active";
+      maxSeats: number;
+      label?: string | null;
+    }
+  | {
+      status: "already_confirmed";
+      message: string;
+      guestView: GuestLookupResult;
+    }
+  | {
+      status: "invalid";
+      message: string;
+    };
+
+export async function resolveInviteLinkContext(
+  token: string,
+  slug: string
+): Promise<InviteLinkContext | null> {
+  if (!isSupabaseConfigured()) return null;
+
+  const validation = await validateInviteLink(token, slug);
+
+  if (validation.valid) {
+    return {
+      status: "active",
+      maxSeats: validation.link.max_seats,
+      label: validation.link.label ?? validation.link.guest_name,
+    };
+  }
+
+  if (validation.code === "ALREADY_CONFIRMED") {
+    const link = await fetchInviteLinkByToken(token);
+    if (link?.rsvp_id) {
+      const rsvp = await fetchRsvpById(link.rsvp_id);
+      if (rsvp) {
+        const guestView = await buildStatusViewFromRsvp(rsvp);
+        return {
+          status: "already_confirmed",
+          message: validation.message,
+          guestView,
+        };
+      }
+    }
+    return {
+      status: "invalid",
+      message: "تم تأكيد هذا الرابط مسبقاً ولكن تعذر تحميل التذكرة.",
+    };
+  }
+
+  return {
+    status: "invalid",
+    message: validation.message,
   };
 }
 

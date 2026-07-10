@@ -77,6 +77,18 @@ async function main() {
   assert.equal(byCode.found, true);
   console.log("  ✓ submit + guest code + lookup by phone/code");
 
+  // Ensure headroom — seed + prior verify runs may fill ws-royal-demo capacity.
+  const { data: royalCap } = await admin
+    .from("events")
+    .select("confirmed_seats, total_capacity")
+    .eq("id", royal!.id)
+    .single();
+  const confirmedNow = (royalCap?.confirmed_seats as number) ?? 0;
+  const minCapacity = confirmedNow + 15;
+  if (!royalCap?.total_capacity || royalCap.total_capacity < minCapacity) {
+    await admin.from("events").update({ total_capacity: minCapacity }).eq("id", royal!.id);
+  }
+
   console.log("\n── Approve + ticket ──");
   const approvePhone = `+97150${String(Date.now() + 1).slice(-7)}`;
   const pending = await createPublicRsvp({
@@ -147,7 +159,10 @@ async function main() {
     .eq("id", capEvent.id)
     .single();
   assert.equal(afterCap!.confirmed_seats, beforeConfirmed);
-  await admin.from("events").update({ total_capacity: 20 }).eq("id", capEvent.id);
+  await admin
+    .from("events")
+    .update({ total_capacity: Math.max(50, beforeConfirmed + 20) })
+    .eq("id", capEvent.id);
   console.log("  ✓ over-capacity approval blocked");
 
   console.log("\n── Check-in + wrong event ──");
@@ -164,6 +179,22 @@ async function main() {
   assert.ok(checkIn.info);
   assert.equal(checkIn.info!.ticket.usedEntries, 1);
   console.log("  ✓ partial check-in + wrong event");
+
+  const { data: royalBeforeControlled } = await admin
+    .from("events")
+    .select("confirmed_seats, total_capacity")
+    .eq("id", royal!.id)
+    .single();
+  const confirmedForLink = (royalBeforeControlled?.confirmed_seats as number) ?? 0;
+  if (
+    !royalBeforeControlled?.total_capacity ||
+    royalBeforeControlled.total_capacity < confirmedForLink + 5
+  ) {
+    await admin
+      .from("events")
+      .update({ total_capacity: confirmedForLink + 10 })
+      .eq("id", royal!.id);
+  }
 
   console.log("\n── Controlled link ──");
   const link = await createInviteLink({

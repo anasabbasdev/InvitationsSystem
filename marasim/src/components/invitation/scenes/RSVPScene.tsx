@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { InvitationConfig, InvitationScene } from "@/types/invitation";
+import type { InviteLinkContext } from "@/lib/rsvp-core";
 import SceneFrame from "../SceneFrame";
 import LayerRenderer from "../LayerRenderer";
 import SceneOrnament from "@/components/ui/SceneOrnament";
@@ -16,6 +18,7 @@ interface Props {
   scene: InvitationScene;
   config: InvitationConfig;
   inviteToken?: string;
+  inviteLinkContext?: InviteLinkContext;
   controlledMaxSeats?: number;
   controlledLabel?: string;
 }
@@ -27,18 +30,37 @@ type VProps = {
   content: Content;
   d: ResolvedDesign;
   inviteToken?: string;
+  inviteLinkContext?: InviteLinkContext;
   controlledMaxSeats?: number;
   controlledLabel?: string;
 };
 
 type FormState = { name: string; guests: string; note: string; phone: PhoneInputValue };
 
-type SubmitSuccess = { guestCode: string; status: string };
+type SubmitSuccess = {
+  guestCode: string;
+  status: string;
+  approvedSeats?: number | null;
+};
+
+function initialSuccessFromContext(ctx?: InviteLinkContext): SubmitSuccess | null {
+  if (ctx?.status === "already_confirmed" && ctx.guestView.found && ctx.guestView.guestCode) {
+    return {
+      guestCode: ctx.guestView.guestCode,
+      status: ctx.guestView.status ?? "confirmed",
+      approvedSeats: ctx.guestView.approvedSeats,
+    };
+  }
+  return null;
+}
 
 function useRSVPForm(
   slug: string,
   maxSeats: number,
-  options?: { inviteToken?: string; controlled?: boolean }
+  options?: {
+    inviteToken?: string;
+    inviteLinkContext?: InviteLinkContext;
+  }
 ) {
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -48,10 +70,14 @@ function useRSVPForm(
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<SubmitSuccess | null>(null);
+  const [success, setSuccess] = useState<SubmitSuccess | null>(() =>
+    initialSuccessFromContext(options?.inviteLinkContext)
+  );
 
   const seatOptions = Array.from({ length: Math.max(1, maxSeats) }, (_, i) => i + 1);
   const isControlled = Boolean(options?.inviteToken);
+  const linkBlocked = options?.inviteLinkContext?.status === "invalid";
+  const linkDone = options?.inviteLinkContext?.status === "already_confirmed";
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -59,8 +85,12 @@ function useRSVPForm(
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (linkBlocked || linkDone) return;
+
     setSubmitting(true);
     setError(null);
+
+    const seats = Number.parseInt(form.guests, 10);
 
     try {
       const response = await fetch(
@@ -74,7 +104,7 @@ function useRSVPForm(
                   slug,
                   inviteToken: options!.inviteToken,
                   name: form.name.trim(),
-                  seats: Number.parseInt(form.guests, 10),
+                  seats,
                   phone: form.phone.national.trim()
                     ? phoneValueToRaw(form.phone)
                     : undefined,
@@ -83,7 +113,7 @@ function useRSVPForm(
                   slug,
                   name: form.name.trim(),
                   phone: phoneValueToRaw(form.phone),
-                  requestedSeats: Number.parseInt(form.guests, 10),
+                  requestedSeats: seats,
                   guestNote: form.note.trim() || undefined,
                 }
           ),
@@ -94,6 +124,7 @@ function useRSVPForm(
         guestCode?: string;
         status?: string;
         error?: string;
+        code?: string;
       };
 
       if (!response.ok) {
@@ -105,6 +136,7 @@ function useRSVPForm(
         setSuccess({
           guestCode: data.guestCode,
           status: data.status ?? (isControlled ? "confirmed" : "pending"),
+          approvedSeats: isControlled ? seats : undefined,
         });
       }
     } catch {
@@ -124,22 +156,50 @@ function useRSVPForm(
     handleSubmit,
     setPhone: (phone: PhoneInputValue) => setForm((prev) => ({ ...prev, phone })),
     isControlled,
+    linkBlocked,
+    linkDone,
   };
+}
+
+function ControlledLinkNotice({
+  message,
+  tone,
+}: {
+  message: string;
+  tone: "error" | "info";
+}) {
+  return (
+    <p
+      className="text-sm text-center leading-relaxed px-2 py-3 rounded-md"
+      style={{
+        color: tone === "error" ? "#E8A0A0" : "inherit",
+        backgroundColor: tone === "error" ? "rgba(196,92,92,0.12)" : "rgba(255,255,255,0.06)",
+        border: tone === "error" ? "1px solid rgba(196,92,92,0.35)" : "1px solid rgba(255,255,255,0.12)",
+      }}
+    >
+      {message}
+    </p>
+  );
 }
 
 // ─── Variant: luxury_form ─────────────────────────────────────────────────────
 // Full styled form with ornament divider.
 
-function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats, controlledLabel }: VProps) {
+function LuxuryForm({ scene, config, content, d, inviteToken, inviteLinkContext, controlledMaxSeats, controlledLabel }: VProps) {
+  const searchParams = useSearchParams();
+  const tokenFromUrl = searchParams.get("t") ?? undefined;
+  const effectiveToken = inviteToken ?? tokenFromUrl;
+
   const { theme, rsvp, slug } = config;
   const primaryRgb = hexToRgbString(theme.primaryColor);
   const cardStyles = getCardStyles(d.cardStyle, primaryRgb);
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
-  const label = content.sectionLabel ?? (inviteToken ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
-  const maxSeats = inviteToken ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
-  const { form, submitting, error, success, seatOptions, handleChange, handleSubmit, setPhone, isControlled } = useRSVPForm(slug, maxSeats, {
-    inviteToken,
-    controlled: Boolean(inviteToken),
+  const isControlledLink = Boolean(effectiveToken);
+  const label = content.sectionLabel ?? (isControlledLink ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
+  const maxSeats = isControlledLink ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
+  const { form, submitting, error, success, seatOptions, handleChange, handleSubmit, setPhone, isControlled, linkBlocked, linkDone } = useRSVPForm(slug, maxSeats, {
+    inviteToken: effectiveToken,
+    inviteLinkContext,
   });
 
   const inputStyle: React.CSSProperties = {
@@ -175,8 +235,12 @@ function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats
           {controlledLabel && (
             <p className="text-xs opacity-60 max-w-xs">{controlledLabel}</p>
           )}
+          {isControlledLink && inviteLinkContext?.status === "invalid" && (
+            <ControlledLinkNotice message={inviteLinkContext.message} tone="error" />
+          )}
         </motion.div>
 
+        {!success && !linkDone && !linkBlocked && (
         <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 16 }}
@@ -265,11 +329,13 @@ function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats
               {submitting ? "جاري الإرسال..." : "تأكيد الحضور"}
             </motion.button>
           </motion.form>
+        )}
 
         {success && (
           <RsvpSuccessPanel
             guestCode={success.guestCode}
             status={success.status}
+            approvedSeats={success.approvedSeats}
             primaryColor={theme.primaryColor}
             textColor={theme.textColor ?? "#F5F0E8"}
           />
@@ -286,14 +352,19 @@ function LuxuryForm({ scene, config, content, d, inviteToken, controlledMaxSeats
 // ─── Variant: minimal_form ────────────────────────────────────────────────────
 // Same fields, much less decoration. Clean and minimal.
 
-function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeats, controlledLabel }: VProps) {
+function MinimalForm({ scene, config, content, d, inviteToken, inviteLinkContext, controlledMaxSeats, controlledLabel }: VProps) {
+  const searchParams = useSearchParams();
+  const tokenFromUrl = searchParams.get("t") ?? undefined;
+  const effectiveToken = inviteToken ?? tokenFromUrl;
+
   const { theme, rsvp, slug } = config;
-  const label = content.sectionLabel ?? (inviteToken ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
+  const isControlledLink = Boolean(effectiveToken);
+  const label = content.sectionLabel ?? (isControlledLink ? "تأكيد الدعوة الخاصة" : "تأكيد الحضور");
   const btnStyle = getButtonStyles(d.buttonStyle, theme.primaryColor, theme.backgroundColor);
-  const maxSeats = inviteToken ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
-  const { form, submitting, error, success, seatOptions, handleChange, handleSubmit, setPhone, isControlled } = useRSVPForm(slug, maxSeats, {
-    inviteToken,
-    controlled: Boolean(inviteToken),
+  const maxSeats = isControlledLink ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
+  const { form, submitting, error, success, seatOptions, handleChange, handleSubmit, setPhone, isControlled, linkBlocked, linkDone } = useRSVPForm(slug, maxSeats, {
+    inviteToken: effectiveToken,
+    inviteLinkContext,
   });
 
   const inputStyle: React.CSSProperties = {
@@ -319,7 +390,11 @@ function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeat
       <div className="relative z-10 flex flex-col items-center justify-center min-h-dvh px-8 py-16 gap-10">
         <SectionLabel text={label} d={d} />
         {controlledLabel && <p className="text-xs opacity-60 text-center max-w-xs">{controlledLabel}</p>}
+        {isControlledLink && inviteLinkContext?.status === "invalid" && (
+          <ControlledLinkNotice message={inviteLinkContext.message} tone="error" />
+        )}
 
+        {!success && !linkDone && !linkBlocked && (
         <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 12 }}
@@ -404,11 +479,13 @@ function MinimalForm({ scene, config, content, d, inviteToken, controlledMaxSeat
               {submitting ? "جاري الإرسال..." : "تأكيد الحضور"}
             </motion.button>
           </motion.form>
+        )}
 
         {success && (
           <RsvpSuccessPanel
             guestCode={success.guestCode}
             status={success.status}
+            approvedSeats={success.approvedSeats}
             primaryColor={theme.primaryColor}
             textColor={theme.textColor ?? "#F5F0E8"}
           />
@@ -428,6 +505,7 @@ export default function RSVPScene({
   scene,
   config,
   inviteToken,
+  inviteLinkContext,
   controlledMaxSeats,
   controlledLabel,
 }: Props) {
@@ -436,7 +514,7 @@ export default function RSVPScene({
 
   const d = resolveDesign(config, scene);
   const content = (scene.content ?? {}) as Content;
-  const p = { scene, config, content, d, inviteToken, controlledMaxSeats, controlledLabel };
+  const p = { scene, config, content, d, inviteToken, inviteLinkContext, controlledMaxSeats, controlledLabel };
 
   switch (scene.variant) {
     case "minimal_form": return <MinimalForm {...p} />;

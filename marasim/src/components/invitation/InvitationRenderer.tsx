@@ -7,6 +7,7 @@ import { buildInvitationCssVars } from "@/lib/theme-vars";
 import MusicGate from "./MusicGate";
 import OpeningScene from "./scenes/OpeningScene";
 import GuestLookupSheet from "@/components/rsvp/GuestLookupSheet";
+import type { InviteLinkContext } from "@/lib/rsvp-core";
 import { SCENE_COMPONENTS } from "./scene-registry";
 
 /**
@@ -24,10 +25,9 @@ function isSceneVisible(scene: InvitationScene): boolean {
 
 interface InvitationRendererProps {
   config: InvitationConfig;
-  /** Controlled Link RSVP — private invite token from ?t= */
+  /** Raw invite token from ?t= — always passed when present in URL */
   inviteToken?: string | null;
-  controlledMaxSeats?: number | null;
-  controlledLabel?: string | null;
+  inviteLinkContext?: InviteLinkContext | null;
 }
 
 /**
@@ -42,8 +42,7 @@ interface InvitationRendererProps {
 export default function InvitationRenderer({
   config,
   inviteToken,
-  controlledMaxSeats,
-  controlledLabel,
+  inviteLinkContext,
 }: InvitationRendererProps) {
   const { theme, layout, scenes } = config;
 
@@ -119,8 +118,15 @@ export default function InvitationRenderer({
                   scene.type === "rsvp"
                     ? {
                         inviteToken: inviteToken ?? undefined,
-                        controlledMaxSeats: controlledMaxSeats ?? undefined,
-                        controlledLabel: controlledLabel ?? undefined,
+                        inviteLinkContext: inviteLinkContext ?? undefined,
+                        controlledMaxSeats:
+                          inviteLinkContext?.status === "active"
+                            ? inviteLinkContext.maxSeats
+                            : undefined,
+                        controlledLabel:
+                          inviteLinkContext?.status === "active"
+                            ? (inviteLinkContext.label ?? undefined)
+                            : undefined,
                       }
                     : {};
                 return (

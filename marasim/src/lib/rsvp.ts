@@ -1,10 +1,13 @@
 import "server-only";
 
+export type { InviteLinkContext } from "@/lib/rsvp-core";
+
 export {
   RsvpError,
   submitPublicRSVP,
   getRSVPStatusView,
   lookupGuestBySlug,
+  resolveInviteLinkContext,
   approveRSVP,
   rejectRSVP,
   validateInviteLink,

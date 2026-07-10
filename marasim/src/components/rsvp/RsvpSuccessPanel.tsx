@@ -1,18 +1,24 @@
 "use client";
 
 import CopyCodeButton from "@/components/ui/CopyCodeButton";
+import TicketQR from "@/components/rsvp/TicketQR";
 
 export default function RsvpSuccessPanel({
   guestCode,
   status,
   primaryColor,
   textColor,
+  approvedSeats,
 }: {
   guestCode: string;
   status: string;
   primaryColor: string;
   textColor: string;
+  approvedSeats?: number | null;
 }) {
+  const isPending = status === "pending";
+  const isConfirmed = status === "confirmed" || status === "approved";
+
   return (
     <div
       className="flex flex-col items-center gap-4 rounded-lg p-6 text-center"
@@ -23,13 +29,16 @@ export default function RsvpSuccessPanel({
       }}
       dir="rtl"
     >
-      <div className="text-3xl">✓</div>
+      <div className="text-3xl">{isPending ? "⏳" : "✓"}</div>
       <h3 className="text-lg font-semibold" style={{ color: primaryColor }}>
-        {status === "pending" ? "تم استلام طلبك" : "تم التأكيد"}
+        {isPending ? "تم استلام طلبك" : "تم تأكيد حضورك"}
       </h3>
       <p className="text-sm opacity-75 leading-relaxed max-w-xs">
-        احتفظ برمز دعوتك. يمكنك متابعة الحالة من شريط «تحقق من حالة دعوتك» أسفل
-        الدعوة برقم جوالك أو هذا الرمز.
+        {isPending
+          ? "طلبك قيد مراجعة المضيف. تابع الحالة من شريط «تحقق من حالة دعوتك» برقم جوالك أو رمز الدعوة."
+          : isConfirmed
+            ? `تم تأكيد ${approvedSeats ?? ""} مقعد/مقاعد. اعرض رمز الدعوة أو QR عند المدخل.`
+            : "احتفظ برمز دعوتك للمتابعة لاحقاً."}
       </p>
       <div className="flex flex-col items-center gap-2 pt-2" dir="ltr">
         <span className="text-xs opacity-60" dir="rtl">
@@ -49,6 +58,12 @@ export default function RsvpSuccessPanel({
           />
         </div>
       </div>
+      {isConfirmed && (
+        <div className="flex flex-col items-center gap-2 pt-2">
+          <TicketQR value={guestCode} size={160} />
+          <p className="text-[11px] opacity-60">اعرض هذا الرمز عند المدخل</p>
+        </div>
+      )}
     </div>
   );
 }
