@@ -27,6 +27,9 @@ jobs:
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      NEXT_PUBLIC_WHATSAPP_URL: ${{ secrets.NEXT_PUBLIC_WHATSAPP_URL }}
+      NEXT_PUBLIC_CONTACT_EMAIL: ${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL }}
+      NEXT_PUBLIC_INSTAGRAM_URL: ${{ secrets.NEXT_PUBLIC_INSTAGRAM_URL }}
 
     steps:
       - name: Checkout
@@ -62,9 +65,20 @@ jobs:
 
       - name: Deploy to Cloudflare Workers (with runtime vars)
         run: |
-          npx opennextjs-cloudflare deploy -- \
-            --keep-vars \
-            --var "NEXT_PUBLIC_SUPABASE_URL:${NEXT_PUBLIC_SUPABASE_URL}" \
-            --var "NEXT_PUBLIC_SUPABASE_ANON_KEY:${NEXT_PUBLIC_SUPABASE_ANON_KEY}" \
-            --var "NEXT_PUBLIC_SITE_URL:${NEXT_PUBLIC_SITE_URL}" \
-            --var "ENABLE_TEST_HUB:true"
+          set -euo pipefail
+          DEPLOY_ARGS=(--keep-vars)
+          add_var() {
+            local name="$1"
+            local value="${!name:-}"
+            if [ -n "$value" ]; then
+              DEPLOY_ARGS+=(--var "${name}:${value}")
+            fi
+          }
+          DEPLOY_ARGS+=(--var "NEXT_PUBLIC_SUPABASE_URL:${NEXT_PUBLIC_SUPABASE_URL}")
+          DEPLOY_ARGS+=(--var "NEXT_PUBLIC_SUPABASE_ANON_KEY:${NEXT_PUBLIC_SUPABASE_ANON_KEY}")
+          DEPLOY_ARGS+=(--var "ENABLE_TEST_HUB:true")
+          add_var NEXT_PUBLIC_SITE_URL
+          add_var NEXT_PUBLIC_WHATSAPP_URL
+          add_var NEXT_PUBLIC_CONTACT_EMAIL
+          add_var NEXT_PUBLIC_INSTAGRAM_URL
+          npx opennextjs-cloudflare deploy -- "${DEPLOY_ARGS[@]}"
