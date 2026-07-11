@@ -98,3 +98,28 @@ body {
   background-size: 200% auto;
   animation: inv-shimmer 2.8s linear infinite;
 }
+
+/* ── Landing page ─────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .landing-page *,
+  .landing-page *::before,
+  .landing-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .inv-bounce-down {
+    animation: none;
+    opacity: 0.4;
+  }
+}

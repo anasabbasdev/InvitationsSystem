@@ -1,12 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Tajawal, Amiri } from "next/font/google";
+import { APP_NAME } from "@/lib/app-brand";
 import "./globals.css";
 
-/**
- * App name lives in one place — change here to rebrand.
- * Referenced in metadata and page titles.
- */
-export const APP_NAME = "مراسِم";
+export { APP_NAME };
 
 const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
