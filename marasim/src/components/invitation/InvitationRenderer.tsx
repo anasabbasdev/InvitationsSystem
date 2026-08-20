@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { InvitationConfig, InvitationScene } from "@/types/invitation";
 import { buildInvitationCssVars } from "@/lib/theme-vars";
@@ -9,6 +9,8 @@ import OpeningScene from "./scenes/OpeningScene";
 import GuestLookupSheet from "@/components/rsvp/GuestLookupSheet";
 import type { InviteLinkContext } from "@/lib/rsvp-core";
 import { SCENE_COMPONENTS } from "./scene-registry";
+
+const AFTER_OPEN_SCROLL_ID = "psd-open-invite";
 
 /**
  * A scene is visible when enabled !== false.
@@ -53,6 +55,19 @@ export default function InvitationRenderer({
   const hasOpening = Boolean(openingScene);
 
   const [isOpened, setIsOpened] = useState(!hasOpening);
+
+  useEffect(() => {
+    if (!isOpened || !hasOpening) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = window.setTimeout(() => {
+      const target = document.getElementById(AFTER_OPEN_SCROLL_ID);
+      target?.scrollIntoView({
+        behavior: reduce ? "auto" : "smooth",
+        block: "start",
+      });
+    }, 520);
+    return () => window.clearTimeout(timer);
+  }, [isOpened, hasOpening]);
 
   // All non-opening scenes that are enabled — renderer is agnostic about count/order
   const contentScenes = scenes.filter(

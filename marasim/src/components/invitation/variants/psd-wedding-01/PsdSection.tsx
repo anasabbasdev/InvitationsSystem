@@ -1,8 +1,8 @@
 "use client";
 
 import type { CSSProperties, ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { PSD_WIDTH } from "./coords";
+import { PsdReveal } from "./PsdReveal";
 
 type PsdSectionProps = {
   plateSrc: string;
@@ -10,21 +10,19 @@ type PsdSectionProps = {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
+  id?: string;
 };
 
-export function PsdSection({ plateSrc, heightPsd, children, className = "", style }: PsdSectionProps) {
-  const reduce = useReducedMotion();
+export function PsdSection({ plateSrc, heightPsd, children, className = "", style, id }: PsdSectionProps) {
   return (
-    <motion.div
+    <div
+      id={id}
       className={`psd-section relative w-full overflow-hidden ${className}`}
       style={{
         aspectRatio: `${PSD_WIDTH} / ${heightPsd}`,
         containerType: "inline-size",
         ...style,
       }}
-      initial={reduce ? false : { opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -34,7 +32,7 @@ export function PsdSection({ plateSrc, heightPsd, children, className = "", styl
         draggable={false}
       />
       <div className="absolute inset-0">{children}</div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -65,6 +63,7 @@ export function PsdBox({
     <div
       className={`absolute ${className}`}
       style={{
+        position: "absolute",
         left: `${(x / PSD_WIDTH) * 100}%`,
         top: `${((y - sectionY) / sectionH) * 100}%`,
         width: `${(width / PSD_WIDTH) * 100}%`,
@@ -74,5 +73,36 @@ export function PsdBox({
     >
       {children}
     </div>
+  );
+}
+
+export function PsdArt({
+  src,
+  x,
+  y,
+  width,
+  height,
+  sectionY,
+  sectionH,
+  alt = "",
+  delay = 0,
+}: {
+  src: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  sectionY: number;
+  sectionH: number;
+  alt?: string;
+  delay?: number;
+}) {
+  return (
+    <PsdBox x={x} y={y} width={width} height={height} sectionY={sectionY} sectionH={sectionH} className="pointer-events-none">
+      <PsdReveal className="h-full w-full" delay={delay}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={alt} className="h-full w-full object-contain object-center" draggable={false} />
+      </PsdReveal>
+    </PsdBox>
   );
 }

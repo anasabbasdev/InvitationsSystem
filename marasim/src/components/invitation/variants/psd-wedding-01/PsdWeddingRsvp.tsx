@@ -9,7 +9,8 @@ import PhoneInput from "@/components/ui/PhoneInput";
 import RsvpSuccessPanel from "@/components/rsvp/RsvpSuccessPanel";
 import { useRSVPForm } from "@/lib/use-rsvp-form";
 import { PsdBox, PsdSection } from "./PsdSection";
-import { PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
+import { PsdReveal } from "./PsdReveal";
+import { PSD_FONT, PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
 
 type Content = { sectionLabel?: string; intro?: string };
 
@@ -44,12 +45,12 @@ export default function PsdWeddingRsvp({
   const fieldStyle: CSSProperties = {
     width: "100%",
     height: "100%",
-    padding: "0 12px",
+    padding: "0 14px",
     backgroundColor: "transparent",
     border: "none",
     color: PSD_INK,
-    fontFamily: "var(--font-noto-sans-arabic)",
-    fontSize: "0.88rem",
+    fontFamily: PSD_FONT.arabic,
+    fontSize: "1.02rem",
     outline: "none",
     direction: "rtl",
   };
@@ -63,22 +64,58 @@ export default function PsdWeddingRsvp({
       <PsdSection plateSrc={showSuccess ? PSD_SECTIONS.rsvp.plateSuccess : PSD_SECTIONS.rsvp.plate} heightPsd={H}>
         {!showSuccess && (
           <>
-        <PsdBox x={533} y={16085} width={472} height={35} sectionY={Y} sectionH={H} className="flex items-center justify-center">
-          <p style={{ fontFamily: "var(--font-noto-sans-arabic)", fontSize: psdFont(44), color: PSD_INK, margin: 0, textAlign: "center" }}>
-            {c.intro ?? "نرجو ملئ المعلومات لتأكيد الحضور"}
-          </p>
-        </PsdBox>
-        <PsdBox x={581} y={16510} width={365} height={73} sectionY={Y} sectionH={H} className="flex items-center justify-center">
-          <h2 style={{ fontFamily: "var(--font-noto-sans-arabic)", fontSize: psdFont(56), fontWeight: 700, color: PSD_INK, margin: 0 }}>
-            {c.sectionLabel ?? "تأكيد الحضور"}
-          </h2>
-        </PsdBox>
+            <PsdBox
+              x={220}
+              y={16110}
+              width={1100}
+              height={120}
+              sectionY={Y}
+              sectionH={H}
+              className="flex items-center justify-center"
+              style={{ overflow: "visible" }}
+            >
+              <PsdReveal>
+                <p
+                  style={{
+                    fontFamily: PSD_FONT.arabic,
+                    fontSize: psdFont(28),
+                    fontWeight: 300,
+                    color: PSD_INK,
+                    margin: 0,
+                    textAlign: "center",
+                    lineHeight: 1.45,
+                    whiteSpace: "normal",
+                    background: "transparent",
+                  }}
+                >
+                  {c.intro ?? "نرجو ملئ المعلومات لتأكيد الحضور"}
+                </p>
+              </PsdReveal>
+            </PsdBox>
+            <PsdBox x={500} y={16490} width={540} height={90} sectionY={Y} sectionH={H} className="flex items-center justify-center">
+              <PsdReveal delay={0.06}>
+                <h2
+                  style={{
+                    fontFamily: PSD_FONT.arabic,
+                    fontSize: psdFont(40),
+                    fontWeight: 700,
+                    color: PSD_INK,
+                    margin: 0,
+                    textAlign: "center",
+                    lineHeight: 1.2,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {c.sectionLabel ?? "تأكيد الحضور"}
+                </h2>
+              </PsdReveal>
+            </PsdBox>
           </>
         )}
 
         {inviteLinkContext?.status === "invalid" && (
           <PsdBox x={450} y={16590} width={638} height={60} sectionY={Y} sectionH={H} className="flex items-center justify-center">
-            <p style={{ color: "#9B3B3B", textAlign: "center", fontFamily: "var(--font-noto-sans-arabic)", margin: 0 }}>{inviteLinkContext.message}</p>
+            <p style={{ color: "#9B3B3B", textAlign: "center", fontFamily: PSD_FONT.arabic, margin: 0 }}>{inviteLinkContext.message}</p>
           </PsdBox>
         )}
 
@@ -93,6 +130,7 @@ export default function PsdWeddingRsvp({
                 onChange={formApi.handleChange}
                 required
                 disabled={formApi.submitting}
+                className="psd-rsvp-field"
                 style={fieldStyle}
               />
             </PsdBox>
@@ -107,7 +145,7 @@ export default function PsdWeddingRsvp({
               />
             </PsdBox>
             <PsdBox x={450} y={16906} width={638} height={92} sectionY={Y} sectionH={H}>
-              <select name="guests" value={formApi.form.guests} onChange={formApi.handleChange} disabled={formApi.submitting} style={fieldStyle}>
+              <select name="guests" value={formApi.form.guests} onChange={formApi.handleChange} disabled={formApi.submitting} className="psd-rsvp-field" style={fieldStyle}>
                 {formApi.seatOptions.map((n) => (
                   <option key={n} value={n}>
                     {n} {n === 1 ? "شخص" : "أشخاص"}
@@ -142,7 +180,7 @@ export default function PsdWeddingRsvp({
                   />
                   <p
                     style={{
-                      fontFamily: "var(--font-noto-sans-arabic)",
+                      fontFamily: PSD_FONT.arabic,
                       fontSize: psdFont(28),
                       fontWeight: 500,
                       color: "#6E3D36",
@@ -154,7 +192,7 @@ export default function PsdWeddingRsvp({
                   </p>
                   <p
                     style={{
-                      fontFamily: "var(--font-noto-sans-arabic)",
+                      fontFamily: PSD_FONT.arabic,
                       fontSize: psdFont(22),
                       color: "#8A7A68",
                       margin: "0.55em 0 0",
@@ -171,6 +209,7 @@ export default function PsdWeddingRsvp({
                   value={formApi.form.note}
                   onChange={formApi.handleChange}
                   disabled={formApi.submitting || Boolean(effectiveToken)}
+                  className="psd-rsvp-field"
                   style={{ ...fieldStyle, resize: "none", paddingTop: 16, display: effectiveToken ? "none" : undefined }}
                 />
               )}
@@ -179,12 +218,12 @@ export default function PsdWeddingRsvp({
               <button
                 type="submit"
                 disabled={formApi.submitting}
-                className="h-full w-full"
+                className="psd-rsvp-submit h-full w-full"
                 style={{
                   backgroundColor: "transparent",
                   border: "none",
                   color: "#F7F1E8",
-                  fontFamily: "var(--font-noto-sans-arabic)",
+                  fontFamily: PSD_FONT.arabic,
                   fontSize: psdFont(40),
                   fontWeight: 600,
                   cursor: formApi.submitting ? "wait" : "pointer",

@@ -1,4 +1,5 @@
 import { InvitationData } from "@/types/invitation";
+import { APP_NAME } from "@/lib/app-brand";
 
 /**
  * Mohammad & Lara — customer invitation data.
@@ -67,7 +68,8 @@ export const mhmdLaraData: InvitationData = {
     gallery_media: {
       label: "OUR",
       scriptLabel: "Moments",
-      caption: "Best Moment",
+      caption: "Moment",
+      body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.",
       media: [],
     },
     notes: {
@@ -102,7 +104,7 @@ export const mhmdLaraData: InvitationData = {
     },
     ticket_confirmation: {
       closingTitle: "تفاصيل التذكرة تظهر في صفحة الحالة الخاصة بعد موافقة المضيف.",
-      body: "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم. لمناسبتك القادمة احصل على دعوة مميزة وتواصل معنا الان.",
+      body: `تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع ${APP_NAME}  .  لمناسبتك القادمة احصل على دعوة مميزة وتواصل معنا الان.`,
     },
   },
 

@@ -55,6 +55,112 @@ body {
   display: block;
 }
 
+.inv-root {
+  overflow-x: hidden;
+}
+
+#psd-open-invite {
+  scroll-margin-top: 0.4rem;
+}
+
+.psd-rsvp-field {
+  transition: box-shadow 0.25s ease, opacity 0.2s ease;
+}
+
+.psd-rsvp-field:focus {
+  box-shadow: inset 0 -1px 0 rgba(196, 163, 90, 0.7);
+}
+
+.psd-rsvp-submit {
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.psd-rsvp-submit:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.psd-timer-host {
+  direction: ltr;
+  isolation: isolate;
+}
+
+.psd-timer-row {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  direction: ltr;
+  pointer-events: none;
+}
+
+.psd-timer-cell {
+  position: absolute;
+  top: 35.4%;
+  width: 15.2%;
+  height: 26%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.psd-timer-cell:nth-child(1) { left: 12.2%; }
+.psd-timer-cell:nth-child(2) { left: 32.3%; }
+.psd-timer-cell:nth-child(3) { left: 52.4%; }
+.psd-timer-cell:nth-child(4) { left: 72.4%; }
+
+.psd-timer-digit {
+  font-family: var(--font-bodoni), var(--font-playfair), Georgia, "Times New Roman", serif;
+  font-size: calc(100cqw * 46 / 1540);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  transform: translateY(0.08em);
+  background-image: linear-gradient(185deg, #c9a45a 0%, #8d6118 36%, #3a2308 74%, #a07228 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 236, 196, 0.35))
+    drop-shadow(0 1px 1px rgba(62, 38, 8, 0.28));
+}
+
+.psd-ticker {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  direction: ltr;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.psd-ticker-track {
+  display: flex;
+  width: max-content;
+  flex-direction: row;
+  animation: psd-ticker 14s linear infinite;
+  will-change: transform;
+}
+
+.psd-ticker-copy {
+  flex: 0 0 auto;
+  padding: 0 2.8em;
+  white-space: nowrap;
+  font-family: var(--font-noto-sans-arabic), var(--font-montserrat-arabic), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: #4a4038;
+  letter-spacing: 0.02em;
+  unicode-bidi: isolate;
+}
+
+@keyframes psd-ticker {
+  from { transform: translate3d(-25%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
 /* Text selection color inside invitations */
 .inv-root ::selection {
   background-color: rgba(201, 162, 77, 0.28);
@@ -130,5 +236,9 @@ html {
   .inv-bounce-down {
     animation: none;
     opacity: 0.4;
+  }
+
+  .psd-ticker-track {
+    animation: none;
   }
 }

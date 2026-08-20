@@ -3,7 +3,8 @@
 import type { InvitationConfig, InvitationScene } from "@/types/invitation";
 import SceneFrame from "@/components/invitation/SceneFrame";
 import { PsdBox, PsdSection } from "./PsdSection";
-import { PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
+import { PsdReveal } from "./PsdReveal";
+import { PSD_FONT, PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
 
 type Content = {
   sectionLabel?: string;
@@ -39,45 +40,49 @@ export default function PsdWeddingLocation({
           className="flex flex-col items-center justify-start text-center"
           style={{ background: "transparent" }}
         >
-          <p
-            style={{
-              fontFamily: "var(--font-montserrat)",
-              fontSize: psdFont(34),
-              fontWeight: 600,
-              color: PSD_INK,
-              margin: 0,
-              lineHeight: 1.25,
-              background: "transparent",
-            }}
-          >
-            {c.sectionLabelEn ?? "Location on the map"}
-          </p>
-          <p
-            style={{
-              fontFamily: "var(--font-noto-sans-arabic)",
-              fontSize: psdFont(38),
-              color: PSD_INK,
-              margin: "0.35em 0 0",
-              lineHeight: 1.3,
-              background: "transparent",
-            }}
-          >
-            {c.sectionLabel ?? "موقع المناسبة"}
-          </p>
-          {(c.venueName || c.address) && (
+          <PsdReveal className="flex flex-col items-center">
             <p
               style={{
-                fontFamily: "var(--font-noto-sans-arabic)",
-                fontSize: psdFont(26),
+                fontFamily: PSD_FONT.latin,
+                fontSize: psdFont(34),
+                fontWeight: 600,
                 color: PSD_INK,
-                margin: "0.4em 0 0",
-                lineHeight: 1.35,
+                margin: 0,
+                lineHeight: 1.25,
                 background: "transparent",
               }}
             >
-              {[c.venueName, c.address].filter(Boolean).join(" — ")}
+              {c.sectionLabelEn ?? "Location on the map"}
             </p>
-          )}
+            <p
+              style={{
+                fontFamily: PSD_FONT.arabic,
+                fontSize: psdFont(38),
+                fontWeight: 400,
+                color: PSD_INK,
+                margin: "0.35em 0 0",
+                lineHeight: 1.3,
+                background: "transparent",
+              }}
+            >
+              {c.sectionLabel ?? "موقع المناسبة"}
+            </p>
+            {(c.venueName || c.address) && (
+              <p
+                style={{
+                  fontFamily: PSD_FONT.arabic,
+                  fontSize: psdFont(26),
+                  fontWeight: 300,
+                  color: PSD_INK,
+                  margin: "0.4em 0 0",
+                  lineHeight: 1.35,
+                  background: "transparent",
+                }}
+              >
+                {[c.venueName, c.address].filter(Boolean).join(" — ")}
+              </p>
+            )}
+          </PsdReveal>
         </PsdBox>
         <PsdBox x={654} y={15314} width={232} height={55} sectionY={Y} sectionH={H}>
           <a
@@ -86,7 +91,7 @@ export default function PsdWeddingLocation({
             rel="noreferrer"
             className="flex h-full w-full items-center justify-center"
             style={{
-              fontFamily: "var(--font-noto-sans-arabic)",
+              fontFamily: PSD_FONT.arabic,
               fontSize: psdFont(36),
               fontWeight: 500,
               color: "#F7F1E8",

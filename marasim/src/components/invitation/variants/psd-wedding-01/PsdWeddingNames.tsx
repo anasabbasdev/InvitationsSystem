@@ -2,8 +2,9 @@
 
 import type { InvitationConfig, InvitationScene } from "@/types/invitation";
 import SceneFrame from "@/components/invitation/SceneFrame";
-import { PsdBox, PsdSection } from "./PsdSection";
-import { PSD_INK, PSD_MUTED, PSD_SECTIONS, psdFont } from "./coords";
+import { PsdArt, PsdBox, PsdSection } from "./PsdSection";
+import { PsdReveal } from "./PsdReveal";
+import { PSD_DECOR, PSD_FONT, PSD_MUTED, PSD_SECTIONS, psdFont } from "./coords";
 
 type Content = {
   primaryName?: string;
@@ -28,33 +29,33 @@ export default function PsdWeddingNames({
   return (
     <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
       <PsdSection plateSrc={PSD_SECTIONS.names.plate} heightPsd={H}>
-        <PsdBox x={390} y={5980} width={760} height={280} sectionY={Y} sectionH={H} className="flex flex-col items-center justify-center text-center">
-          <p
-            style={{
-              fontFamily: "var(--font-montserrat)",
-              fontSize: psdFont(36),
-              letterSpacing: "0.16em",
-              color: PSD_MUTED,
-              margin: 0,
-              background: "transparent",
-            }}
-          >
-            {c.eyebrow ?? "OUR FOREVER BEGINS"}
-          </p>
-          <p
-            aria-label={[c.primaryName, c.secondaryName].filter(Boolean).join(` ${c.connector ?? "و"} `)}
-            style={{
-              fontFamily: "var(--font-great-vibes)",
-              fontSize: psdFont(140),
-              color: PSD_INK,
-              margin: "0.1em 0 0",
-              lineHeight: 1.05,
-              background: "transparent",
-            }}
-          >
-            {c.subtitle ?? "Together"}
-          </p>
+        <PsdBox x={390} y={5980} width={760} height={130} sectionY={Y} sectionH={H} className="flex flex-col items-center justify-center text-center">
+          <PsdReveal className="flex flex-col items-center">
+            <p
+              style={{
+                fontFamily: PSD_FONT.latin,
+                fontSize: psdFont(36),
+                letterSpacing: "0.16em",
+                color: PSD_MUTED,
+                margin: 0,
+                background: "transparent",
+              }}
+            >
+              {c.eyebrow ?? "OUR FOREVER BEGINS"}
+            </p>
+            <span className="sr-only">{c.subtitle ?? "Together"}</span>
+          </PsdReveal>
         </PsdBox>
+        <PsdArt
+          src={PSD_DECOR.artTogether}
+          x={542}
+          y={6117}
+          width={458}
+          height={207}
+          sectionY={Y}
+          sectionH={H}
+          alt={c.subtitle ?? "Together"}
+        />
       </PsdSection>
     </SceneFrame>
   );

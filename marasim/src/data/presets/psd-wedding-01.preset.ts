@@ -21,10 +21,10 @@ export const psdWedding01Preset: DesignPreset = {
     mutedTextColor: "#6B6258",
     accentColor: PSD_GOLD,
     fontHeading: "var(--font-montserrat)",
-    fontBody: "var(--font-noto-sans-arabic)",
+    fontBody: "var(--font-montserrat-arabic)",
     typography: {
       headingFont: "var(--font-montserrat)",
-      bodyFont: "var(--font-noto-sans-arabic)",
+      bodyFont: "var(--font-montserrat-arabic)",
       namesFont: "var(--font-great-vibes)",
     },
     design: {
@@ -57,8 +57,8 @@ export const psdWedding01Preset: DesignPreset = {
         startBehavior: "tap_anywhere",
         startButtonText: "افتح الدعوة",
         revealAfter: "media_end",
-        minDurationMs: 500,
-        maxDurationMs: 4500,
+        minDurationMs: 200,
+        maxDurationMs: 10000,
       },
       defaultContent: {
         tapText: "افتح الدعوة",
