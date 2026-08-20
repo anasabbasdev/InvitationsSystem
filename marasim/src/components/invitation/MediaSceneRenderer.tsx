@@ -44,6 +44,7 @@ function MediaAssetLayer({
     width: "100%",
     height: "100%",
     objectFit: fit,
+    objectPosition: "center",
     display: "block",
     ...style,
   };
@@ -328,12 +329,12 @@ export default function MediaSceneRenderer({
     return () => observer.disconnect();
   }, [media.playBehavior, hasStarted]);
 
-  // maxDurationMs safety cap for opening
+  // maxDurationMs safety cap — starts after the guest taps, not on first paint
   useEffect(() => {
-    if (!isOpening || !media.maxDurationMs || hasRevealed) return;
+    if (!isOpening || !hasStarted || !media.maxDurationMs || hasRevealed) return;
     const t = setTimeout(triggerReveal, media.maxDurationMs);
     return () => clearTimeout(t);
-  }, [isOpening, media.maxDurationMs, hasRevealed, triggerReveal]);
+  }, [isOpening, hasStarted, media.maxDurationMs, hasRevealed, triggerReveal]);
 
   const btnStyle = getButtonStyles(d.buttonStyle, "var(--inv-button-color)", theme.backgroundColor);
   const tapAnywhere = media.startBehavior === "tap_anywhere" && !hasStarted;
@@ -366,6 +367,7 @@ export default function MediaSceneRenderer({
       >
         <MediaAssetLayer
           asset={asset}
+          className={isOpening && primaryAsset === asset ? "inv-opening-video" : ""}
           videoRef={primaryAsset === asset ? videoRef : undefined}
           autoPlay={
             opts?.autoPlay ??
@@ -389,10 +391,22 @@ export default function MediaSceneRenderer({
       <SceneFrame
         config={config}
         scene={scene}
-        style={{ padding: 0, minHeight: isOpening ? "100dvh" : undefined }}
+        style={{
+          padding: 0,
+          margin: 0,
+          minHeight: isOpening ? "100dvh" : undefined,
+          height: isOpening ? "100dvh" : undefined,
+          width: "100%",
+          maxWidth: "none",
+          overflow: "hidden",
+        }}
         className="inv-media-scene"
       >
-        <div ref={sectionRef} className="absolute inset-0">
+        <div
+          ref={sectionRef}
+          className="absolute inset-0 h-full w-full"
+          style={isOpening ? { width: "100%", height: "100%" } : undefined}
+        >
           {renderAsset(primaryAsset, {
             autoPlay: false,
             label: primaryAsset?.src.split("/").pop(),
@@ -415,13 +429,29 @@ export default function MediaSceneRenderer({
           )}
 
           {tapAnywhere && (
-            <button
-              type="button"
-              aria-label={startText}
-              className="absolute inset-0 z-30 cursor-pointer"
-              style={{ background: "transparent", border: "none" }}
-              onClick={handleStart}
-            />
+            <>
+              <button
+                type="button"
+                aria-label={startText}
+                className="absolute inset-0 z-30 cursor-pointer"
+                style={{ background: "transparent", border: "none" }}
+                onClick={handleStart}
+              />
+              <p
+                className="pointer-events-none absolute inset-x-0 bottom-[6%] z-20 mx-auto w-max text-center"
+                style={{
+                  fontFamily: "var(--font-noto-sans-arabic), var(--font-tajawal)",
+                  fontSize: "0.85rem",
+                  letterSpacing: "0.12em",
+                  color: "#F7F1E8",
+                  background: "rgba(74, 64, 56, 0.55)",
+                  padding: "0.45em 1.15em",
+                  borderRadius: 999,
+                }}
+              >
+                {startText}
+              </p>
+            </>
           )}
 
           {hasStarted &&

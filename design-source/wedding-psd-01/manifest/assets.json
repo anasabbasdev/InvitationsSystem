@@ -1,0 +1,71 @@
+{
+  "extractionMethod": "psd-tools 1.18.0 + Photoshop unavailable",
+  "scale": {
+    "psd": "1540x20000",
+    "design": "385x5000",
+    "confirmed4x": true
+  },
+  "classification": {
+    "staticTemplateArt": [
+      "sections/01-opening.webp",
+      "sections/02-invitation.webp",
+      "sections/03-names.webp",
+      "sections/04-countdown.webp",
+      "sections/05-details.webp",
+      "sections/06-gallery.webp",
+      "sections/08-notes.webp",
+      "sections/09-location.webp",
+      "sections/11-closing.webp",
+      "decor/countdown-timer.webp",
+      "decor/golden-rings.webp",
+      "decor/luxury-curtains.webp",
+      "decor/closing-bouquet.webp",
+      "decor/program-hall.webp",
+      "decor/program-hall-frame.webp",
+      "decor/gallery-tape-1.webp",
+      "decor/gallery-tape-2a.webp",
+      "decor/gallery-tape-2b.webp",
+      "decor/gallery-tape-3.webp"
+    ],
+    "liveCustomerContent": [
+      "primaryName",
+      "secondaryName",
+      "host names",
+      "invitation wording",
+      "event date/time/venue",
+      "programItems[]",
+      "notes items",
+      "mapUrl",
+      "gallery photos",
+      "countdown targetDate"
+    ],
+    "functionalUi": [
+      "opening video gate",
+      "live countdown digits",
+      "map CTA",
+      "existing public-request RSVP form"
+    ]
+  },
+  "couldNotExtractFaithfully": [
+    "Creattion Demo / GE SS Two / Montserrat Arabic / Photograph Signature webfonts (not in repo; fallbacks documented)",
+    "Name calligraphy on wax seal is baked into the photographic seal asset",
+    "Countdown timer smart object contains baked sample digits; live digits overlay the frames",
+    "Gallery 'Your Image Here' smart objects were empty placeholders"
+  ],
+  "fonts": {
+    "psd": ["Montserrat", "Montserrat Arabic", "GESSTwoBold", "GESSTwoMedium", "CreattionDemo", "PhotographSignature", "MyriadArabic"],
+    "web": {
+      "Montserrat": "next/font Google Montserrat — Latin labels",
+      "Noto Sans Arabic": "closest available substitute for Montserrat Arabic + GE SS Two",
+      "Great Vibes": "temporary substitute for Creattion Demo script",
+      "unavailable": ["Creattion Demo", "GE SS Two", "Montserrat Arabic", "Photograph Signature"]
+    }
+  },
+  "video": {
+    "source": "C:/Users/anas-/Downloads/magnific_from-a-steady-topdown-vie_J9SRP6zOq4.mp4",
+    "sourceBytes": 6385198,
+    "output": "/assets/invitations/psd-wedding-01/opening.mp4",
+    "outputBytes": 518127,
+    "poster": "/assets/invitations/psd-wedding-01/opening-poster.webp"
+  }
+}

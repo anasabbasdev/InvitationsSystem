@@ -10,6 +10,7 @@ import SceneIcon from "@/components/ui/SceneIcon";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, getButtonStyles, getCardStyles, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import PsdWeddingLocation from "@/components/invitation/variants/psd-wedding-01/PsdWeddingLocation";
 
 interface Props {
   scene: InvitationScene;
@@ -312,6 +313,7 @@ export default function LocationScene({ scene, config }: Props) {
   const p = { scene, config, content, d };
 
   switch (scene.variant) {
+    case "psd_wedding_location": return <PsdWeddingLocation scene={scene} config={config} />;
     case "minimal_link": return <MinimalLink {...p} />;
     case "full_bleed_location": return <FullBleedLocation {...p} />;
     default: return <MapButtonCard {...p} />;

@@ -14,6 +14,9 @@ export function resolveFontFamily(token?: string): string {
   if (!token) return "var(--font-tajawal)";
   if (token === "CustomArabicFont" || token === "Amiri") return "var(--font-amiri)";
   if (token === "Tajawal") return "var(--font-tajawal)";
+  if (token === "Montserrat") return "var(--font-montserrat)";
+  if (token === "NotoSansArabic") return "var(--font-noto-sans-arabic)";
+  if (token === "GreatVibes") return "var(--font-great-vibes)";
   return token;
 }
 

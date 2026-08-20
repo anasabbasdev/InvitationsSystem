@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Tajawal, Amiri } from "next/font/google";
+import { Tajawal, Amiri, Montserrat, Noto_Sans_Arabic, Great_Vibes } from "next/font/google";
 import { APP_NAME } from "@/lib/app-brand";
 import "./globals.css";
 
@@ -16,6 +16,27 @@ const amiri = Amiri({
   subsets: ["arabic", "latin"],
   weight: ["400", "700"],
   variable: "--font-amiri",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-montserrat",
+  display: "swap",
+});
+
+const notoSansArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-noto-sans-arabic",
+  display: "swap",
+});
+
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-great-vibes",
   display: "swap",
 });
 
@@ -49,7 +70,7 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${tajawal.variable} ${amiri.variable} h-full`}
+      className={`${tajawal.variable} ${amiri.variable} ${montserrat.variable} ${notoSansArabic.variable} ${greatVibes.variable} h-full`}
     >
       <body className="min-h-full bg-[var(--background)] text-[var(--foreground)] antialiased">
         {children}

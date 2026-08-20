@@ -1,0 +1,4 @@
+# Local PSD forensic sources — never commit original Photoshop files
+design-source/**/source/
+design-source/**/*.psd
+*.psd

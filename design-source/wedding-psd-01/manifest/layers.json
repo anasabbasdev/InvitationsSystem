@@ -1,0 +1,3397 @@
+[
+  {
+    "name": "Background",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 0,
+    "y": 0,
+    "width": 1540,
+    "height": 20000,
+    "x2": 1540,
+    "y2": 20000
+  },
+  {
+    "name": "4",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": -791,
+    "y": 0,
+    "width": 4202,
+    "height": 20180,
+    "x2": 3411,
+    "y2": 20180
+  },
+  {
+    "name": "Color Fill 3",
+    "type": "solidcolorfill",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 0,
+    "y": 0,
+    "width": 1540,
+    "height": 20000,
+    "x2": 1540,
+    "y2": 20000
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": -58,
+    "y": 17440,
+    "width": 1639,
+    "height": 2457,
+    "x2": 1581,
+    "y2": 19897
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": -791,
+    "y": 18874,
+    "width": 1540,
+    "height": 1306,
+    "x2": 749,
+    "y2": 20180
+  },
+  {
+    "name": "Vector Smart Object copy 4",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.502,
+    "parent": "4",
+    "depth": 1,
+    "x": 1318,
+    "y": 17790,
+    "width": 1320,
+    "height": 1707,
+    "x2": 2638,
+    "y2": 19497
+  },
+  {
+    "name": "OUR",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 726,
+    "y": 9469,
+    "width": 87,
+    "height": 23,
+    "x2": 813,
+    "y2": 9492,
+    "text": {
+      "text": "OUR",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Moments",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 576,
+    "y": 9503,
+    "width": 437,
+    "height": 163,
+    "x2": 1013,
+    "y2": 9666,
+    "text": {
+      "text": "Moments",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    }
+  },
+  {
+    "name": "BACKGROUND",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": -678,
+    "y": 8539,
+    "width": 4089,
+    "height": 3469,
+    "x2": 3411,
+    "y2": 12008
+  },
+  {
+    "name": "Shadow",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.1412,
+    "parent": "BACKGROUND",
+    "depth": 2,
+    "x": -678,
+    "y": 8539,
+    "width": 4089,
+    "height": 3469,
+    "x2": 3411,
+    "y2": 12008
+  },
+  {
+    "name": "FRAME 3",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 147,
+    "y": 10300,
+    "width": 662,
+    "height": 479,
+    "x2": 809,
+    "y2": 10779
+  },
+  {
+    "name": "Frame 3b",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 3",
+    "depth": 2,
+    "x": 196,
+    "y": 10309,
+    "width": 613,
+    "height": 470,
+    "x2": 809,
+    "y2": 10779
+  },
+  {
+    "name": "Frame 3",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 3",
+    "depth": 2,
+    "x": 216,
+    "y": 10329,
+    "width": 575,
+    "height": 433,
+    "x2": 791,
+    "y2": 10762
+  },
+  {
+    "name": "Your Image Here",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 3",
+    "depth": 2,
+    "x": -76,
+    "y": 10157,
+    "width": 1183,
+    "height": 790,
+    "x2": 1107,
+    "y2": 10947
+  },
+  {
+    "name": "Tape 3",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.7216,
+    "parent": "FRAME 3",
+    "depth": 2,
+    "x": 147,
+    "y": 10300,
+    "width": 185,
+    "height": 163,
+    "x2": 332,
+    "y2": 10463
+  },
+  {
+    "name": "FRAME 2",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 739,
+    "y": 10275,
+    "width": 607,
+    "height": 570,
+    "x2": 1346,
+    "y2": 10845
+  },
+  {
+    "name": "Frame 2b",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 2",
+    "depth": 2,
+    "x": 793,
+    "y": 10300,
+    "width": 553,
+    "height": 545,
+    "x2": 1346,
+    "y2": 10845
+  },
+  {
+    "name": "Frame 2 ",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 2",
+    "depth": 2,
+    "x": 810,
+    "y": 10319,
+    "width": 518,
+    "height": 506,
+    "x2": 1328,
+    "y2": 10825
+  },
+  {
+    "name": "Your Image Here",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 2",
+    "depth": 2,
+    "x": 791,
+    "y": 10267,
+    "width": 555,
+    "height": 694,
+    "x2": 1346,
+    "y2": 10961
+  },
+  {
+    "name": "Tape 2b",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.7216,
+    "parent": "FRAME 2",
+    "depth": 2,
+    "x": 739,
+    "y": 10398,
+    "width": 135,
+    "height": 119,
+    "x2": 874,
+    "y2": 10517
+  },
+  {
+    "name": "Tape 2a",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.7216,
+    "parent": "FRAME 2",
+    "depth": 2,
+    "x": 776,
+    "y": 10275,
+    "width": 197,
+    "height": 118,
+    "x2": 973,
+    "y2": 10393
+  },
+  {
+    "name": "FRAME 1",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 238,
+    "y": 9696,
+    "width": 558,
+    "height": 576,
+    "x2": 796,
+    "y2": 10272
+  },
+  {
+    "name": "Frame 1",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 1",
+    "depth": 2,
+    "x": 238,
+    "y": 9733,
+    "width": 558,
+    "height": 539,
+    "x2": 796,
+    "y2": 10272
+  },
+  {
+    "name": "Frame 1 copy",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 1",
+    "depth": 2,
+    "x": 256,
+    "y": 9751,
+    "width": 521,
+    "height": 503,
+    "x2": 777,
+    "y2": 10254
+  },
+  {
+    "name": "Your Image Here",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "FRAME 1",
+    "depth": 2,
+    "x": 260,
+    "y": 9702,
+    "width": 534,
+    "height": 667,
+    "x2": 794,
+    "y2": 10369
+  },
+  {
+    "name": "Tape 1",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.7216,
+    "parent": "FRAME 1",
+    "depth": 2,
+    "x": 380,
+    "y": 9696,
+    "width": 255,
+    "height": 77,
+    "x2": 635,
+    "y2": 9773
+  },
+  {
+    "name": "TEXT",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 850,
+    "y": 9769,
+    "width": 517,
+    "height": 477,
+    "x2": 1367,
+    "y2": 10246
+  },
+  {
+    "name": "Brush ",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "TEXT",
+    "depth": 2,
+    "x": 850,
+    "y": 10010,
+    "width": 517,
+    "height": 236,
+    "x2": 1367,
+    "y2": 10246
+  },
+  {
+    "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "TEXT",
+    "depth": 2,
+    "x": 873,
+    "y": 9769,
+    "width": 452,
+    "height": 155,
+    "x2": 1325,
+    "y2": 9924,
+    "text": {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. ",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadPro-Regular', 'Script': 0, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        10.42
+      ]
+    }
+  },
+  {
+    "name": "Best",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "TEXT",
+    "depth": 2,
+    "x": 982,
+    "y": 10010,
+    "width": 275,
+    "height": 122,
+    "x2": 1257,
+    "y2": 10132,
+    "text": {
+      "text": "Best",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadPro-Regular', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'PhotographSignature', 'Script': 0, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        19.43
+      ]
+    }
+  },
+  {
+    "name": "Moment",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "TEXT",
+    "depth": 2,
+    "x": 908,
+    "y": 10045,
+    "width": 327,
+    "height": 166,
+    "x2": 1235,
+    "y2": 10211,
+    "text": {
+      "text": "Moment",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadPro-Regular', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'PhotographSignature', 'Script': 0, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        19.43
+      ]
+    }
+  },
+  {
+    "name": "ORNAMENT",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "4",
+    "depth": 1,
+    "x": 100,
+    "y": 9838,
+    "width": 1323,
+    "height": 1084,
+    "x2": 1423,
+    "y2": 10922
+  },
+  {
+    "name": "Doodle",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "ORNAMENT",
+    "depth": 2,
+    "x": 100,
+    "y": 9838,
+    "width": 1192,
+    "height": 1084,
+    "x2": 1292,
+    "y2": 10922
+  },
+  {
+    "name": "Dragonfly",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "ORNAMENT",
+    "depth": 2,
+    "x": 581,
+    "y": 10653,
+    "width": 232,
+    "height": 211,
+    "x2": 813,
+    "y2": 10864
+  },
+  {
+    "name": "Layer 11",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "ORNAMENT",
+    "depth": 2,
+    "x": 1265,
+    "y": 10064,
+    "width": 158,
+    "height": 212,
+    "x2": 1423,
+    "y2": 10276
+  },
+  {
+    "name": "5",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 0,
+    "y": 10913,
+    "width": 1540,
+    "height": 2252,
+    "x2": 1540,
+    "y2": 13165
+  },
+  {
+    "name": "EVENT",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "5",
+    "depth": 1,
+    "x": 705,
+    "y": 11248,
+    "width": 134,
+    "height": 21,
+    "x2": 839,
+    "y2": 11269,
+    "text": {
+      "text": "EVENT",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Timeline",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "5",
+    "depth": 1,
+    "x": 591,
+    "y": 11286,
+    "width": 357,
+    "height": 159,
+    "x2": 948,
+    "y2": 11445,
+    "text": {
+      "text": "Timeline",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    }
+  },
+  {
+    "name": "Group 5",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "5",
+    "depth": 1,
+    "x": 275,
+    "y": 12321,
+    "width": 1025,
+    "height": 844,
+    "x2": 1300,
+    "y2": 13165
+  },
+  {
+    "name": "Our Luxury",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 5",
+    "depth": 2,
+    "x": 632,
+    "y": 12321,
+    "width": 278,
+    "height": 23,
+    "x2": 910,
+    "y2": 12344,
+    "text": {
+      "text": "Our Luxury",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Wedding Hall",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 5",
+    "depth": 2,
+    "x": 369,
+    "y": 12361,
+    "width": 828,
+    "height": 181,
+    "x2": 1197,
+    "y2": 12542,
+    "text": {
+      "text": "Wedding Hall",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    }
+  },
+  {
+    "name": "Layer 13 copy",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 5",
+    "depth": 2,
+    "x": 275,
+    "y": 12579,
+    "width": 990,
+    "height": 586,
+    "x2": 1265,
+    "y2": 13165
+  },
+  {
+    "name": "Layer 13",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 5",
+    "depth": 2,
+    "x": 297,
+    "y": 12598,
+    "width": 946,
+    "height": 542,
+    "x2": 1243,
+    "y2": 13140
+  },
+  {
+    "name": "Layer 14",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 5",
+    "depth": 2,
+    "x": 1120,
+    "y": 12980,
+    "width": 180,
+    "height": 155,
+    "x2": 1300,
+    "y2": 13135
+  },
+  {
+    "name": "Group 4",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "5",
+    "depth": 1,
+    "x": 202,
+    "y": 11418,
+    "width": 361,
+    "height": 872,
+    "x2": 563,
+    "y2": 12290
+  },
+  {
+    "name": "Rectangle 1",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 213,
+    "y": 11418,
+    "width": 4,
+    "height": 872,
+    "x2": 217,
+    "y2": 12290
+  },
+  {
+    "name": "Rectangle 2",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 206,
+    "y": 11481,
+    "width": 18,
+    "height": 23,
+    "x2": 224,
+    "y2": 11504
+  },
+  {
+    "name": "Rectangle 2 copy 5",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 202,
+    "y": 11476,
+    "width": 26,
+    "height": 33,
+    "x2": 228,
+    "y2": 11509
+  },
+  {
+    "name": "Rectangle 2 copy 6",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 202,
+    "y": 11631,
+    "width": 26,
+    "height": 33,
+    "x2": 228,
+    "y2": 11664
+  },
+  {
+    "name": "Rectangle 2 copy 7",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 202,
+    "y": 11787,
+    "width": 26,
+    "height": 33,
+    "x2": 228,
+    "y2": 11820
+  },
+  {
+    "name": "Rectangle 2 copy 8",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 202,
+    "y": 11942,
+    "width": 26,
+    "height": 33,
+    "x2": 228,
+    "y2": 11975
+  },
+  {
+    "name": "Rectangle 2 copy 9",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 202,
+    "y": 12099,
+    "width": 26,
+    "height": 33,
+    "x2": 228,
+    "y2": 12132
+  },
+  {
+    "name": "Rectangle 2 copy",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 206,
+    "y": 11636,
+    "width": 18,
+    "height": 23,
+    "x2": 224,
+    "y2": 11659
+  },
+  {
+    "name": "Rectangle 2 copy 2",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 206,
+    "y": 11792,
+    "width": 18,
+    "height": 22,
+    "x2": 224,
+    "y2": 11814
+  },
+  {
+    "name": "Rectangle 2 copy 3",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 206,
+    "y": 11947,
+    "width": 18,
+    "height": 23,
+    "x2": 224,
+    "y2": 11970
+  },
+  {
+    "name": "Rectangle 2 copy 4",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 206,
+    "y": 12104,
+    "width": 18,
+    "height": 22,
+    "x2": 224,
+    "y2": 12126
+  },
+  {
+    "name": "15:00 WELCOME RECEPTION Cocktails & sweets  17:00 NIKAH CEREMON",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4",
+    "depth": 2,
+    "x": 265,
+    "y": 11484,
+    "width": 298,
+    "height": 758,
+    "x2": 563,
+    "y2": 12242,
+    "text": {
+      "text": "15:00\rWELCOME RECEPTION\rCocktails & sweets\r\r17:00\rNIKAH CEREMONY\rReligious ceremony\r\r19:00\rDINNER\rGourmet dinner\r\r20:00\rPARTY\rDance the night away\r\r22:00\rEND OF THE EVENING\rWishing you a safe and\rpleasant departure",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Medium', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    }
+  },
+  {
+    "name": "Group 4 copy",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "5",
+    "depth": 1,
+    "x": 956,
+    "y": 11418,
+    "width": 402,
+    "height": 872,
+    "x2": 1358,
+    "y2": 12290
+  },
+  {
+    "name": "Rectangle 1",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1343,
+    "y": 11418,
+    "width": 4,
+    "height": 872,
+    "x2": 1347,
+    "y2": 12290
+  },
+  {
+    "name": "Rectangle 2",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1336,
+    "y": 11481,
+    "width": 18,
+    "height": 23,
+    "x2": 1354,
+    "y2": 11504
+  },
+  {
+    "name": "Rectangle 2 copy",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1336,
+    "y": 11636,
+    "width": 18,
+    "height": 23,
+    "x2": 1354,
+    "y2": 11659
+  },
+  {
+    "name": "Rectangle 2 copy 2",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1336,
+    "y": 11792,
+    "width": 18,
+    "height": 22,
+    "x2": 1354,
+    "y2": 11814
+  },
+  {
+    "name": "Rectangle 2 copy 5",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1332,
+    "y": 11476,
+    "width": 26,
+    "height": 33,
+    "x2": 1358,
+    "y2": 11509
+  },
+  {
+    "name": "Rectangle 2 copy 6",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1332,
+    "y": 11631,
+    "width": 26,
+    "height": 33,
+    "x2": 1358,
+    "y2": 11664
+  },
+  {
+    "name": "Rectangle 2 copy 7",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1332,
+    "y": 11787,
+    "width": 26,
+    "height": 33,
+    "x2": 1358,
+    "y2": 11820
+  },
+  {
+    "name": "Rectangle 2 copy 8",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1332,
+    "y": 11942,
+    "width": 26,
+    "height": 33,
+    "x2": 1358,
+    "y2": 11975
+  },
+  {
+    "name": "Rectangle 2 copy 9",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1332,
+    "y": 12099,
+    "width": 26,
+    "height": 33,
+    "x2": 1358,
+    "y2": 12132
+  },
+  {
+    "name": "Rectangle 2 copy 3",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1336,
+    "y": 11947,
+    "width": 18,
+    "height": 23,
+    "x2": 1354,
+    "y2": 11970
+  },
+  {
+    "name": "Rectangle 2 copy 4",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 1336,
+    "y": 12104,
+    "width": 18,
+    "height": 22,
+    "x2": 1354,
+    "y2": 12126
+  },
+  {
+    "name": "15:00 حفل الاستقبال كوكتيلات وحلويات  17:00 عقد القِران مراسم د",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 4 copy",
+    "depth": 2,
+    "x": 956,
+    "y": 11484,
+    "width": 344,
+    "height": 722,
+    "x2": 1300,
+    "y2": 12206,
+    "text": {
+      "text": "15:00\rحفل الاستقبال\rكوكتيلات وحلويات\r\r17:00\rعقد القِران\rمراسم دينية\r\r19:00\rالعشاء\rعشاء فاخر\r\r20:00\rالحفل\rاستمتعوا بالرقص طوال المساء\r\r22:00\rنهاية الأمسية\rنتمنى لكم مغادرة آمنة وسعيدة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-ExtraLight', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    }
+  },
+  {
+    "name": "Layer 12",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "5",
+    "depth": 1,
+    "x": 0,
+    "y": 10913,
+    "width": 1540,
+    "height": 307,
+    "x2": 1540,
+    "y2": 11220
+  },
+  {
+    "name": "6",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": -407,
+    "y": 12409,
+    "width": 3377,
+    "height": 8965,
+    "x2": 2970,
+    "y2": 21374
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": -252,
+    "y": 12409,
+    "width": 2002,
+    "height": 8965,
+    "x2": 1750,
+    "y2": 21374
+  },
+  {
+    "name": "تفاصيل التذكرة تظهر في صفحة الحالة الخاصة بعد موافقة المضيف.",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 315,
+    "y": 18476,
+    "width": 911,
+    "height": 35,
+    "x2": 1226,
+    "y2": 18511,
+    "text": {
+      "text": "تفاصيل التذكرة تظهر في صفحة الحالة الخاصة بعد موافقة المضيف.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Color Fill 4",
+    "type": "solidcolorfill",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 0,
+    "y": 19899,
+    "width": 1540,
+    "height": 101,
+    "x2": 1540,
+    "y2": 20000
+  },
+  {
+    "name": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك ا",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": -407,
+    "y": 19936,
+    "width": 1669,
+    "height": 35,
+    "x2": 1262,
+    "y2": 19971,
+    "text": {
+      "text": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك القادمة احصل على دعوة مميزة وتواصل معنا الان",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97,
+        162.88
+      ]
+    }
+  },
+  {
+    "name": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك ا",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 1279,
+    "y": 19936,
+    "width": 1691,
+    "height": 35,
+    "x2": 2970,
+    "y2": 19971,
+    "text": {
+      "text": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك القادمة احصل على دعوة مميزة وتواصل معنا الان .",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97,
+        162.88
+      ]
+    }
+  },
+  {
+    "name": "Layer 15",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 0.3412,
+    "parent": "6",
+    "depth": 1,
+    "x": 0,
+    "y": 12592,
+    "width": 1540,
+    "height": 5001,
+    "x2": 1540,
+    "y2": 17593
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.702,
+    "parent": "6",
+    "depth": 1,
+    "x": -113,
+    "y": 13228,
+    "width": 1689,
+    "height": 422,
+    "x2": 1576,
+    "y2": 13650
+  },
+  {
+    "name": "Vector Smart Object copy",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": -86,
+    "y": 13260,
+    "width": 1635,
+    "height": 365,
+    "x2": 1549,
+    "y2": 13625
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": -86,
+    "y": 13277,
+    "width": 1635,
+    "height": 365,
+    "x2": 1549,
+    "y2": 13642
+  },
+  {
+    "name": "Layer 2 (merged)",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 0,
+    "y": 12409,
+    "width": 1540,
+    "height": 7591,
+    "x2": 1540,
+    "y2": 20000
+  },
+  {
+    "name": "IMPORTANT NOTES",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 531,
+    "y": 13646,
+    "width": 479,
+    "height": 25,
+    "x2": 1010,
+    "y2": 13671,
+    "text": {
+      "text": "IMPORTANT NOTES",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "ملاحظات مهمة",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 657,
+    "y": 13701,
+    "width": 229,
+    "height": 31,
+    "x2": 886,
+    "y2": 13732,
+    "text": {
+      "text": "ملاحظات مهمة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "• نرجو التكرم بعدم اصطحاب الأطفال • يُمنع التصوير حفاظاً على خص",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 574,
+    "y": 13858,
+    "width": 393,
+    "height": 179,
+    "x2": 967,
+    "y2": 14037,
+    "text": {
+      "text": "• نرجو التكرم بعدم اصطحاب الأطفال\r• يُمنع التصوير حفاظاً على خصوصية الحفل\r• نأمل الالتزام باللباس الرسمي المحتشم\r• الدعوة خاصة وشخصية\r• يرجى الحضور في الوقت المحدد",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-ExtraLight', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        33.87
+      ]
+    }
+  },
+  {
+    "name": "• Kindly refrain from bringing children • Photography is not pe",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 420,
+    "y": 14096,
+    "width": 701,
+    "height": 172,
+    "x2": 1121,
+    "y2": 14268,
+    "text": {
+      "text": "• Kindly refrain from bringing children\r• Photography is not permitted to respect the privacy of the event\r• We kindly ask you to adhere to formal and modest attire\r• This invitation is private and non-transferable\r• Please arrive on time",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-ExtraLight', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        33.87
+      ]
+    }
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 653,
+    "y": 13793,
+    "width": 233,
+    "height": 9,
+    "x2": 886,
+    "y2": 13802
+  },
+  {
+    "name": "Vector Smart Object copy 2",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 653,
+    "y": 15760,
+    "width": 233,
+    "height": 9,
+    "x2": 886,
+    "y2": 15769
+  },
+  {
+    "name": "Layer 19",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 0,
+    "y": 13152,
+    "width": 647,
+    "height": 1547,
+    "x2": 647,
+    "y2": 14699
+  },
+  {
+    "name": "Layer 19 copy",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 887,
+    "y": 13152,
+    "width": 653,
+    "height": 1546,
+    "x2": 1540,
+    "y2": 14698
+  },
+  {
+    "name": "2 sides luxury curtians left and right",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 0,
+    "y": 13265,
+    "width": 1540,
+    "height": 1501,
+    "x2": 1540,
+    "y2": 14766
+  },
+  {
+    "name": "• نرجو التكرم بعدم اصطحاب الأطفال • يُمنع التصوير حفاظاً على خص",
+    "type": "type",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 911,
+    "y": 13732,
+    "width": 469,
+    "height": 215,
+    "x2": 1380,
+    "y2": 13947,
+    "text": {
+      "text": "• نرجو التكرم بعدم اصطحاب الأطفال\r• يُمنع التصوير حفاظاً على خصوصية الحفل\r• نأمل الالتزام باللباس الرسمي المحتشم\r• الدعوة خاصة وشخصية\r• يرجى الحضور في الوقت المحدد",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    }
+  },
+  {
+    "name": "• Kindly refrain from bringing children • Photography is not pe",
+    "type": "type",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 128,
+    "y": 13734,
+    "width": 712,
+    "height": 203,
+    "x2": 840,
+    "y2": 13937,
+    "text": {
+      "text": "• Kindly refrain from bringing children\r• Photography is not permitted to respect the privacy\r• We kindly ask you to adhere to formal and modest attire\r• This invitation is private and non-transferable\r• Please arrive on time",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    }
+  },
+  {
+    "name": "Group 6",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 263,
+    "y": 14601,
+    "width": 1012,
+    "height": 1519,
+    "x2": 1275,
+    "y2": 16120
+  },
+  {
+    "name": "Location on the map",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 473,
+    "y": 14601,
+    "width": 593,
+    "height": 25,
+    "x2": 1066,
+    "y2": 14626,
+    "text": {
+      "text": "Location on the map",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "موقـــــــــــع المناســــــــــــبة",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 597,
+    "y": 14683,
+    "width": 347,
+    "height": 33,
+    "x2": 944,
+    "y2": 14716,
+    "text": {
+      "text": "موقـــــــــــع المناســــــــــــبة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "نرجو ملئ المعلومات لتأكيد الحضور",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 533,
+    "y": 16085,
+    "width": 472,
+    "height": 35,
+    "x2": 1005,
+    "y2": 16120,
+    "text": {
+      "text": "نرجو ملئ المعلومات لتأكيد الحضور",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Layer 20",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 401,
+    "y": 14973,
+    "width": 726,
+    "height": 469,
+    "x2": 1127,
+    "y2": 15442
+  },
+  {
+    "name": "Layer 21",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 357,
+    "y": 14958,
+    "width": 821,
+    "height": 484,
+    "x2": 1178,
+    "y2": 15442
+  },
+  {
+    "name": "Layer 22",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 263,
+    "y": 14810,
+    "width": 1012,
+    "height": 793,
+    "x2": 1275,
+    "y2": 15603
+  },
+  {
+    "name": "Layer 23",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 654,
+    "y": 15314,
+    "width": 232,
+    "height": 55,
+    "x2": 886,
+    "y2": 15369
+  },
+  {
+    "name": "فتح الخريطة",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 6",
+    "depth": 2,
+    "x": 707,
+    "y": 15330,
+    "width": 128,
+    "height": 25,
+    "x2": 835,
+    "y2": 15355,
+    "text": {
+      "text": "فتح الخريطة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Medium', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 1234,
+    "y": 15134,
+    "width": 649,
+    "height": 1054,
+    "x2": 1883,
+    "y2": 16188
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "6",
+    "depth": 1,
+    "x": 380,
+    "y": 15873,
+    "width": 779,
+    "height": 162,
+    "x2": 1159,
+    "y2": 16035
+  },
+  {
+    "name": "7",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 374,
+    "y": 16272,
+    "width": 793,
+    "height": 1344,
+    "x2": 1167,
+    "y2": 17616
+  },
+  {
+    "name": "Vector Smart Object copy 3",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 374,
+    "y": 16272,
+    "width": 793,
+    "height": 1344,
+    "x2": 1167,
+    "y2": 17616
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 399,
+    "y": 16299,
+    "width": 743,
+    "height": 1289,
+    "x2": 1142,
+    "y2": 17588
+  },
+  {
+    "name": "Layer 24",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 291,
+    "y": 16253,
+    "width": 923,
+    "height": 1372,
+    "x2": 1214,
+    "y2": 17625
+  },
+  {
+    "name": "تأكيد الحضور",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 581,
+    "y": 16510,
+    "width": 365,
+    "height": 73,
+    "x2": 946,
+    "y2": 16583,
+    "text": {
+      "text": "تأكيد الحضور",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Bold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Rectangle 3 copy",
+    "type": "shape",
+    "visible": true,
+    "opacity": 0.3216,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 16667,
+    "width": 638,
+    "height": 92,
+    "x2": 1088,
+    "y2": 16759
+  },
+  {
+    "name": "Rectangle 3",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 16667,
+    "width": 638,
+    "height": 92,
+    "x2": 1088,
+    "y2": 16759
+  },
+  {
+    "name": "Rectangle 3 copy 4",
+    "type": "shape",
+    "visible": true,
+    "opacity": 0.3216,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 16906,
+    "width": 638,
+    "height": 92,
+    "x2": 1088,
+    "y2": 16998
+  },
+  {
+    "name": "Rectangle 3 copy 4",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 16906,
+    "width": 638,
+    "height": 92,
+    "x2": 1088,
+    "y2": 16998
+  },
+  {
+    "name": "Rectangle 3 copy 5",
+    "type": "shape",
+    "visible": true,
+    "opacity": 0.3216,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 17025,
+    "width": 638,
+    "height": 216,
+    "x2": 1088,
+    "y2": 17241
+  },
+  {
+    "name": "Rectangle 3 copy 5",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 17025,
+    "width": 638,
+    "height": 216,
+    "x2": 1088,
+    "y2": 17241
+  },
+  {
+    "name": "الاسم الكريم:  ............................................",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 475,
+    "y": 16699,
+    "width": 590,
+    "height": 27,
+    "x2": 1065,
+    "y2": 16726,
+    "text": {
+      "text": "الاسم الكريم:  ............................................",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "1 شخص",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 978,
+    "y": 16941,
+    "width": 87,
+    "height": 24,
+    "x2": 1065,
+    "y2": 16965,
+    "text": {
+      "text": "1 شخص",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "ملاحظات (اختياري)",
+    "type": "type",
+    "visible": true,
+    "opacity": 0.4706,
+    "parent": "7",
+    "depth": 1,
+    "x": 873,
+    "y": 17054,
+    "width": 192,
+    "height": 29,
+    "x2": 1065,
+    "y2": 17083,
+    "text": {
+      "text": "ملاحظات (اختياري)",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Triangle 1",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 506,
+    "y": 16948,
+    "width": 24,
+    "height": 21,
+    "x2": 530,
+    "y2": 16969
+  },
+  {
+    "name": "Rectangle 3 copy 2",
+    "type": "shape",
+    "visible": true,
+    "opacity": 0.3216,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 16786,
+    "width": 144,
+    "height": 92,
+    "x2": 594,
+    "y2": 16878
+  },
+  {
+    "name": "Rectangle 3 copy 2",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 450,
+    "y": 16786,
+    "width": 144,
+    "height": 92,
+    "x2": 594,
+    "y2": 16878
+  },
+  {
+    "name": "Rectangle 3 copy 3",
+    "type": "shape",
+    "visible": true,
+    "opacity": 0.3216,
+    "parent": "7",
+    "depth": 1,
+    "x": 606,
+    "y": 16786,
+    "width": 482,
+    "height": 92,
+    "x2": 1088,
+    "y2": 16878
+  },
+  {
+    "name": "Rectangle 3 copy 3",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 606,
+    "y": 16786,
+    "width": 482,
+    "height": 92,
+    "x2": 1088,
+    "y2": 16878
+  },
+  {
+    "name": "+971",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 494,
+    "y": 16823,
+    "width": 48,
+    "height": 17,
+    "x2": 542,
+    "y2": 16840,
+    "text": {
+      "text": "+971",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "0000 000 000",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 880,
+    "y": 16823,
+    "width": 186,
+    "height": 17,
+    "x2": 1066,
+    "y2": 16840,
+    "text": {
+      "text": "0000 000 000",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Rectangle 4",
+    "type": "shape",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 560,
+    "y": 17292,
+    "width": 440,
+    "height": 86,
+    "x2": 1000,
+    "y2": 17378
+  },
+  {
+    "name": "تأكيد الحضور",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "7",
+    "depth": 1,
+    "x": 708,
+    "y": 17319,
+    "width": 145,
+    "height": 28,
+    "x2": 853,
+    "y2": 17347,
+    "text": {
+      "text": "تأكيد الحضور",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "8",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 524,
+    "y": 17826,
+    "width": 492,
+    "height": 528,
+    "x2": 1016,
+    "y2": 18354
+  },
+  {
+    "name": "Layer 25",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "8",
+    "depth": 1,
+    "x": 524,
+    "y": 17826,
+    "width": 492,
+    "height": 528,
+    "x2": 1016,
+    "y2": 18354
+  },
+  {
+    "name": "3",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": -1537,
+    "y": 1218,
+    "width": 5132,
+    "height": 8965,
+    "x2": 3595,
+    "y2": 10183
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": -249,
+    "y": 1218,
+    "width": 2002,
+    "height": 8965,
+    "x2": 1753,
+    "y2": 10183
+  },
+  {
+    "name": "Layer 2",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 0.3412,
+    "parent": "3",
+    "depth": 1,
+    "x": 0,
+    "y": 5000,
+    "width": 1540,
+    "height": 5001,
+    "x2": 1540,
+    "y2": 10001
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 632,
+    "y": 7164,
+    "width": 278,
+    "height": 336,
+    "x2": 910,
+    "y2": 7500
+  },
+  {
+    "name": "Layer 8",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 953,
+    "y": 8742,
+    "width": 587,
+    "height": 114,
+    "x2": 1540,
+    "y2": 8856
+  },
+  {
+    "name": "Layer 8 copy",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 0,
+    "y": 8744,
+    "width": 608,
+    "height": 114,
+    "x2": 608,
+    "y2": 8858
+  },
+  {
+    "name": "Layer 7",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 50,
+    "y": 6982,
+    "width": 1427,
+    "height": 1855,
+    "x2": 1477,
+    "y2": 8837
+  },
+  {
+    "name": "create fance countdown timer",
+    "type": "smartobject",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 398,
+    "y": 7644,
+    "width": 758,
+    "height": 503,
+    "x2": 1156,
+    "y2": 8147
+  },
+  {
+    "name": "Group 3",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 397,
+    "y": 7760,
+    "width": 759,
+    "height": 504,
+    "x2": 1156,
+    "y2": 8264
+  },
+  {
+    "name": "create fance countdown timer copy",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 3",
+    "depth": 2,
+    "x": 397,
+    "y": 7760,
+    "width": 759,
+    "height": 504,
+    "x2": 1156,
+    "y2": 8264
+  },
+  {
+    "name": "create fance countdown timer copy 2",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 3",
+    "depth": 2,
+    "x": 397,
+    "y": 7760,
+    "width": 759,
+    "height": 504,
+    "x2": 1156,
+    "y2": 8264
+  },
+  {
+    "name": "وذلـك فـي يـوم الـثلاثــــــــــــاء 16 يونيو الساعــــــــة 6 ",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 551,
+    "y": 7647,
+    "width": 436,
+    "height": 71,
+    "x2": 987,
+    "y2": 7718,
+    "text": {
+      "text": "وذلـك فـي يـوم الـثلاثــــــــــــاء 16 يونيو\rالساعــــــــة 6 مســـــــــــاء",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "Flower",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": -1537,
+    "y": 4736,
+    "width": 2366,
+    "height": 3005,
+    "x2": 829,
+    "y2": 7741
+  },
+  {
+    "name": "Flower",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 1049,
+    "y": 6819,
+    "width": 2546,
+    "height": 2645,
+    "x2": 3595,
+    "y2": 9464
+  },
+  {
+    "name": "On Tuesday June 16th، at 6:00 PM, we look forward to welcoming ",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 502,
+    "y": 8284,
+    "width": 596,
+    "height": 201,
+    "x2": 1098,
+    "y2": 8485,
+    "text": {
+      "text": "On Tuesday\rJune 16th، at 6:00 PM,\rwe look forward to welcoming you to share a special evening\rfilled with warmth, joy, and beautiful moments together.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        29.63
+      ]
+    }
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.5412,
+    "parent": "3",
+    "depth": 1,
+    "x": -74,
+    "y": 8947,
+    "width": 1688,
+    "height": 513,
+    "x2": 1614,
+    "y2": 9460
+  },
+  {
+    "name": "Vector Smart Object copy",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": -47,
+    "y": 8967,
+    "width": 1635,
+    "height": 365,
+    "x2": 1588,
+    "y2": 9332
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": -47,
+    "y": 8951,
+    "width": 1635,
+    "height": 365,
+    "x2": 1588,
+    "y2": 9316
+  },
+  {
+    "name": "Layer 2 (merged)",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 0,
+    "y": 4597,
+    "width": 1540,
+    "height": 5587,
+    "x2": 1540,
+    "y2": 10184
+  },
+  {
+    "name": "Group 2",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "3",
+    "depth": 1,
+    "x": 243,
+    "y": 8794,
+    "width": 1034,
+    "height": 337,
+    "x2": 1277,
+    "y2": 9131
+  },
+  {
+    "name": "التفاصيــــــــــــ                     ـــــــــــــل",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 2",
+    "depth": 2,
+    "x": 581,
+    "y": 8794,
+    "width": 376,
+    "height": 28,
+    "x2": 957,
+    "y2": 8822,
+    "text": {
+      "text": "التفاصيــــــــــــ                     ـــــــــــــل",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "العنوان: قصر الأميرة - دبي",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 2",
+    "depth": 2,
+    "x": 883,
+    "y": 9072,
+    "width": 157,
+    "height": 59,
+    "x2": 1040,
+    "y2": 9131,
+    "text": {
+      "text": "العنوان:\rقصر الأميرة - دبي",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "التاريــــخ: الأحد 2026-10-15",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 2",
+    "depth": 2,
+    "x": 462,
+    "y": 9072,
+    "width": 162,
+    "height": 51,
+    "x2": 624,
+    "y2": 9123,
+    "text": {
+      "text": "التاريــــخ:\rالأحد 2026-10-15",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "الساعة: 21:00",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 2",
+    "depth": 2,
+    "x": 726,
+    "y": 9072,
+    "width": 64,
+    "height": 51,
+    "x2": 790,
+    "y2": 9123,
+    "text": {
+      "text": "الساعة:\r21:00",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "Details",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 2",
+    "depth": 2,
+    "x": 691,
+    "y": 8795,
+    "width": 96,
+    "height": 22,
+    "x2": 787,
+    "y2": 8817,
+    "text": {
+      "text": "Details",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "Layer 9",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 2",
+    "depth": 2,
+    "x": 243,
+    "y": 8909,
+    "width": 1034,
+    "height": 118,
+    "x2": 1277,
+    "y2": 9027
+  },
+  {
+    "name": "Layer 10",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 2",
+    "depth": 2,
+    "x": 494,
+    "y": 8913,
+    "width": 528,
+    "height": 104,
+    "x2": 1022,
+    "y2": 9017
+  },
+  {
+    "name": "2 copy",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": -83,
+    "y": 3104,
+    "width": 1706,
+    "height": 3951,
+    "x2": 1623,
+    "y2": 7055
+  },
+  {
+    "name": "Layer 1",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": -83,
+    "y": 3381,
+    "width": 1706,
+    "height": 3333,
+    "x2": 1623,
+    "y2": 6714
+  },
+  {
+    "name": "Color Fill 1",
+    "type": "solidcolorfill",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 0,
+    "y": 3333,
+    "width": 1540,
+    "height": 1872,
+    "x2": 1540,
+    "y2": 5205
+  },
+  {
+    "name": "Layer 5",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": -83,
+    "y": 3128,
+    "width": 1706,
+    "height": 3871,
+    "x2": 1623,
+    "y2": 6999
+  },
+  {
+    "name": "Layer 4",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": -55,
+    "y": 3104,
+    "width": 1626,
+    "height": 3951,
+    "x2": 1571,
+    "y2": 7055
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 622,
+    "y": 4068,
+    "width": 299,
+    "height": 362,
+    "x2": 921,
+    "y2": 4430
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 417,
+    "y": 3736,
+    "width": 706,
+    "height": 153,
+    "x2": 1123,
+    "y2": 3889
+  },
+  {
+    "name": "Our Forever Begins",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 490,
+    "y": 6049,
+    "width": 561,
+    "height": 26,
+    "x2": 1051,
+    "y2": 6075,
+    "text": {
+      "text": "Our Forever Begins",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Written in Love",
+    "type": "type",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 544,
+    "y": 3885,
+    "width": 451,
+    "height": 25,
+    "x2": 995,
+    "y2": 3910,
+    "text": {
+      "text": "Written in Love",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "A promise for a lifetime.",
+    "type": "type",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 414,
+    "y": 3955,
+    "width": 714,
+    "height": 26,
+    "x2": 1128,
+    "y2": 3981,
+    "text": {
+      "text": "A promise for a lifetime.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Together",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 542,
+    "y": 6117,
+    "width": 458,
+    "height": 207,
+    "x2": 1000,
+    "y2": 6324,
+    "text": {
+      "text": "Together",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    }
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 656,
+    "y": 5800,
+    "width": 228,
+    "height": 52,
+    "x2": 884,
+    "y2": 5852
+  },
+  {
+    "name": "Group 1",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": -11,
+    "y": 4808,
+    "width": 962,
+    "height": 1119,
+    "x2": 951,
+    "y2": 5927
+  },
+  {
+    "name": "add 2 golden rings top view",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 1",
+    "depth": 2,
+    "x": -11,
+    "y": 4808,
+    "width": 962,
+    "height": 1119,
+    "x2": 951,
+    "y2": 5927
+  },
+  {
+    "name": "Color Fill 2",
+    "type": "solidcolorfill",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 1",
+    "depth": 2,
+    "x": 0,
+    "y": 0,
+    "width": 1540,
+    "height": 20000,
+    "x2": 1540,
+    "y2": 20000
+  },
+  {
+    "name": "Layer 6",
+    "type": "pixel",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "Group 1",
+    "depth": 2,
+    "x": 216,
+    "y": 5194,
+    "width": 511,
+    "height": 312,
+    "x2": 727,
+    "y2": 5506
+  },
+  {
+    "name": "بـكـل حـب و ود يـتـشـرف",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 582,
+    "y": 3951,
+    "width": 360,
+    "height": 37,
+    "x2": 942,
+    "y2": 3988,
+    "text": {
+      "text": "بـكـل حـب و ود يـتـشـرف",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoMedium-Medium', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "السيد",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 977,
+    "y": 4011,
+    "width": 68,
+    "height": 24,
+    "x2": 1045,
+    "y2": 4035,
+    "text": {
+      "text": "السيد",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "الحاج",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 492,
+    "y": 4011,
+    "width": 60,
+    "height": 24,
+    "x2": 552,
+    "y2": 4035,
+    "text": {
+      "text": "الحاج",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "بسام سلامه",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 911,
+    "y": 4059,
+    "width": 207,
+    "height": 31,
+    "x2": 1118,
+    "y2": 4090,
+    "text": {
+      "text": "بسام سلامه",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "معتصم الرز",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 412,
+    "y": 4059,
+    "width": 198,
+    "height": 31,
+    "x2": 610,
+    "y2": 4090,
+    "text": {
+      "text": "معتصم الرز",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "بــدعـوتـكـم لـحـضـور حفل زفـــــــاف ولـديـهـمـا",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 409,
+    "y": 4135,
+    "width": 703,
+    "height": 34,
+    "x2": 1112,
+    "y2": 4169,
+    "text": {
+      "text": "بــدعـوتـكـم لـحـضـور حفل زفـــــــاف ولـديـهـمـا",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoMedium-Medium', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    }
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 471,
+    "y": 4237,
+    "width": 186,
+    "height": 206,
+    "x2": 657,
+    "y2": 4443
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 0.7608,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 565,
+    "y": 4124,
+    "width": 516,
+    "height": 504,
+    "x2": 1081,
+    "y2": 4628
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2 copy",
+    "depth": 1,
+    "x": 829,
+    "y": 4241,
+    "width": 243,
+    "height": 198,
+    "x2": 1072,
+    "y2": 4439
+  },
+  {
+    "name": "2",
+    "type": "group",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 0,
+    "y": 0,
+    "width": 0,
+    "height": 0,
+    "x2": 0,
+    "y2": 0
+  },
+  {
+    "name": "Layer 1",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2",
+    "depth": 1,
+    "x": -83,
+    "y": 3256,
+    "width": 1706,
+    "height": 3333,
+    "x2": 1623,
+    "y2": 6589
+  },
+  {
+    "name": "Our Forever Begins",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2",
+    "depth": 1,
+    "x": 490,
+    "y": 6079,
+    "width": 561,
+    "height": 26,
+    "x2": 1051,
+    "y2": 6105,
+    "text": {
+      "text": "Our Forever Begins",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Written in Love",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2",
+    "depth": 1,
+    "x": 544,
+    "y": 3759,
+    "width": 451,
+    "height": 25,
+    "x2": 995,
+    "y2": 3784,
+    "text": {
+      "text": "Written in Love",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "A promise for a lifetime.",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2",
+    "depth": 1,
+    "x": 414,
+    "y": 3829,
+    "width": 714,
+    "height": 26,
+    "x2": 1128,
+    "y2": 3855,
+    "text": {
+      "text": "A promise for a lifetime.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Together",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2",
+    "depth": 1,
+    "x": 542,
+    "y": 6147,
+    "width": 458,
+    "height": 207,
+    "x2": 1000,
+    "y2": 6354,
+    "text": {
+      "text": "Together",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    }
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "2",
+    "depth": 1,
+    "x": 656,
+    "y": 5830,
+    "width": 228,
+    "height": 52,
+    "x2": 884,
+    "y2": 5882
+  },
+  {
+    "name": "1",
+    "type": "group",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": -83,
+    "y": -347,
+    "width": 1706,
+    "height": 3871,
+    "x2": 1623,
+    "y2": 3524
+  },
+  {
+    "name": "Layer 3",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "1",
+    "depth": 1,
+    "x": -83,
+    "y": -347,
+    "width": 1706,
+    "height": 3871,
+    "x2": 1623,
+    "y2": 3524
+  },
+  {
+    "name": "Our Forever Begins",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "1",
+    "depth": 1,
+    "x": 490,
+    "y": 2746,
+    "width": 561,
+    "height": 26,
+    "x2": 1051,
+    "y2": 2772,
+    "text": {
+      "text": "Our Forever Begins",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Written in Love",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "1",
+    "depth": 1,
+    "x": 544,
+    "y": 426,
+    "width": 451,
+    "height": 25,
+    "x2": 995,
+    "y2": 451,
+    "text": {
+      "text": "Written in Love",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "A promise for a lifetime.",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "1",
+    "depth": 1,
+    "x": 414,
+    "y": 496,
+    "width": 714,
+    "height": 26,
+    "x2": 1128,
+    "y2": 522,
+    "text": {
+      "text": "A promise for a lifetime.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    }
+  },
+  {
+    "name": "Together",
+    "type": "type",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "1",
+    "depth": 1,
+    "x": 542,
+    "y": 2814,
+    "width": 458,
+    "height": 207,
+    "x2": 1000,
+    "y2": 3021,
+    "text": {
+      "text": "Together",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    }
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": true,
+    "opacity": 1.0,
+    "parent": "1",
+    "depth": 1,
+    "x": 656,
+    "y": 2497,
+    "width": 228,
+    "height": 52,
+    "x2": 884,
+    "y2": 2549
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 502,
+    "y": 5885,
+    "width": 536,
+    "height": 53,
+    "x2": 1038,
+    "y2": 5938
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 355,
+    "y": 5888,
+    "width": 831,
+    "height": 30,
+    "x2": 1186,
+    "y2": 5918
+  },
+  {
+    "name": "Vector Smart Object",
+    "type": "smartobject",
+    "visible": false,
+    "opacity": 1.0,
+    "parent": null,
+    "depth": 0,
+    "x": 686,
+    "y": 14081,
+    "width": 618,
+    "height": 1044,
+    "x2": 1304,
+    "y2": 15125
+  }
+]

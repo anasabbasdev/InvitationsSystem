@@ -9,22 +9,25 @@ export default function RsvpSuccessPanel({
   primaryColor,
   textColor,
   approvedSeats,
+  chrome = "card",
 }: {
   guestCode: string;
   status: string;
   primaryColor: string;
   textColor: string;
   approvedSeats?: number | null;
+  chrome?: "card" | "plain";
 }) {
   const isPending = status === "pending";
   const isConfirmed = status === "confirmed" || status === "approved";
+  const plain = chrome === "plain";
 
   return (
     <div
-      className="flex flex-col items-center gap-4 rounded-lg p-6 text-center"
+      className={`flex flex-col items-center gap-4 text-center ${plain ? "" : "rounded-lg p-6"}`}
       style={{
-        backgroundColor: `${primaryColor}18`,
-        border: `1px solid ${primaryColor}44`,
+        backgroundColor: plain ? "transparent" : `${primaryColor}18`,
+        border: plain ? "none" : `1px solid ${primaryColor}44`,
         color: textColor,
       }}
       dir="rtl"

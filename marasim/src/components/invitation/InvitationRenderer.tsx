@@ -82,15 +82,12 @@ export default function InvitationRenderer({
           {!isOpened && openingScene && (
             <motion.div
               key="opening-gate"
-              className="fixed inset-0 z-50"
-          style={{
-            maxWidth: layout.mobileMaxWidth,
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: bgColor,
-          }}
+              className="absolute left-0 right-0 top-0 z-50 h-[100dvh] w-full overflow-hidden"
+              style={{
+                backgroundColor: bgColor,
+              }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
             >
               <OpeningScene
                 scene={openingScene}
@@ -108,7 +105,7 @@ export default function InvitationRenderer({
               key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.15, ease: "easeOut" }}
+              transition={{ duration: 0.55, delay: 0.05, ease: "easeOut" }}
               className="pb-20"
             >
               {contentScenes.map((scene) => {

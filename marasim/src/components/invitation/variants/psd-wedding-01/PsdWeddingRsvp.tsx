@@ -1,0 +1,223 @@
+"use client";
+
+import type { CSSProperties } from "react";
+import { useSearchParams } from "next/navigation";
+import type { InvitationConfig, InvitationScene } from "@/types/invitation";
+import type { InviteLinkContext } from "@/lib/rsvp-core";
+import SceneFrame from "@/components/invitation/SceneFrame";
+import PhoneInput from "@/components/ui/PhoneInput";
+import RsvpSuccessPanel from "@/components/rsvp/RsvpSuccessPanel";
+import { useRSVPForm } from "@/lib/use-rsvp-form";
+import { PsdBox, PsdSection } from "./PsdSection";
+import { PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
+
+type Content = { sectionLabel?: string; intro?: string };
+
+const Y = PSD_SECTIONS.rsvp.y;
+const H = PSD_SECTIONS.rsvp.height;
+
+export default function PsdWeddingRsvp({
+  scene,
+  config,
+  inviteToken,
+  inviteLinkContext,
+  controlledMaxSeats,
+}: {
+  scene: InvitationScene;
+  config: InvitationConfig;
+  inviteToken?: string;
+  inviteLinkContext?: InviteLinkContext;
+  controlledMaxSeats?: number;
+}) {
+  const searchParams = useSearchParams();
+  const tokenFromUrl = searchParams.get("t") ?? undefined;
+  const effectiveToken = inviteToken ?? tokenFromUrl;
+  const { rsvp, slug, theme } = config;
+  const c = (scene.content ?? {}) as Content;
+  const isControlledLink = Boolean(effectiveToken);
+  const maxSeats = isControlledLink ? (controlledMaxSeats ?? 4) : (rsvp.maxPublicRequest ?? 4);
+  const formApi = useRSVPForm(slug, maxSeats, {
+    inviteToken: effectiveToken,
+    inviteLinkContext,
+  });
+
+  const fieldStyle: CSSProperties = {
+    width: "100%",
+    height: "100%",
+    padding: "0 12px",
+    backgroundColor: "transparent",
+    border: "none",
+    color: PSD_INK,
+    fontFamily: "var(--font-noto-sans-arabic)",
+    fontSize: "0.88rem",
+    outline: "none",
+    direction: "rtl",
+  };
+
+  if (!rsvp.enabled) return null;
+
+  const showSuccess = Boolean(formApi.success);
+
+  return (
+    <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
+      <PsdSection plateSrc={showSuccess ? PSD_SECTIONS.rsvp.plateSuccess : PSD_SECTIONS.rsvp.plate} heightPsd={H}>
+        {!showSuccess && (
+          <>
+        <PsdBox x={533} y={16085} width={472} height={35} sectionY={Y} sectionH={H} className="flex items-center justify-center">
+          <p style={{ fontFamily: "var(--font-noto-sans-arabic)", fontSize: psdFont(44), color: PSD_INK, margin: 0, textAlign: "center" }}>
+            {c.intro ?? "نرجو ملئ المعلومات لتأكيد الحضور"}
+          </p>
+        </PsdBox>
+        <PsdBox x={581} y={16510} width={365} height={73} sectionY={Y} sectionH={H} className="flex items-center justify-center">
+          <h2 style={{ fontFamily: "var(--font-noto-sans-arabic)", fontSize: psdFont(56), fontWeight: 700, color: PSD_INK, margin: 0 }}>
+            {c.sectionLabel ?? "تأكيد الحضور"}
+          </h2>
+        </PsdBox>
+          </>
+        )}
+
+        {inviteLinkContext?.status === "invalid" && (
+          <PsdBox x={450} y={16590} width={638} height={60} sectionY={Y} sectionH={H} className="flex items-center justify-center">
+            <p style={{ color: "#9B3B3B", textAlign: "center", fontFamily: "var(--font-noto-sans-arabic)", margin: 0 }}>{inviteLinkContext.message}</p>
+          </PsdBox>
+        )}
+
+        {!formApi.success && !formApi.linkDone && !formApi.linkBlocked && (
+          <form onSubmit={formApi.handleSubmit}>
+            <PsdBox x={450} y={16667} width={638} height={92} sectionY={Y} sectionH={H}>
+              <input
+                name="name"
+                type="text"
+                placeholder="الاسم الكريم"
+                value={formApi.form.name}
+                onChange={formApi.handleChange}
+                required
+                disabled={formApi.submitting}
+                style={fieldStyle}
+              />
+            </PsdBox>
+            <PsdBox x={450} y={16786} width={638} height={92} sectionY={Y} sectionH={H}>
+              <PhoneInput
+                value={formApi.form.phone}
+                onChange={formApi.setPhone}
+                disabled={formApi.submitting}
+                required={!formApi.isControlled}
+                className="h-full w-full"
+                inputStyle={{ ...fieldStyle, height: "100%", direction: "ltr" }}
+              />
+            </PsdBox>
+            <PsdBox x={450} y={16906} width={638} height={92} sectionY={Y} sectionH={H}>
+              <select name="guests" value={formApi.form.guests} onChange={formApi.handleChange} disabled={formApi.submitting} style={fieldStyle}>
+                {formApi.seatOptions.map((n) => (
+                  <option key={n} value={n}>
+                    {n} {n === 1 ? "شخص" : "أشخاص"}
+                  </option>
+                ))}
+              </select>
+            </PsdBox>
+            <PsdBox
+              x={450}
+              y={17025}
+              width={638}
+              height={216}
+              sectionY={Y}
+              sectionH={H}
+              className="flex flex-col"
+            >
+              {formApi.error ? (
+                <div
+                  className="flex h-full w-full flex-col items-center justify-center px-[8%] text-center"
+                  style={{ background: "transparent" }}
+                  role="alert"
+                >
+                  <span
+                    aria-hidden
+                    style={{
+                      display: "block",
+                      width: "2.2em",
+                      height: 1,
+                      background: "linear-gradient(90deg, transparent, #C4A35A, transparent)",
+                      marginBottom: "0.7em",
+                    }}
+                  />
+                  <p
+                    style={{
+                      fontFamily: "var(--font-noto-sans-arabic)",
+                      fontSize: psdFont(28),
+                      fontWeight: 500,
+                      color: "#6E3D36",
+                      margin: 0,
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    {formApi.error}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-noto-sans-arabic)",
+                      fontSize: psdFont(22),
+                      color: "#8A7A68",
+                      margin: "0.55em 0 0",
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    تابع الطلب من شريط «تحقق من حالة دعوتك» أسفل الدعوة.
+                  </p>
+                </div>
+              ) : (
+                <textarea
+                  name="note"
+                  placeholder="ملاحظات (اختياري)"
+                  value={formApi.form.note}
+                  onChange={formApi.handleChange}
+                  disabled={formApi.submitting || Boolean(effectiveToken)}
+                  style={{ ...fieldStyle, resize: "none", paddingTop: 16, display: effectiveToken ? "none" : undefined }}
+                />
+              )}
+            </PsdBox>
+            <PsdBox x={560} y={17292} width={440} height={86} sectionY={Y} sectionH={H}>
+              <button
+                type="submit"
+                disabled={formApi.submitting}
+                className="h-full w-full"
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "#F7F1E8",
+                  fontFamily: "var(--font-noto-sans-arabic)",
+                  fontSize: psdFont(40),
+                  fontWeight: 600,
+                  cursor: formApi.submitting ? "wait" : "pointer",
+                }}
+              >
+                {formApi.submitting ? "جاري الإرسال..." : "تأكيد الحضور"}
+              </button>
+            </PsdBox>
+          </form>
+        )}
+
+        {formApi.success && (
+          <PsdBox
+            x={430}
+            y={16420}
+            width={680}
+            height={1180}
+            sectionY={Y}
+            sectionH={H}
+            className="flex items-center justify-center px-[6%]"
+            style={{ background: "transparent" }}
+          >
+            <RsvpSuccessPanel
+              guestCode={formApi.success.guestCode}
+              status={formApi.success.status}
+              approvedSeats={formApi.success.approvedSeats}
+              primaryColor={theme.primaryColor}
+              textColor={theme.textColor ?? PSD_INK}
+              chrome="plain"
+            />
+          </PsdBox>
+        )}
+      </PsdSection>
+    </SceneFrame>
+  );
+}

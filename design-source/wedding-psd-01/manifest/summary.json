@@ -1,0 +1,929 @@
+{
+  "document": {
+    "path": "C:\\Users\\anas-\\Downloads\\1.psd",
+    "bytes": 583878079,
+    "width": 1540,
+    "height": 20000,
+    "color_mode": "3",
+    "channels": 3,
+    "depth": null,
+    "width_div_4": 385.0,
+    "height_div_4": 5000.0,
+    "likely_4x_mobile": true,
+    "top_level_count": 13
+  },
+  "layer_count": 198,
+  "text_layer_count": 56,
+  "top_or_second_level_groups": [
+    {
+      "name": "4",
+      "y": 0,
+      "height": 20180,
+      "width": 4202,
+      "visible": true
+    },
+    {
+      "name": "BACKGROUND",
+      "y": 8539,
+      "height": 3469,
+      "width": 4089,
+      "visible": true
+    },
+    {
+      "name": "FRAME 3",
+      "y": 10300,
+      "height": 479,
+      "width": 662,
+      "visible": true
+    },
+    {
+      "name": "FRAME 2",
+      "y": 10275,
+      "height": 570,
+      "width": 607,
+      "visible": true
+    },
+    {
+      "name": "FRAME 1",
+      "y": 9696,
+      "height": 576,
+      "width": 558,
+      "visible": true
+    },
+    {
+      "name": "TEXT",
+      "y": 9769,
+      "height": 477,
+      "width": 517,
+      "visible": true
+    },
+    {
+      "name": "ORNAMENT",
+      "y": 9838,
+      "height": 1084,
+      "width": 1323,
+      "visible": true
+    },
+    {
+      "name": "5",
+      "y": 10913,
+      "height": 2252,
+      "width": 1540,
+      "visible": true
+    },
+    {
+      "name": "Group 5",
+      "y": 12321,
+      "height": 844,
+      "width": 1025,
+      "visible": true
+    },
+    {
+      "name": "Group 4",
+      "y": 11418,
+      "height": 872,
+      "width": 361,
+      "visible": true
+    },
+    {
+      "name": "Group 4 copy",
+      "y": 11418,
+      "height": 872,
+      "width": 402,
+      "visible": true
+    },
+    {
+      "name": "6",
+      "y": 12409,
+      "height": 8965,
+      "width": 3377,
+      "visible": true
+    },
+    {
+      "name": "Group 6",
+      "y": 14601,
+      "height": 1519,
+      "width": 1012,
+      "visible": true
+    },
+    {
+      "name": "7",
+      "y": 16272,
+      "height": 1344,
+      "width": 793,
+      "visible": true
+    },
+    {
+      "name": "8",
+      "y": 17826,
+      "height": 528,
+      "width": 492,
+      "visible": true
+    },
+    {
+      "name": "3",
+      "y": 1218,
+      "height": 8965,
+      "width": 5132,
+      "visible": true
+    },
+    {
+      "name": "Group 3",
+      "y": 7760,
+      "height": 504,
+      "width": 759,
+      "visible": true
+    },
+    {
+      "name": "Group 2",
+      "y": 8794,
+      "height": 337,
+      "width": 1034,
+      "visible": true
+    },
+    {
+      "name": "2 copy",
+      "y": 3104,
+      "height": 3951,
+      "width": 1706,
+      "visible": true
+    },
+    {
+      "name": "Group 1",
+      "y": 4808,
+      "height": 1119,
+      "width": 962,
+      "visible": true
+    },
+    {
+      "name": "2",
+      "y": 0,
+      "height": 0,
+      "width": 0,
+      "visible": false
+    },
+    {
+      "name": "1",
+      "y": -347,
+      "height": 3871,
+      "width": 1706,
+      "visible": true
+    }
+  ],
+  "fonts_detected": [
+    "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+    "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+    "{'Name': 'GESSTwoMedium-Medium', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Arabic-Bold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Arabic-ExtraLight', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Arabic-Medium', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Arabic-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Arabic-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Medium', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+    "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+    "{'Name': 'MyriadPro-Regular', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+    "{'Name': 'PhotographSignature', 'Script': 0, 'FontType': 0, 'Synthetic': 0}"
+  ],
+  "text_preview": [
+    {
+      "name": "OUR",
+      "y": 9469,
+      "text": "OUR",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Moments",
+      "y": 9503,
+      "text": "Moments",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    },
+    {
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+      "y": 9769,
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. ",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadPro-Regular', 'Script': 0, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        10.42
+      ]
+    },
+    {
+      "name": "Best",
+      "y": 10010,
+      "text": "Best",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadPro-Regular', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'PhotographSignature', 'Script': 0, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        19.43
+      ]
+    },
+    {
+      "name": "Moment",
+      "y": 10045,
+      "text": "Moment",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadPro-Regular', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'PhotographSignature', 'Script': 0, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        19.43
+      ]
+    },
+    {
+      "name": "EVENT",
+      "y": 11248,
+      "text": "EVENT",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Timeline",
+      "y": 11286,
+      "text": "Timeline",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    },
+    {
+      "name": "Our Luxury",
+      "y": 12321,
+      "text": "Our Luxury",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Wedding Hall",
+      "y": 12361,
+      "text": "Wedding Hall",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    },
+    {
+      "name": "15:00 WELCOME RECEPTION Cocktails & sweets  17:00 NIKAH CEREMON",
+      "y": 11484,
+      "text": "15:00\rWELCOME RECEPTION\rCocktails & sweets\r\r17:00\rNIKAH CEREMONY\rReligious ceremony\r\r19:00\rDINNER\rGourmet dinner\r\r20:00\rPARTY\rDance the night away\r\r22:00\rEND OF THE EVENING\rWishing you a safe and\rpleasant departure",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Medium', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    },
+    {
+      "name": "15:00 حفل الاستقبال كوكتيلات وحلويات  17:00 عقد القِران مراسم د",
+      "y": 11484,
+      "text": "15:00\rحفل الاستقبال\rكوكتيلات وحلويات\r\r17:00\rعقد القِران\rمراسم دينية\r\r19:00\rالعشاء\rعشاء فاخر\r\r20:00\rالحفل\rاستمتعوا بالرقص طوال المساء\r\r22:00\rنهاية الأمسية\rنتمنى لكم مغادرة آمنة وسعيدة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-ExtraLight', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    },
+    {
+      "name": "تفاصيل التذكرة تظهر في صفحة الحالة الخاصة بعد موافقة المضيف.",
+      "y": 18476,
+      "text": "تفاصيل التذكرة تظهر في صفحة الحالة الخاصة بعد موافقة المضيف.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك ا",
+      "y": 19936,
+      "text": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك القادمة احصل على دعوة مميزة وتواصل معنا الان",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97,
+        162.88
+      ]
+    },
+    {
+      "name": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك ا",
+      "y": 19936,
+      "text": "تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك القادمة احصل على دعوة مميزة وتواصل معنا الان .",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97,
+        162.88
+      ]
+    },
+    {
+      "name": "IMPORTANT NOTES",
+      "y": 13646,
+      "text": "IMPORTANT NOTES",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "ملاحظات مهمة",
+      "y": 13701,
+      "text": "ملاحظات مهمة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "• نرجو التكرم بعدم اصطحاب الأطفال • يُمنع التصوير حفاظاً على خص",
+      "y": 13858,
+      "text": "• نرجو التكرم بعدم اصطحاب الأطفال\r• يُمنع التصوير حفاظاً على خصوصية الحفل\r• نأمل الالتزام باللباس الرسمي المحتشم\r• الدعوة خاصة وشخصية\r• يرجى الحضور في الوقت المحدد",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-ExtraLight', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        33.87
+      ]
+    },
+    {
+      "name": "• Kindly refrain from bringing children • Photography is not pe",
+      "y": 14096,
+      "text": "• Kindly refrain from bringing children\r• Photography is not permitted to respect the privacy of the event\r• We kindly ask you to adhere to formal and modest attire\r• This invitation is private and non-transferable\r• Please arrive on time",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-ExtraLight', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        33.87
+      ]
+    },
+    {
+      "name": "• نرجو التكرم بعدم اصطحاب الأطفال • يُمنع التصوير حفاظاً على خص",
+      "y": 13732,
+      "text": "• نرجو التكرم بعدم اصطحاب الأطفال\r• يُمنع التصوير حفاظاً على خصوصية الحفل\r• نأمل الالتزام باللباس الرسمي المحتشم\r• الدعوة خاصة وشخصية\r• يرجى الحضور في الوقت المحدد",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    },
+    {
+      "name": "• Kindly refrain from bringing children • Photography is not pe",
+      "y": 13734,
+      "text": "• Kindly refrain from bringing children\r• Photography is not permitted to respect the privacy\r• We kindly ask you to adhere to formal and modest attire\r• This invitation is private and non-transferable\r• Please arrive on time",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        38.1
+      ]
+    },
+    {
+      "name": "Location on the map",
+      "y": 14601,
+      "text": "Location on the map",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "موقـــــــــــع المناســــــــــــبة",
+      "y": 14683,
+      "text": "موقـــــــــــع المناســــــــــــبة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "نرجو ملئ المعلومات لتأكيد الحضور",
+      "y": 16085,
+      "text": "نرجو ملئ المعلومات لتأكيد الحضور",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "فتح الخريطة",
+      "y": 15330,
+      "text": "فتح الخريطة",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Medium', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "تأكيد الحضور",
+      "y": 16510,
+      "text": "تأكيد الحضور",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Bold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "الاسم الكريم:  ............................................",
+      "y": 16699,
+      "text": "الاسم الكريم:  ............................................",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "1 شخص",
+      "y": 16941,
+      "text": "1 شخص",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "ملاحظات (اختياري)",
+      "y": 17054,
+      "text": "ملاحظات (اختياري)",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "+971",
+      "y": 16823,
+      "text": "+971",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "0000 000 000",
+      "y": 16823,
+      "text": "0000 000 000",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "تأكيد الحضور",
+      "y": 17319,
+      "text": "تأكيد الحضور",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "وذلـك فـي يـوم الـثلاثــــــــــــاء 16 يونيو الساعــــــــة 6 ",
+      "y": 7647,
+      "text": "وذلـك فـي يـوم الـثلاثــــــــــــاء 16 يونيو\rالساعــــــــة 6 مســـــــــــاء",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "On Tuesday June 16th، at 6:00 PM, we look forward to welcoming ",
+      "y": 8284,
+      "text": "On Tuesday\rJune 16th، at 6:00 PM,\rwe look forward to welcoming you to share a special evening\rfilled with warmth, joy, and beautiful moments together.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        29.63
+      ]
+    },
+    {
+      "name": "التفاصيــــــــــــ                     ـــــــــــــل",
+      "y": 8794,
+      "text": "التفاصيــــــــــــ                     ـــــــــــــل",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "العنوان: قصر الأميرة - دبي",
+      "y": 9072,
+      "text": "العنوان:\rقصر الأميرة - دبي",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "التاريــــخ: الأحد 2026-10-15",
+      "y": 9072,
+      "text": "التاريــــخ:\rالأحد 2026-10-15",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "الساعة: 21:00",
+      "y": 9072,
+      "text": "الساعة:\r21:00",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "Details",
+      "y": 8795,
+      "text": "Details",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Arabic-Light', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "Our Forever Begins",
+      "y": 6049,
+      "text": "Our Forever Begins",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Written in Love",
+      "y": 3885,
+      "text": "Written in Love",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "A promise for a lifetime.",
+      "y": 3955,
+      "text": "A promise for a lifetime.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Together",
+      "y": 6117,
+      "text": "Together",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    },
+    {
+      "name": "بـكـل حـب و ود يـتـشـرف",
+      "y": 3951,
+      "text": "بـكـل حـب و ود يـتـشـرف",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoMedium-Medium', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "السيد",
+      "y": 4011,
+      "text": "السيد",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "الحاج",
+      "y": 4011,
+      "text": "الحاج",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "بسام سلامه",
+      "y": 4059,
+      "text": "بسام سلامه",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "معتصم الرز",
+      "y": 4059,
+      "text": "معتصم الرز",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoBold-Bold', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "بــدعـوتـكـم لـحـضـور حفل زفـــــــاف ولـديـهـمـا",
+      "y": 4135,
+      "text": "بــدعـوتـكـم لـحـضـور حفل زفـــــــاف ولـديـهـمـا",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'GESSTwoMedium-Medium', 'Script': 5, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        54.21
+      ]
+    },
+    {
+      "name": "Our Forever Begins",
+      "y": 6079,
+      "text": "Our Forever Begins",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Written in Love",
+      "y": 3759,
+      "text": "Written in Love",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "A promise for a lifetime.",
+      "y": 3829,
+      "text": "A promise for a lifetime.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Together",
+      "y": 6147,
+      "text": "Together",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    },
+    {
+      "name": "Our Forever Begins",
+      "y": 2746,
+      "text": "Our Forever Begins",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Written in Love",
+      "y": 426,
+      "text": "Written in Love",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-SemiBold', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "A promise for a lifetime.",
+      "y": 496,
+      "text": "A promise for a lifetime.",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'Montserrat-Regular', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        51.97
+      ]
+    },
+    {
+      "name": "Together",
+      "y": 2814,
+      "text": "Together",
+      "fonts": [
+        "{'Name': 'AdobeInvisFont', 'Script': 0, 'FontType': 0, 'Synthetic': 0}",
+        "{'Name': 'CreattionDemo', 'Script': 0, 'FontType': 1, 'Synthetic': 0}",
+        "{'Name': 'MyriadArabic-Regular', 'Script': 5, 'FontType': 0, 'Synthetic': 0}"
+      ],
+      "font_sizes": [
+        59.0
+      ]
+    }
+  ]
+}

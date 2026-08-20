@@ -9,6 +9,7 @@ import SceneOrnament from "@/components/ui/SceneOrnament";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, getCardStyles, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import PsdWeddingNotes from "@/components/invitation/variants/psd-wedding-01/PsdWeddingNotes";
 
 interface Props {
   scene: InvitationScene;
@@ -182,6 +183,7 @@ export default function NotesScene({ scene, config }: Props) {
   const p = { scene, config, content, d };
 
   switch (scene.variant) {
+    case "psd_wedding_notes": return <PsdWeddingNotes scene={scene} config={config} />;
     case "elegant_cards": return <ElegantCards {...p} />;
     case "hidden": return <HiddenNotes />;
     default: return <SimpleList {...p} />;

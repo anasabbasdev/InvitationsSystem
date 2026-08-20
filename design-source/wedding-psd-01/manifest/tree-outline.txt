@@ -1,0 +1,211 @@
+
+=== Background [pixel] vis=True x=0 y=0 w=1540 h=20000 children=0
+
+=== 4 [group] vis=True x=-791 y=0 w=4202 h=20180 children=12
+  - Color Fill 3 [solidcolorfill] vis=True x=0 y=0 w=1540 h=20000
+  - Vector Smart Object [smartobject] vis=True x=-58 y=17440 w=1639 h=2457
+  - Vector Smart Object [smartobject] vis=True x=-791 y=18874 w=1540 h=1306
+  - Vector Smart Object copy 4 [smartobject] vis=True x=1318 y=17790 w=1320 h=1707
+  - OUR [type] vis=True x=726 y=9469 w=87 h=23
+  - Moments [type] vis=True x=576 y=9503 w=437 h=163
+  - BACKGROUND [group] vis=True x=-678 y=8539 w=4089 h=3469
+      · Shadow [smartobject] vis=True x=-678 y=8539 w=4089 h=3469
+  - FRAME 3 [group] vis=True x=147 y=10300 w=662 h=479
+      · Frame 3b [shape] vis=True x=196 y=10309 w=613 h=470
+      · Frame 3 [shape] vis=True x=216 y=10329 w=575 h=433
+      · Your Image Here [smartobject] vis=True x=-76 y=10157 w=1183 h=790
+      · Tape 3 [smartobject] vis=True x=147 y=10300 w=185 h=163
+  - FRAME 2 [group] vis=True x=739 y=10275 w=607 h=570
+      · Frame 2b [shape] vis=True x=793 y=10300 w=553 h=545
+      · Frame 2  [shape] vis=True x=810 y=10319 w=518 h=506
+      · Your Image Here [smartobject] vis=True x=791 y=10267 w=555 h=694
+      · Tape 2b [smartobject] vis=True x=739 y=10398 w=135 h=119
+      · Tape 2a [smartobject] vis=True x=776 y=10275 w=197 h=118
+  - FRAME 1 [group] vis=True x=238 y=9696 w=558 h=576
+      · Frame 1 [shape] vis=True x=238 y=9733 w=558 h=539
+      · Frame 1 copy [shape] vis=True x=256 y=9751 w=521 h=503
+      · Your Image Here [smartobject] vis=True x=260 y=9702 w=534 h=667
+      · Tape 1 [smartobject] vis=True x=380 y=9696 w=255 h=77
+  - TEXT [group] vis=True x=850 y=9769 w=517 h=477
+      · Brush  [pixel] vis=True x=850 y=10010 w=517 h=236
+      · Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do [type] vis=True x=873 y=9769 w=452 h=155
+      · Best [type] vis=True x=982 y=10010 w=275 h=122
+      · Moment [type] vis=True x=908 y=10045 w=327 h=166
+  - ORNAMENT [group] vis=True x=100 y=9838 w=1323 h=1084
+      · Doodle [pixel] vis=True x=100 y=9838 w=1192 h=1084
+      · Dragonfly [pixel] vis=True x=581 y=10653 w=232 h=211
+      · Layer 11 [smartobject] vis=True x=1265 y=10064 w=158 h=212
+
+=== 5 [group] vis=True x=0 y=10913 w=1540 h=2252 children=6
+  - EVENT [type] vis=True x=705 y=11248 w=134 h=21
+  - Timeline [type] vis=True x=591 y=11286 w=357 h=159
+  - Group 5 [group] vis=True x=275 y=12321 w=1025 h=844
+      · Our Luxury [type] vis=True x=632 y=12321 w=278 h=23
+      · Wedding Hall [type] vis=True x=369 y=12361 w=828 h=181
+      · Layer 13 copy [pixel] vis=True x=275 y=12579 w=990 h=586
+      · Layer 13 [pixel] vis=True x=297 y=12598 w=946 h=542
+      · Layer 14 [pixel] vis=True x=1120 y=12980 w=180 h=155
+  - Group 4 [group] vis=True x=202 y=11418 w=361 h=872
+      · Rectangle 1 [shape] vis=True x=213 y=11418 w=4 h=872
+      · Rectangle 2 [shape] vis=True x=206 y=11481 w=18 h=23
+      · Rectangle 2 copy 5 [shape] vis=True x=202 y=11476 w=26 h=33
+      · Rectangle 2 copy 6 [shape] vis=True x=202 y=11631 w=26 h=33
+      · Rectangle 2 copy 7 [shape] vis=True x=202 y=11787 w=26 h=33
+      · Rectangle 2 copy 8 [shape] vis=True x=202 y=11942 w=26 h=33
+      · Rectangle 2 copy 9 [shape] vis=True x=202 y=12099 w=26 h=33
+      · Rectangle 2 copy [shape] vis=True x=206 y=11636 w=18 h=23
+      · Rectangle 2 copy 2 [shape] vis=True x=206 y=11792 w=18 h=22
+      · Rectangle 2 copy 3 [shape] vis=True x=206 y=11947 w=18 h=23
+      · Rectangle 2 copy 4 [shape] vis=True x=206 y=12104 w=18 h=22
+      · 15:00 WELCOME RECEPTION Cocktails & sweets  17:00 NIKAH CEREMON [type] vis=True x=265 y=11484 w=298 h=758
+  - Group 4 copy [group] vis=True x=956 y=11418 w=402 h=872
+      · Rectangle 1 [shape] vis=True x=1343 y=11418 w=4 h=872
+      · Rectangle 2 [shape] vis=True x=1336 y=11481 w=18 h=23
+      · Rectangle 2 copy [shape] vis=True x=1336 y=11636 w=18 h=23
+      · Rectangle 2 copy 2 [shape] vis=True x=1336 y=11792 w=18 h=22
+      · Rectangle 2 copy 5 [shape] vis=True x=1332 y=11476 w=26 h=33
+      · Rectangle 2 copy 6 [shape] vis=True x=1332 y=11631 w=26 h=33
+      · Rectangle 2 copy 7 [shape] vis=True x=1332 y=11787 w=26 h=33
+      · Rectangle 2 copy 8 [shape] vis=True x=1332 y=11942 w=26 h=33
+      · Rectangle 2 copy 9 [shape] vis=True x=1332 y=12099 w=26 h=33
+      · Rectangle 2 copy 3 [shape] vis=True x=1336 y=11947 w=18 h=23
+      · Rectangle 2 copy 4 [shape] vis=True x=1336 y=12104 w=18 h=22
+      · 15:00 حفل الاستقبال كوكتيلات وحلويات  17:00 عقد القِران مراسم د [type] vis=True x=956 y=11484 w=344 h=722
+  - Layer 12 [pixel] vis=True x=0 y=10913 w=1540 h=307
+
+=== 6 [group] vis=True x=-407 y=12409 w=3377 h=8965 children=24
+  - Vector Smart Object [smartobject] vis=True x=-252 y=12409 w=2002 h=8965
+  - تفاصيل التذكرة تظهر في صفحة الحالة الخاصة بعد موافقة المضيف. [type] vis=True x=315 y=18476 w=911 h=35
+  - Color Fill 4 [solidcolorfill] vis=True x=0 y=19899 w=1540 h=101
+  - تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك ا [type] vis=True x=-407 y=19936 w=1669 h=35
+  - تم تصميم هذه الدعوة بشكل خاص وبواسطة موقع مراسيم  .  لمناسبتك ا [type] vis=True x=1279 y=19936 w=1691 h=35
+  - Layer 15 [pixel] vis=True x=0 y=12592 w=1540 h=5001
+  - Vector Smart Object [smartobject] vis=True x=-113 y=13228 w=1689 h=422
+  - Vector Smart Object copy [smartobject] vis=True x=-86 y=13260 w=1635 h=365
+  - Vector Smart Object [smartobject] vis=True x=-86 y=13277 w=1635 h=365
+  - Layer 2 (merged) [pixel] vis=True x=0 y=12409 w=1540 h=7591
+  - IMPORTANT NOTES [type] vis=True x=531 y=13646 w=479 h=25
+  - ملاحظات مهمة [type] vis=True x=657 y=13701 w=229 h=31
+  - • نرجو التكرم بعدم اصطحاب الأطفال • يُمنع التصوير حفاظاً على خص [type] vis=True x=574 y=13858 w=393 h=179
+  - • Kindly refrain from bringing children • Photography is not pe [type] vis=True x=420 y=14096 w=701 h=172
+  - Vector Smart Object [smartobject] vis=True x=653 y=13793 w=233 h=9
+  - Vector Smart Object copy 2 [smartobject] vis=True x=653 y=15760 w=233 h=9
+  - Layer 19 [pixel] vis=True x=0 y=13152 w=647 h=1547
+  - Layer 19 copy [pixel] vis=True x=887 y=13152 w=653 h=1546
+  - 2 sides luxury curtians left and right [smartobject] vis=True x=0 y=13265 w=1540 h=1501
+  - • نرجو التكرم بعدم اصطحاب الأطفال • يُمنع التصوير حفاظاً على خص [type] vis=False x=911 y=13732 w=469 h=215
+  - • Kindly refrain from bringing children • Photography is not pe [type] vis=False x=128 y=13734 w=712 h=203
+  - Group 6 [group] vis=True x=263 y=14601 w=1012 h=1519
+      · Location on the map [type] vis=True x=473 y=14601 w=593 h=25
+      · موقـــــــــــع المناســــــــــــبة [type] vis=True x=597 y=14683 w=347 h=33
+      · نرجو ملئ المعلومات لتأكيد الحضور [type] vis=True x=533 y=16085 w=472 h=35
+      · Layer 20 [pixel] vis=True x=401 y=14973 w=726 h=469
+      · Layer 21 [pixel] vis=True x=357 y=14958 w=821 h=484
+      · Layer 22 [smartobject] vis=True x=263 y=14810 w=1012 h=793
+      · Layer 23 [pixel] vis=True x=654 y=15314 w=232 h=55
+      · فتح الخريطة [type] vis=True x=707 y=15330 w=128 h=25
+  - Vector Smart Object [smartobject] vis=False x=1234 y=15134 w=649 h=1054
+  - Vector Smart Object [smartobject] vis=True x=380 y=15873 w=779 h=162
+
+=== 7 [group] vis=True x=374 y=16272 w=793 h=1344 children=22
+  - Vector Smart Object copy 3 [smartobject] vis=True x=374 y=16272 w=793 h=1344
+  - Vector Smart Object [smartobject] vis=True x=399 y=16299 w=743 h=1289
+  - Layer 24 [pixel] vis=True x=291 y=16253 w=923 h=1372
+  - تأكيد الحضور [type] vis=True x=581 y=16510 w=365 h=73
+  - Rectangle 3 copy [shape] vis=True x=450 y=16667 w=638 h=92
+  - Rectangle 3 [shape] vis=True x=450 y=16667 w=638 h=92
+  - Rectangle 3 copy 4 [shape] vis=True x=450 y=16906 w=638 h=92
+  - Rectangle 3 copy 4 [shape] vis=True x=450 y=16906 w=638 h=92
+  - Rectangle 3 copy 5 [shape] vis=True x=450 y=17025 w=638 h=216
+  - Rectangle 3 copy 5 [shape] vis=True x=450 y=17025 w=638 h=216
+  - الاسم الكريم:  ............................................ [type] vis=True x=475 y=16699 w=590 h=27
+  - 1 شخص [type] vis=True x=978 y=16941 w=87 h=24
+  - ملاحظات (اختياري) [type] vis=True x=873 y=17054 w=192 h=29
+  - Triangle 1 [shape] vis=True x=506 y=16948 w=24 h=21
+  - Rectangle 3 copy 2 [shape] vis=True x=450 y=16786 w=144 h=92
+  - Rectangle 3 copy 2 [shape] vis=True x=450 y=16786 w=144 h=92
+  - Rectangle 3 copy 3 [shape] vis=True x=606 y=16786 w=482 h=92
+  - Rectangle 3 copy 3 [shape] vis=True x=606 y=16786 w=482 h=92
+  - +971 [type] vis=True x=494 y=16823 w=48 h=17
+  - 0000 000 000 [type] vis=True x=880 y=16823 w=186 h=17
+  - Rectangle 4 [shape] vis=True x=560 y=17292 w=440 h=86
+  - تأكيد الحضور [type] vis=True x=708 y=17319 w=145 h=28
+
+=== 8 [group] vis=True x=524 y=17826 w=492 h=528 children=1
+  - Layer 25 [smartobject] vis=True x=524 y=17826 w=492 h=528
+
+=== 3 [group] vis=True x=-1537 y=1218 w=5132 h=8965 children=17
+  - Vector Smart Object [smartobject] vis=True x=-249 y=1218 w=2002 h=8965
+  - Layer 2 [pixel] vis=True x=0 y=5000 w=1540 h=5001
+  - Vector Smart Object [smartobject] vis=True x=632 y=7164 w=278 h=336
+  - Layer 8 [pixel] vis=True x=953 y=8742 w=587 h=114
+  - Layer 8 copy [pixel] vis=True x=0 y=8744 w=608 h=114
+  - Layer 7 [smartobject] vis=True x=50 y=6982 w=1427 h=1855
+  - create fance countdown timer [smartobject] vis=False x=398 y=7644 w=758 h=503
+  - Group 3 [group] vis=True x=397 y=7760 w=759 h=504
+      · create fance countdown timer copy [smartobject] vis=True x=397 y=7760 w=759 h=504
+      · create fance countdown timer copy 2 [smartobject] vis=True x=397 y=7760 w=759 h=504
+  - وذلـك فـي يـوم الـثلاثــــــــــــاء 16 يونيو الساعــــــــة 6  [type] vis=True x=551 y=7647 w=436 h=71
+  - Flower [smartobject] vis=True x=-1537 y=4736 w=2366 h=3005
+  - Flower [smartobject] vis=True x=1049 y=6819 w=2546 h=2645
+  - On Tuesday June 16th، at 6:00 PM, we look forward to welcoming  [type] vis=True x=502 y=8284 w=596 h=201
+  - Vector Smart Object [smartobject] vis=True x=-74 y=8947 w=1688 h=513
+  - Vector Smart Object copy [smartobject] vis=True x=-47 y=8967 w=1635 h=365
+  - Vector Smart Object [smartobject] vis=True x=-47 y=8951 w=1635 h=365
+  - Layer 2 (merged) [pixel] vis=True x=0 y=4597 w=1540 h=5587
+  - Group 2 [group] vis=True x=243 y=8794 w=1034 h=337
+      · التفاصيــــــــــــ                     ـــــــــــــل [type] vis=True x=581 y=8794 w=376 h=28
+      · العنوان: قصر الأميرة - دبي [type] vis=True x=883 y=9072 w=157 h=59
+      · التاريــــخ: الأحد 2026-10-15 [type] vis=True x=462 y=9072 w=162 h=51
+      · الساعة: 21:00 [type] vis=True x=726 y=9072 w=64 h=51
+      · Details [type] vis=True x=691 y=8795 w=96 h=22
+      · Layer 9 [smartobject] vis=True x=243 y=8909 w=1034 h=118
+      · Layer 10 [smartobject] vis=True x=494 y=8913 w=528 h=104
+
+=== 2 copy [group] vis=True x=-83 y=3104 w=1706 h=3951 children=21
+  - Layer 1 [smartobject] vis=True x=-83 y=3381 w=1706 h=3333
+  - Color Fill 1 [solidcolorfill] vis=True x=0 y=3333 w=1540 h=1872
+  - Layer 5 [smartobject] vis=True x=-83 y=3128 w=1706 h=3871
+  - Layer 4 [smartobject] vis=True x=-55 y=3104 w=1626 h=3951
+  - Vector Smart Object [smartobject] vis=False x=622 y=4068 w=299 h=362
+  - Vector Smart Object [smartobject] vis=True x=417 y=3736 w=706 h=153
+  - Our Forever Begins [type] vis=True x=490 y=6049 w=561 h=26
+  - Written in Love [type] vis=False x=544 y=3885 w=451 h=25
+  - A promise for a lifetime. [type] vis=False x=414 y=3955 w=714 h=26
+  - Together [type] vis=True x=542 y=6117 w=458 h=207
+  - Vector Smart Object [smartobject] vis=True x=656 y=5800 w=228 h=52
+  - Group 1 [group] vis=True x=-11 y=4808 w=962 h=1119
+      · add 2 golden rings top view [smartobject] vis=True x=-11 y=4808 w=962 h=1119
+      · Color Fill 2 [solidcolorfill] vis=True x=0 y=0 w=1540 h=20000
+      · Layer 6 [pixel] vis=True x=216 y=5194 w=511 h=312
+  - بـكـل حـب و ود يـتـشـرف [type] vis=True x=582 y=3951 w=360 h=37
+  - السيد [type] vis=True x=977 y=4011 w=68 h=24
+  - الحاج [type] vis=True x=492 y=4011 w=60 h=24
+  - بسام سلامه [type] vis=True x=911 y=4059 w=207 h=31
+  - معتصم الرز [type] vis=True x=412 y=4059 w=198 h=31
+  - بــدعـوتـكـم لـحـضـور حفل زفـــــــاف ولـديـهـمـا [type] vis=True x=409 y=4135 w=703 h=34
+  - Vector Smart Object [smartobject] vis=True x=471 y=4237 w=186 h=206
+  - Vector Smart Object [smartobject] vis=True x=565 y=4124 w=516 h=504
+  - Vector Smart Object [smartobject] vis=True x=829 y=4241 w=243 h=198
+
+=== 2 [group] vis=False x=0 y=0 w=0 h=0 children=6
+  - Layer 1 [smartobject] vis=True x=-83 y=3256 w=1706 h=3333
+  - Our Forever Begins [type] vis=True x=490 y=6079 w=561 h=26
+  - Written in Love [type] vis=True x=544 y=3759 w=451 h=25
+  - A promise for a lifetime. [type] vis=True x=414 y=3829 w=714 h=26
+  - Together [type] vis=True x=542 y=6147 w=458 h=207
+  - Vector Smart Object [smartobject] vis=True x=656 y=5830 w=228 h=52
+
+=== 1 [group] vis=True x=-83 y=-347 w=1706 h=3871 children=6
+  - Layer 3 [smartobject] vis=True x=-83 y=-347 w=1706 h=3871
+  - Our Forever Begins [type] vis=True x=490 y=2746 w=561 h=26
+  - Written in Love [type] vis=True x=544 y=426 w=451 h=25
+  - A promise for a lifetime. [type] vis=True x=414 y=496 w=714 h=26
+  - Together [type] vis=True x=542 y=2814 w=458 h=207
+  - Vector Smart Object [smartobject] vis=True x=656 y=2497 w=228 h=52
+
+=== Vector Smart Object [smartobject] vis=False x=502 y=5885 w=536 h=53 children=0
+
+=== Vector Smart Object [smartobject] vis=False x=355 y=5888 w=831 h=30 children=0
+
+=== Vector Smart Object [smartobject] vis=False x=686 y=14081 w=618 h=1044 children=0

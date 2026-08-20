@@ -11,6 +11,7 @@ import { wsFloralConfig } from "@/data/demo-invitations/ws-floral";
 import { wsMinimalConfig } from "@/data/demo-invitations/ws-minimal";
 import { wsShortConfig } from "@/data/demo-invitations/ws-short";
 import { wsGalleryRepeatConfig } from "@/data/demo-invitations/ws-gallery-repeat";
+import { mhmdLaraConfig } from "@/data/demo-invitations/mhmd-lara";
 
 // Re-export both builders so callers only need one import
 export { buildInvitationConfig, buildInvitationConfigV2, createPublishedSnapshot } from "@/lib/build-config";
@@ -46,6 +47,8 @@ const INVITATION_REGISTRY: Record<string, InvitationConfig> = {
 
   // Repeated SceneType proof:
   "ws-gallery-repeat-demo": wsGalleryRepeatConfig, // gallery_media × 2 with different IDs
+
+  "mhmd_lara": mhmdLaraConfig,
 };
 
 export function getInvitationFromRegistry(slug: string): InvitationConfig | null {

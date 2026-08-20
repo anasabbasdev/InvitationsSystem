@@ -60,6 +60,20 @@ export async function fetchEventBySlug(slug: string): Promise<DbEventRow | null>
   return data as DbEventRow | null;
 }
 
+/** Title search for owner-account recovery. Empty or overly broad queries return []. */
+export async function findEventsByTitleHint(hint: string): Promise<DbEventRow[]> {
+  const q = hint.trim();
+  if (q.length < 3) return [];
+  const { data, error } = await createSupabaseAdminClient()
+    .from("events")
+    .select("*")
+    .ilike("title", `%${q}%`)
+    .limit(5);
+
+  if (error) throw error;
+  return (data ?? []) as DbEventRow[];
+}
+
 export async function fetchEventById(id: string): Promise<DbEventRow | null> {
   const { data, error } = await createSupabaseAdminClient()
     .from("events")

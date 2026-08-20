@@ -1,0 +1,91 @@
+{
+  "document": {
+    "width": 1540,
+    "height": 20000,
+    "scale": 4,
+    "designWidth": 385,
+    "designHeight": 5000,
+    "targetViewport": 390,
+    "extractionMethod": "psd-tools 1.18.0",
+    "photoshopAvailable": false
+  },
+  "sections": [
+    {
+      "id": "01-opening-reference",
+      "scene": "opening_card",
+      "y": 0,
+      "height": 3333,
+      "notes": "PSD group 1 card — Written in Love / Together. Opening VIDEO is a separate gate."
+    },
+    {
+      "id": "02-invitation-reference",
+      "scene": "invitation_message",
+      "y": 3333,
+      "height": 1475,
+      "notes": "Hosts Bassam Salameh & Mutasim Al-Rez, invitation wording, name calligraphy smart objects"
+    },
+    {
+      "id": "03-names-reference",
+      "scene": "hero_names",
+      "y": 4808,
+      "height": 1592,
+      "notes": "Golden rings + Our Forever Begins / Together"
+    },
+    {
+      "id": "04-countdown-reference",
+      "scene": "countdown",
+      "y": 6400,
+      "height": 2100,
+      "notes": "Florals + fancy countdown timer smart object + Arabic/English date lines"
+    },
+    {
+      "id": "05-details-reference",
+      "scene": "event_details",
+      "y": 8500,
+      "height": 969,
+      "notes": "التفاصيل / Details with venue, date, time"
+    },
+    {
+      "id": "06-gallery-reference",
+      "scene": "gallery_media",
+      "y": 9469,
+      "height": 1444,
+      "notes": "OUR Moments polaroid frames + tapes + ornaments"
+    },
+    {
+      "id": "07-program-reference",
+      "scene": "program",
+      "y": 10913,
+      "height": 2337,
+      "notes": "EVENT Timeline bilingual rails + luxury hall photo card"
+    },
+    {
+      "id": "08-notes-reference",
+      "scene": "notes",
+      "y": 13250,
+      "height": 1351,
+      "notes": "IMPORTANT NOTES / ملاحظات مهمة + curtains"
+    },
+    {
+      "id": "09-location-reference",
+      "scene": "location",
+      "y": 14601,
+      "height": 1484,
+      "notes": "موقع المناسبة + map frame + فتح الخريطة"
+    },
+    {
+      "id": "10-rsvp-reference",
+      "scene": "rsvp",
+      "y": 16085,
+      "height": 1741,
+      "notes": "تأكيد الحضور form chrome"
+    },
+    {
+      "id": "11-closing-reference",
+      "scene": "ticket_confirmation",
+      "y": 17826,
+      "height": 2174,
+      "notes": "Bouquet / monogram + Marasim brand line"
+    }
+  ]
+}

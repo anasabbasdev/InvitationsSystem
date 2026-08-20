@@ -47,8 +47,15 @@ After seed: `.seed-data.local` (demo URLs) and `.preview-tokens.local` (draft pr
 
 RLS enabled on all tables. No anon/authenticated policies — all access via **service role** on the server after auth checks in `lib/auth.ts`.
 
-## Demo owner
+## Owner password reset
 
-Default after seed: `owner@marasim.local` / `MarasimDemo123!` (override via env).
+Arabic step-by-step SMTP + recovery guide:
+
+**[docs/supabase-smtp-ar.md](../docs/supabase-smtp-ar.md)**
+
+- Local set/reset (no email needed): `npm run owner:set-password -- you@email.com`
+- In-app recover: `/owner/forgot-password` and `/owner/forgot-account`
+- SMTP is configured in the Supabase dashboard only — never in `.env` or git
+- IMAP is not required
 
 See `docs/mvp-manual-test-guide.md` for end-to-end scenarios.

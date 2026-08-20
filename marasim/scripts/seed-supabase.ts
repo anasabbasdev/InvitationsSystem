@@ -17,22 +17,27 @@ import { loadProjectEnv } from "@/lib/env/load-dotenv";
 import { weddingStandardBlueprint } from "@/data/blueprints/wedding-standard.blueprint";
 import { weddingShortBlueprint } from "@/data/blueprints/wedding-short.blueprint";
 import { galleryRepeatAcceptanceBlueprint } from "@/data/blueprints/gallery-repeat-acceptance.blueprint";
+import { psdWedding01Blueprint } from "@/data/blueprints/psd-wedding-01.blueprint";
 import { weddingRoyalDarkPreset } from "@/data/presets/wedding-royal-dark.preset";
 import { weddingCinematicFloralPreset } from "@/data/presets/wedding-cinematic-floral.preset";
 import { weddingMinimalModernPreset } from "@/data/presets/wedding-minimal-modern.preset";
 import { galleryRepeatAcceptancePreset } from "@/data/presets/gallery-repeat-acceptance.preset";
+import { psdWedding01Preset } from "@/data/presets/psd-wedding-01.preset";
 import { wsRoyalDemoData } from "@/data/invitations/ws-royal-demo";
 import { wsFloralDemoData } from "@/data/invitations/ws-floral-demo";
 import { wsMinimalDemoData } from "@/data/invitations/ws-minimal-demo";
 import { wsShortDemoData } from "@/data/invitations/ws-short-demo";
 import { wsGalleryRepeatDemoData } from "@/data/invitations/ws-gallery-repeat-demo";
+import { mhmdLaraData } from "@/data/invitations/mhmd-lara";
 import { buildInvitationConfigV2, createPublishedSnapshot } from "@/lib/build-config";
 import { generatePreviewToken, hashPreviewToken } from "@/lib/preview-token";
 import { assertSupabaseAdminEnv } from "@/lib/supabase/env";
 import {
+  addEventOwner,
   createSnapshot,
   fetchInvitationBySlug,
   listSnapshotsForInvitation,
+  republishInvitation,
   setInvitationEventId,
   setInvitationPreviewTokenHash,
   setInvitationPublishedSnapshot,
@@ -42,6 +47,7 @@ import {
   upsertInvitation,
   upsertPreset,
 } from "@/lib/repositories";
+import { createSupabaseAdminClient } from "@/lib/supabase/create-admin-client";
 import type { DesignPreset, InvitationData, SequenceBlueprint } from "@/types/invitation";
 import { seedOperationalDemoData } from "./seed-demo-operational";
 
@@ -52,6 +58,8 @@ type SeedInvitation = {
   blueprint: SequenceBlueprint;
   preset: DesignPreset;
   publish?: boolean;
+  republish?: boolean;
+  ownerEmail?: string;
 };
 
 const PREVIEW_TOKENS_FILE = resolve(process.cwd(), ".preview-tokens.local");
@@ -60,6 +68,7 @@ const BLUEPRINTS: SequenceBlueprint[] = [
   weddingStandardBlueprint,
   weddingShortBlueprint,
   galleryRepeatAcceptanceBlueprint,
+  psdWedding01Blueprint,
 ];
 
 const PRESETS: Array<{
@@ -70,6 +79,7 @@ const PRESETS: Array<{
   { preset: weddingCinematicFloralPreset, compatibleBlueprintId: "wedding-standard" },
   { preset: weddingMinimalModernPreset, compatibleBlueprintId: "wedding-standard" },
   { preset: galleryRepeatAcceptancePreset, compatibleBlueprintId: "gallery-repeat-acceptance" },
+  { preset: psdWedding01Preset, compatibleBlueprintId: "psd-wedding-01" },
 ];
 
 const INVITATIONS: SeedInvitation[] = [
@@ -78,6 +88,14 @@ const INVITATIONS: SeedInvitation[] = [
   { data: wsMinimalDemoData, blueprint: weddingStandardBlueprint, preset: weddingMinimalModernPreset },
   { data: wsShortDemoData, blueprint: weddingShortBlueprint, preset: weddingRoyalDarkPreset },
   { data: wsGalleryRepeatDemoData, blueprint: galleryRepeatAcceptanceBlueprint, preset: galleryRepeatAcceptancePreset },
+  {
+    data: mhmdLaraData,
+    blueprint: psdWedding01Blueprint,
+    preset: psdWedding01Preset,
+    publish: true,
+    republish: true,
+    ownerEmail: "anas.hub95@gmail.com",
+  },
 ];
 
 type SeedAction = "created" | "updated" | "skipped";
@@ -112,6 +130,18 @@ function appendPreviewToken(slug: string, token: string) {
   appendFileSync(PREVIEW_TOKENS_FILE, line, "utf8");
 }
 
+async function assignExistingOwner(eventId: string, email: string) {
+  const admin = createSupabaseAdminClient();
+  const { data: list } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  const owner = list.users.find((u) => u.email === email);
+  if (!owner) {
+    console.log(`  ! owner ${email} not found — link the event after the customer account exists`);
+    return;
+  }
+  await addEventOwner(eventId, owner.id);
+  logAction("owner", email, "updated", eventId);
+}
+
 function eventTitleFromData(data: InvitationData): string {
   const hero = data.content.hero_names;
   if (hero?.primaryName && hero?.secondaryName) {
@@ -127,9 +157,14 @@ async function ensureEventForInvitation(data: InvitationData): Promise<string | 
   const { event } = await upsertEventWithSettings({
     slug: data.slug,
     title: eventTitleFromData(data),
-    eventDate: details?.date ? `${details.date}T00:00:00+03:00` : null,
+    eventDate: details?.date
+      ? data.slug === "mhmd_lara"
+        ? `${details.date}T21:00:00+04:00`
+        : `${details.date}T00:00:00+03:00`
+      : null,
     venueName: details?.venueName ?? null,
-    totalCapacity: data.slug === "ws-royal-demo" ? 50 : data.slug === "ws-floral-demo" ? 30 : null,
+    totalCapacity:
+      data.slug === "ws-royal-demo" ? 50 : data.slug === "ws-floral-demo" ? 30 : data.slug === "mhmd_lara" ? 150 : null,
     rsvpEnabled: data.rsvp.enabled,
     rsvpMode: data.rsvp.mode,
     maxPublicRequest: data.rsvp.maxPublicRequest ?? 4,
@@ -199,6 +234,9 @@ async function main() {
     const eventId = await ensureEventForInvitation(entry.data);
     if (eventId) {
       logAction("event", slug, "updated", eventId);
+      if (entry.ownerEmail) {
+        await assignExistingOwner(eventId, entry.ownerEmail);
+      }
     }
 
     const existing = await fetchInvitationBySlug(slug);
@@ -208,6 +246,11 @@ async function main() {
       if (eventId && !existing.event_id) {
         await setInvitationEventId(existing.id, eventId);
         logAction("event_link", slug, "updated", eventId);
+      }
+      if (entry.republish) {
+        const published = await republishInvitation(slug);
+        logAction("invitation", slug, "updated", `republished snapshot ${published.snapshotId}`);
+        continue;
       }
       logAction("invitation", slug, "updated", "published — data only, snapshot preserved");
       continue;
@@ -287,7 +330,7 @@ async function main() {
   }
 
   console.log("\n── Done ──");
-  console.log("Published: /i/ws-royal-demo, /i/ws-floral-demo");
+  console.log("Published: /i/ws-royal-demo, /i/ws-floral-demo, /i/mhmd_lara");
   console.log("Owner login: /owner/login (see .seed-data.local)");
   console.log("Test Hub: /lab/test-hub (dev only)");
   console.log("RSVP status after submit: /s/[rsvp_view_token]");

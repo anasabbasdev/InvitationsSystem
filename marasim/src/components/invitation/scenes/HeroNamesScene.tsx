@@ -8,6 +8,7 @@ import LayerRenderer from "../LayerRenderer";
 import SceneOrnament from "@/components/ui/SceneOrnament";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import PsdWeddingNames from "@/components/invitation/variants/psd-wedding-01/PsdWeddingNames";
 
 interface Props {
   scene: InvitationScene;
@@ -302,6 +303,7 @@ export default function HeroNamesScene({ scene, config }: Props) {
   const p = { scene, config, content, d };
 
   switch (scene.variant) {
+    case "psd_wedding_names": return <PsdWeddingNames scene={scene} config={config} />;
     case "split_names": return <SplitNames {...p} />;
     case "single_name_centered": return <SingleNameCentered {...p} />;
     default: return <StackedCalligraphy {...p} />;

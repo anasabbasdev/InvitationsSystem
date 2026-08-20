@@ -9,6 +9,7 @@ import SceneOrnament from "@/components/ui/SceneOrnament";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, getCardStyles, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import PsdWeddingInvitationMessage from "@/components/invitation/variants/psd-wedding-01/PsdWeddingInvitationMessage";
 
 interface Props {
   scene: InvitationScene;
@@ -288,6 +289,7 @@ export default function InvitationMessageScene({ scene, config }: Props) {
   const p = { scene, config, content, d };
 
   switch (scene.variant) {
+    case "psd_wedding_message": return <PsdWeddingInvitationMessage scene={scene} config={config} />;
     case "full_bleed_text": return <FullBleedText {...p} />;
     case "minimal_quote": return <MinimalQuote {...p} />;
     default: return <ClassicCard {...p} />;

@@ -8,6 +8,7 @@ import LayerRenderer from "../LayerRenderer";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import PsdWeddingGallery from "@/components/invitation/variants/psd-wedding-01/PsdWeddingGallery";
 
 interface Props {
   scene: InvitationScene;
@@ -292,6 +293,7 @@ export default function GalleryMediaScene({ scene, config }: Props) {
   const p = { scene, config, content, d };
 
   switch (scene.variant) {
+    case "psd_wedding_gallery": return <PsdWeddingGallery scene={scene} config={config} />;
     case "full_bleed_media": return <FullBleedMedia {...p} />;
     case "polaroid_stack": return <PolaroidStack {...p} />;
     default: return <SingleCard {...p} />;

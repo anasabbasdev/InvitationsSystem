@@ -10,6 +10,8 @@ import SceneIcon from "@/components/ui/SceneIcon";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, getCardStyles, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import PsdWeddingDetails from "@/components/invitation/variants/psd-wedding-01/PsdWeddingDetails";
+import PsdWeddingProgram from "@/components/invitation/variants/psd-wedding-01/PsdWeddingProgram";
 
 interface Props {
   scene: InvitationScene;
@@ -338,6 +340,8 @@ export default function EventDetailsScene({ scene, config }: Props) {
   const p = { scene, config, content, d };
 
   switch (scene.variant) {
+    case "psd_wedding_details": return <PsdWeddingDetails scene={scene} config={config} />;
+    case "psd_wedding_program": return <PsdWeddingProgram scene={scene} config={config} />;
     case "timeline": return <Timeline {...p} />;
     case "minimal_rows": return <MinimalRows {...p} />;
     default: return <StackedCards {...p} />;

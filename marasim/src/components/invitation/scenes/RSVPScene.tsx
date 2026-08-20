@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { InvitationConfig, InvitationScene } from "@/types/invitation";
@@ -9,10 +9,12 @@ import SceneFrame from "../SceneFrame";
 import LayerRenderer from "../LayerRenderer";
 import SceneOrnament from "@/components/ui/SceneOrnament";
 import SectionLabel from "@/components/ui/SectionLabel";
-import PhoneInput, { defaultPhoneValue, phoneValueToRaw, type PhoneInputValue } from "@/components/ui/PhoneInput";
+import PhoneInput from "@/components/ui/PhoneInput";
 import RsvpSuccessPanel from "@/components/rsvp/RsvpSuccessPanel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, getButtonStyles, getCardStyles, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import { useRSVPForm } from "@/lib/use-rsvp-form";
+import PsdWeddingRsvp from "@/components/invitation/variants/psd-wedding-01/PsdWeddingRsvp";
 
 interface Props {
   scene: InvitationScene;
@@ -34,132 +36,6 @@ type VProps = {
   controlledMaxSeats?: number;
   controlledLabel?: string;
 };
-
-type FormState = { name: string; guests: string; note: string; phone: PhoneInputValue };
-
-type SubmitSuccess = {
-  guestCode: string;
-  status: string;
-  approvedSeats?: number | null;
-};
-
-function initialSuccessFromContext(ctx?: InviteLinkContext): SubmitSuccess | null {
-  if (ctx?.status === "already_confirmed" && ctx.guestView.found && ctx.guestView.guestCode) {
-    return {
-      guestCode: ctx.guestView.guestCode,
-      status: ctx.guestView.status ?? "confirmed",
-      approvedSeats: ctx.guestView.approvedSeats,
-    };
-  }
-  return null;
-}
-
-function useRSVPForm(
-  slug: string,
-  maxSeats: number,
-  options?: {
-    inviteToken?: string;
-    inviteLinkContext?: InviteLinkContext;
-  }
-) {
-  const [form, setForm] = useState<FormState>({
-    name: "",
-    guests: "1",
-    note: "",
-    phone: defaultPhoneValue(),
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<SubmitSuccess | null>(() =>
-    initialSuccessFromContext(options?.inviteLinkContext)
-  );
-
-  const seatOptions = Array.from({ length: Math.max(1, maxSeats) }, (_, i) => i + 1);
-  const isControlled = Boolean(options?.inviteToken);
-  const linkBlocked = options?.inviteLinkContext?.status === "invalid";
-  const linkDone = options?.inviteLinkContext?.status === "already_confirmed";
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (linkBlocked || linkDone) return;
-
-    setSubmitting(true);
-    setError(null);
-
-    const seats = Number.parseInt(form.guests, 10);
-
-    try {
-      const response = await fetch(
-        isControlled ? "/api/rsvp/controlled/confirm" : "/api/rsvp/public",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(
-            isControlled
-              ? {
-                  slug,
-                  inviteToken: options!.inviteToken,
-                  name: form.name.trim(),
-                  seats,
-                  phone: form.phone.national.trim()
-                    ? phoneValueToRaw(form.phone)
-                    : undefined,
-                }
-              : {
-                  slug,
-                  name: form.name.trim(),
-                  phone: phoneValueToRaw(form.phone),
-                  requestedSeats: seats,
-                  guestNote: form.note.trim() || undefined,
-                }
-          ),
-        }
-      );
-
-      const data = (await response.json()) as {
-        guestCode?: string;
-        status?: string;
-        error?: string;
-        code?: string;
-      };
-
-      if (!response.ok) {
-        setError(data.error ?? "تعذر إرسال الطلب. حاول مرة أخرى.");
-        return;
-      }
-
-      if (data.guestCode) {
-        setSuccess({
-          guestCode: data.guestCode,
-          status: data.status ?? (isControlled ? "confirmed" : "pending"),
-          approvedSeats: isControlled ? seats : undefined,
-        });
-      }
-    } catch {
-      setError("تعذر الاتصال بالخادم. تحقق من الاتصال وحاول مرة أخرى.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  return {
-    form,
-    submitting,
-    error,
-    success,
-    seatOptions,
-    handleChange,
-    handleSubmit,
-    setPhone: (phone: PhoneInputValue) => setForm((prev) => ({ ...prev, phone })),
-    isControlled,
-    linkBlocked,
-    linkDone,
-  };
-}
 
 function ControlledLinkNotice({
   message,
@@ -517,6 +393,16 @@ export default function RSVPScene({
   const p = { scene, config, content, d, inviteToken, inviteLinkContext, controlledMaxSeats, controlledLabel };
 
   switch (scene.variant) {
+    case "psd_wedding_rsvp":
+      return (
+        <PsdWeddingRsvp
+          scene={scene}
+          config={config}
+          inviteToken={inviteToken}
+          inviteLinkContext={inviteLinkContext}
+          controlledMaxSeats={controlledMaxSeats}
+        />
+      );
     case "minimal_form": return <MinimalForm {...p} />;
     case "hidden": return null;
     default: return <LuxuryForm {...p} />;

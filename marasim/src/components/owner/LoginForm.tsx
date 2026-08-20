@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createSupabaseBrowserClient, isBrowserSupabaseConfigured } from "@/lib/supabase/browser";
 
@@ -98,6 +99,14 @@ export default function LoginForm() {
       >
         {loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
       </button>
+      <div className="flex flex-col items-center gap-1 text-center text-sm text-stone-500">
+        <Link href="/owner/forgot-password" className="text-amber-700 hover:underline">
+          نسيت كلمة المرور؟
+        </Link>
+        <Link href="/owner/forgot-account" className="hover:text-stone-700 hover:underline">
+          نسيت البريد الإلكتروني؟
+        </Link>
+      </div>
     </form>
   );
 }

@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "db:seed": "tsx --tsconfig tsconfig.json scripts/seed-supabase.ts",
+    "owner:set-password": "tsx --tsconfig tsconfig.json scripts/set-owner-password.ts",
     "test:persistence": "tsx --test --tsconfig tsconfig.json scripts/test-persistence.mts",
     "test:mvp": "tsx --test --tsconfig tsconfig.json scripts/test-mvp.mts scripts/test-persistence.mts",
     "test": "npm run test:mvp",

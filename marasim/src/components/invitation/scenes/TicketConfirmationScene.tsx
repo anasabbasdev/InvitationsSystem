@@ -8,6 +8,7 @@ import LayerRenderer from "../LayerRenderer";
 import SceneOrnament from "@/components/ui/SceneOrnament";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import PsdWeddingClosing from "@/components/invitation/variants/psd-wedding-01/PsdWeddingClosing";
 
 interface Props {
   scene: InvitationScene;
@@ -283,6 +284,7 @@ export default function TicketConfirmationScene({ scene, config }: Props) {
   const p = { scene, config, content, d, isRSVPEnabled };
 
   switch (scene.variant) {
+    case "psd_wedding_closing": return <PsdWeddingClosing scene={scene} config={config} />;
     case "minimal_thank_you": return <MinimalThankYou {...p} />;
     case "brand_signature": return <BrandSignature {...p} />;
     default: return <ClosingLuxury {...p} />;

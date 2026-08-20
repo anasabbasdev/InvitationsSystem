@@ -46,6 +46,15 @@ body {
   display: none;
 }
 
+/* Opening video fills the invitation player, not the padded scene column */
+.inv-root .inv-opening-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
 /* Text selection color inside invitations */
 .inv-root ::selection {
   background-color: rgba(201, 162, 77, 0.28);

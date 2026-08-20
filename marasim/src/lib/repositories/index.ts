@@ -38,6 +38,7 @@ export {
   mapEventRow,
   mapEventSettingsRow,
   fetchEventBySlug,
+  findEventsByTitleHint,
   fetchEventById,
   fetchEventByScannerToken,
   fetchEventSettings,

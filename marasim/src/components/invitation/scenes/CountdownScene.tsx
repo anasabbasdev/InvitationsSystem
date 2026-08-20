@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { InvitationConfig, InvitationScene } from "@/types/invitation";
 import SceneFrame from "../SceneFrame";
@@ -9,6 +9,8 @@ import SceneOrnament from "@/components/ui/SceneOrnament";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { renderMediaSceneIfNeeded } from "@/lib/render-media-scene";
 import { resolveDesign, hexToRgbString, resolveFont, type ResolvedDesign } from "@/lib/scene-design";
+import { useCountdown } from "@/lib/use-countdown";
+import PsdWeddingCountdown from "@/components/invitation/variants/psd-wedding-01/PsdWeddingCountdown";
 
 interface Props {
   scene: InvitationScene;
@@ -18,35 +20,7 @@ interface Props {
 type Content = { targetDate?: string; sectionLabel?: string };
 type VProps = { scene: InvitationScene; config: InvitationConfig; content: Content; d: ResolvedDesign };
 
-type TimeLeft = { days: number; hours: number; minutes: number; seconds: number };
-
-function calcTimeLeft(target: string): TimeLeft | null {
-  const diff = new Date(target).getTime() - Date.now();
-  if (isNaN(diff) || diff <= 0) return null;
-  return {
-    days: Math.floor(diff / 86_400_000),
-    hours: Math.floor((diff % 86_400_000) / 3_600_000),
-    minutes: Math.floor((diff % 3_600_000) / 60_000),
-    seconds: Math.floor((diff % 60_000) / 1_000),
-  };
-}
-
 const UNIT_LABELS: Record<string, string> = { days: "يوم", hours: "ساعة", minutes: "دقيقة", seconds: "ثانية" };
-
-function useCountdown(targetDate: string | undefined) {
-  const [tl, setTl] = useState<TimeLeft | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    if (!targetDate) return;
-    setTl(calcTimeLeft(targetDate));
-    const id = setInterval(() => setTl(calcTimeLeft(targetDate)), 1_000);
-    return () => clearInterval(id);
-  }, [targetDate]);
-
-  return { tl, mounted };
-}
 
 // ─── Variant: boxed_luxury ────────────────────────────────────────────────────
 // Bordered boxes for each time unit. Classic luxury look.
@@ -237,6 +211,7 @@ export default function CountdownScene({ scene, config }: Props) {
   const p = { scene, config, content, d };
 
   switch (scene.variant) {
+    case "psd_wedding_countdown": return <PsdWeddingCountdown scene={scene} config={config} />;
     case "minimal_digits": return <MinimalDigits {...p} />;
     case "hidden": return <HiddenCountdown />;
     default: return <BoxedLuxury {...p} />;

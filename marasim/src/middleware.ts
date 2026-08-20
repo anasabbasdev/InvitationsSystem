@@ -35,16 +35,20 @@ export async function middleware(request: NextRequest) {
     });
 
     const { data } = await supabase.auth.getUser();
-    const isLoginPage = request.nextUrl.pathname === "/owner/login";
+    const pathname = request.nextUrl.pathname;
+    const isPublicOwnerPage =
+      pathname === "/owner/login" ||
+      pathname === "/owner/forgot-password" ||
+      pathname === "/owner/forgot-account";
 
-    if (!data.user && !isLoginPage) {
+    if (!data.user && !isPublicOwnerPage) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = "/owner/login";
       loginUrl.searchParams.set("next", request.nextUrl.pathname);
       return NextResponse.redirect(loginUrl);
     }
 
-    if (data.user && isLoginPage) {
+    if (data.user && pathname === "/owner/login") {
       const eventsUrl = request.nextUrl.clone();
       eventsUrl.pathname = "/owner/events";
       eventsUrl.search = "";
@@ -52,9 +56,13 @@ export async function middleware(request: NextRequest) {
     }
   } catch {
     // Edge / Workers: never crash the request — let the page render or redirect.
-    const isLoginPage = request.nextUrl.pathname === "/owner/login";
+    const pathname = request.nextUrl.pathname;
+    const isPublicOwnerPage =
+      pathname === "/owner/login" ||
+      pathname === "/owner/forgot-password" ||
+      pathname === "/owner/forgot-account";
     const isProtected =
-      request.nextUrl.pathname.startsWith("/owner/") && !isLoginPage;
+      request.nextUrl.pathname.startsWith("/owner/") && !isPublicOwnerPage;
     if (isProtected) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = "/owner/login";
