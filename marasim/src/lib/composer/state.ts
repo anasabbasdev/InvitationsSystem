@@ -575,6 +575,7 @@ export function buildExportPayload(
     journey: journey ?? initJourneyFromConfig(base),
     sceneEdits: edits,
     themeEdit,
+    music: base.music,
   });
   const payload: ComposerExport = {};
   if (separated.invitationData.themeOverrides) {
