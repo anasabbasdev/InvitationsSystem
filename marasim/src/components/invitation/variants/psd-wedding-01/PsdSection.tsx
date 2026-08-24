@@ -4,6 +4,12 @@ import type { CSSProperties, ReactNode } from "react";
 import { PSD_WIDTH } from "./coords";
 import { PsdReveal } from "./PsdReveal";
 
+type PsdUnderlay = {
+  src: string;
+  className?: string;
+  style?: CSSProperties;
+};
+
 type PsdSectionProps = {
   plateSrc: string;
   heightPsd: number;
@@ -11,9 +17,18 @@ type PsdSectionProps = {
   className?: string;
   style?: CSSProperties;
   id?: string;
+  underlays?: PsdUnderlay[];
 };
 
-export function PsdSection({ plateSrc, heightPsd, children, className = "", style, id }: PsdSectionProps) {
+export function PsdSection({
+  plateSrc,
+  heightPsd,
+  children,
+  className = "",
+  style,
+  id,
+  underlays,
+}: PsdSectionProps) {
   return (
     <div
       id={id}
@@ -24,14 +39,25 @@ export function PsdSection({ plateSrc, heightPsd, children, className = "", styl
         ...style,
       }}
     >
+      {underlays?.map((layer) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={layer.src}
+          src={layer.src}
+          alt=""
+          className={`pointer-events-none absolute ${layer.className ?? ""}`}
+          style={layer.style}
+          draggable={false}
+        />
+      ))}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={plateSrc}
         alt=""
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top"
+        className="pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover object-top"
         draggable={false}
       />
-      <div className="absolute inset-0">{children}</div>
+      <div className="absolute inset-0 z-[2]">{children}</div>
     </div>
   );
 }

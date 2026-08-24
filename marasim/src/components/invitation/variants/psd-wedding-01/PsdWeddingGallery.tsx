@@ -37,8 +37,8 @@ export default function PsdWeddingGallery({
 
   return (
     <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
-      <PsdSection plateSrc={PSD_SECTIONS.gallery.plate} heightPsd={H}>
-        <PsdBox x={500} y={9464} width={540} height={40} sectionY={Y} sectionH={H} className="flex items-center justify-center">
+      <PsdSection plateSrc={PSD_SECTIONS.gallery.plate} heightPsd={H} style={{ overflow: "visible" }}>
+        <PsdBox x={500} y={9510} width={540} height={64} sectionY={Y} sectionH={H} className="flex items-center justify-center overflow-visible">
           <PsdReveal>
             <span
               style={{

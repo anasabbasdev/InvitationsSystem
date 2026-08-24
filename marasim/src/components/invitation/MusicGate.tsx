@@ -35,10 +35,10 @@ interface MusicGateProps {
 }
 
 /**
- * MusicGate wraps the entire invitation and:
- * 1. Captures the first user interaction (tap/click).
- * 2. Starts looping background music after first tap (if startMode = "after_first_tap").
- * 3. Exposes play/pause to the invitation dock via context.
+ * Starts looping invitation music as soon as the browser allows:
+ * 1. Attempt autoplay when the page loads (before the opening video).
+ * 2. Unlock/play on the first tap in the same user gesture (so music
+ *    begins even if autoplay was blocked, and before the intro video).
  */
 export default function MusicGate({
   config,
@@ -49,14 +49,25 @@ export default function MusicGate({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
-  const enabled = Boolean(music.enabled && music.src);
+  const enabled = Boolean(music.enabled && music.src && music.startMode !== "disabled");
+
+  const playNow = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const attempt = audio.play();
+    if (attempt) {
+      attempt.then(() => setIsPlaying(true)).catch(() => {});
+    }
+  }, []);
 
   useEffect(() => {
     if (!enabled || !music.src) return;
     const audio = new Audio(music.src);
     audio.loop = true;
     audio.volume = 0.45;
+    audio.preload = "auto";
     audioRef.current = audio;
+    audio.play().then(() => setIsPlaying(true)).catch(() => {});
 
     return () => {
       audio.pause();
@@ -65,36 +76,25 @@ export default function MusicGate({
     };
   }, [enabled, music.src]);
 
-  useEffect(() => {
-    if (!hasInteracted || !audioRef.current) return;
-    if (music.startMode !== "after_first_tap") return;
-
-    audioRef.current
-      .play()
-      .then(() => setIsPlaying(true))
-      .catch(() => {});
-  }, [hasInteracted, music.startMode]);
-
   const handleFirstInteraction = useCallback(() => {
-    if (hasInteracted) return;
-    setHasInteracted(true);
-    onFirstInteraction?.();
-  }, [hasInteracted, onFirstInteraction]);
+    playNow();
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      onFirstInteraction?.();
+    }
+  }, [hasInteracted, onFirstInteraction, playNow]);
 
   const toggleMusic = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
     setHasInteracted(true);
-    if (isPlaying) {
+    if (!audio.paused && !audio.ended) {
       audio.pause();
       setIsPlaying(false);
     } else {
-      audio
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => {});
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
     }
-  }, [isPlaying]);
+  }, []);
 
   const value = useMemo<MusicControl>(
     () => ({ enabled, isPlaying, toggleMusic }),
@@ -103,7 +103,7 @@ export default function MusicGate({
 
   return (
     <MusicControlContext.Provider value={value}>
-      <div onPointerDown={handleFirstInteraction} className="relative">
+      <div onPointerDownCapture={handleFirstInteraction} className="relative">
         {children}
       </div>
     </MusicControlContext.Provider>

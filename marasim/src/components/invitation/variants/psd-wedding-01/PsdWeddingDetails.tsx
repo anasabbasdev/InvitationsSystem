@@ -18,6 +18,44 @@ type Content = {
 const Y = PSD_SECTIONS.details.y;
 const H = PSD_SECTIONS.details.height;
 
+function DetailCopy({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <PsdReveal className="flex h-full w-full flex-col items-center justify-start text-center">
+      <div
+        style={{
+          fontFamily: PSD_FONT.arabic,
+          fontSize: psdFont(24),
+          fontWeight: 300,
+          color: PSD_DETAILS,
+          lineHeight: 1.2,
+          background: "transparent",
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontFamily: PSD_FONT.arabic,
+          fontSize: psdFont(24),
+          fontWeight: 300,
+          color: PSD_DETAILS,
+          lineHeight: 1.25,
+          marginTop: "0.15em",
+          background: "transparent",
+        }}
+      >
+        {value}
+      </div>
+    </PsdReveal>
+  );
+}
+
 export default function PsdWeddingDetails({
   scene,
   config,
@@ -32,12 +70,20 @@ export default function PsdWeddingDetails({
   return (
     <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
       <PsdSection plateSrc={PSD_SECTIONS.details.plate} heightPsd={H}>
-        <PsdBox x={280} y={8760} width={980} height={90} sectionY={Y} sectionH={H} className="flex items-center justify-center">
+        <PsdBox
+          x={581}
+          y={8794}
+          width={376}
+          height={34}
+          sectionY={Y}
+          sectionH={H}
+          className="relative z-[2] flex items-center justify-center"
+        >
           <PsdReveal className="flex w-full items-center justify-center" style={{ direction: "rtl" }}>
             <span
               style={{
                 fontFamily: PSD_FONT.arabic,
-                fontSize: psdFont(40),
+                fontSize: psdFont(34),
                 fontWeight: 300,
                 color: PSD_DETAILS,
                 background: "transparent",
@@ -50,14 +96,14 @@ export default function PsdWeddingDetails({
               dir="ltr"
               style={{
                 fontFamily: PSD_FONT.latin,
-                fontSize: psdFont(22),
+                fontSize: psdFont(20),
                 fontWeight: 300,
                 letterSpacing: "0.08em",
                 color: PSD_DETAILS,
                 background: "transparent",
                 lineHeight: 1,
-                padding: "0 0.35em",
-                transform: "translateY(0.06em)",
+                padding: "0 0.3em",
+                transform: "translateY(0.05em)",
               }}
             >
               {c.sectionLabelEn ?? "Details"}
@@ -65,7 +111,7 @@ export default function PsdWeddingDetails({
             <span
               style={{
                 fontFamily: PSD_FONT.arabic,
-                fontSize: psdFont(40),
+                fontSize: psdFont(34),
                 fontWeight: 300,
                 color: PSD_DETAILS,
                 background: "transparent",
@@ -76,21 +122,15 @@ export default function PsdWeddingDetails({
             </span>
           </PsdReveal>
         </PsdBox>
-        <PsdBox x={280} y={9000} width={980} height={160} sectionY={Y} sectionH={H} className="flex items-start justify-between px-[6%] text-center">
-          <PsdReveal className="flex flex-1 flex-col items-center" delay={0.05}>
-            <div style={{ fontFamily: PSD_FONT.arabic, fontSize: psdFont(28), fontWeight: 300, color: PSD_DETAILS }}>التاريــــخ:</div>
-            <div style={{ fontFamily: PSD_FONT.arabic, fontSize: psdFont(28), fontWeight: 300, color: PSD_DETAILS, marginTop: "0.2em" }}>
-              {c.day} {c.date}
-            </div>
-          </PsdReveal>
-          <PsdReveal className="flex flex-1 flex-col items-center" delay={0.1}>
-            <div style={{ fontFamily: PSD_FONT.arabic, fontSize: psdFont(28), fontWeight: 300, color: PSD_DETAILS }}>الساعة:</div>
-            <div style={{ fontFamily: PSD_FONT.arabic, fontSize: psdFont(28), fontWeight: 300, color: PSD_DETAILS, marginTop: "0.2em" }}>{c.time}</div>
-          </PsdReveal>
-          <PsdReveal className="flex flex-1 flex-col items-center" delay={0.15}>
-            <div style={{ fontFamily: PSD_FONT.arabic, fontSize: psdFont(28), fontWeight: 300, color: PSD_DETAILS }}>العنوان:</div>
-            <div style={{ fontFamily: PSD_FONT.arabic, fontSize: psdFont(28), fontWeight: 300, color: PSD_DETAILS, marginTop: "0.2em" }}>{c.venueName}</div>
-          </PsdReveal>
+
+        <PsdBox x={430} y={9072} width={228} height={70} sectionY={Y} sectionH={H} className="relative z-[2]">
+          <DetailCopy label="التاريــــخ:" value={`${c.day ?? ""} ${c.date ?? ""}`.trim()} />
+        </PsdBox>
+        <PsdBox x={668} y={9072} width={180} height={70} sectionY={Y} sectionH={H} className="relative z-[2]">
+          <DetailCopy label="الساعة:" value={c.time ?? ""} />
+        </PsdBox>
+        <PsdBox x={848} y={9072} width={228} height={70} sectionY={Y} sectionH={H} className="relative z-[2]">
+          <DetailCopy label="العنوان:" value={c.venueName ?? ""} />
         </PsdBox>
       </PsdSection>
     </SceneFrame>

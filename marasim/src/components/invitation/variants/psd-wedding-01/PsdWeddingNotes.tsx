@@ -5,7 +5,7 @@ import SceneFrame from "@/components/invitation/SceneFrame";
 import { PsdBox, PsdSection } from "./PsdSection";
 import { PsdReveal } from "./PsdReveal";
 import { PsdNotesCurtains } from "./PsdNotesCurtains";
-import { PSD_FONT, PSD_INK, PSD_PAPER, PSD_SECTIONS, psdFont } from "./coords";
+import { PSD_FONT, PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
 
 type Content = {
   sectionLabel?: string;
@@ -32,66 +32,109 @@ export default function PsdWeddingNotes({
     <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
       <PsdSection plateSrc={PSD_SECTIONS.notes.plate} heightPsd={H}>
         <PsdBox
-          x={200}
-          y={13430}
-          width={1140}
-          height={1040}
+          x={531}
+          y={13550}
+          width={479}
+          height={32}
           sectionY={Y}
           sectionH={H}
-          className="relative z-[2] flex flex-col items-center px-[7%] pt-[3%] text-center"
-          style={{ background: PSD_PAPER }}
+          className="relative z-[2] flex items-center justify-center text-center"
         >
-          <PsdReveal className="flex flex-col items-center">
+          <PsdReveal>
             <p
               style={{
                 fontFamily: PSD_FONT.latin,
-                fontSize: psdFont(36),
+                fontSize: psdFont(28),
                 fontWeight: 600,
-                letterSpacing: "0.18em",
+                letterSpacing: "0.16em",
                 color: PSD_INK,
                 margin: 0,
-                lineHeight: 1.2,
+                lineHeight: 1,
                 background: "transparent",
               }}
             >
-              IMPORTANT
-              <br />
-              NOTES
+              {c.sectionLabelEn ?? "IMPORTANT NOTES"}
             </p>
+          </PsdReveal>
+        </PsdBox>
+        <PsdBox
+          x={500}
+          y={13605}
+          width={540}
+          height={40}
+          sectionY={Y}
+          sectionH={H}
+          className="relative z-[2] flex items-center justify-center text-center"
+        >
+          <PsdReveal>
             <p
               style={{
                 fontFamily: PSD_FONT.arabic,
-                fontSize: psdFont(40),
+                fontSize: psdFont(34),
                 fontWeight: 400,
                 color: PSD_INK,
-                margin: "0.7em 0 0",
-                lineHeight: 1.25,
+                margin: 0,
+                lineHeight: 1,
                 background: "transparent",
               }}
             >
-              ملاحظات
-              <br />
-              مهمة
+              {c.sectionLabel ?? "ملاحظات مهمة"}
             </p>
           </PsdReveal>
-          <div className="mt-[1.1em] flex w-full flex-col items-center gap-[0.4em]">
-            {items.map((item, index) => (
-              <PsdReveal key={item} delay={0.05 + index * 0.05}>
-                <p style={{ fontFamily: PSD_FONT.arabic, fontSize: psdFont(30), fontWeight: 300, color: PSD_INK, margin: 0, lineHeight: 1.4, background: "transparent" }}>
-                  • {item}
-                </p>
-              </PsdReveal>
-            ))}
-          </div>
-          <div className="mt-[1em] flex w-full flex-col items-center gap-[0.35em]">
-            {itemsEn.map((item, index) => (
-              <PsdReveal key={item} delay={0.08 + index * 0.05}>
-                <p style={{ fontFamily: PSD_FONT.latin, fontSize: psdFont(22), fontWeight: 200, color: PSD_INK, margin: 0, lineHeight: 1.4, background: "transparent" }}>
-                  • {item}
-                </p>
-              </PsdReveal>
-            ))}
-          </div>
+        </PsdBox>
+        <PsdBox
+          x={500}
+          y={13790}
+          width={540}
+          height={200}
+          sectionY={Y}
+          sectionH={H}
+          className="relative z-[2] flex flex-col items-center justify-start gap-[0.28em] text-center"
+        >
+          {items.map((item, index) => (
+            <PsdReveal key={item} delay={0.04 + index * 0.04}>
+              <p
+                style={{
+                  fontFamily: PSD_FONT.arabic,
+                  fontSize: psdFont(26),
+                  fontWeight: 300,
+                  color: PSD_INK,
+                  margin: 0,
+                  lineHeight: 1.35,
+                  background: "transparent",
+                }}
+              >
+                • {item}
+              </p>
+            </PsdReveal>
+          ))}
+        </PsdBox>
+        <PsdBox
+          x={360}
+          y={14096}
+          width={820}
+          height={190}
+          sectionY={Y}
+          sectionH={H}
+          className="relative z-[2] flex flex-col items-center justify-start gap-[0.22em] text-center"
+        >
+          {itemsEn.map((item, index) => (
+            <PsdReveal key={item} delay={0.06 + index * 0.04}>
+              <p
+                style={{
+                  fontFamily: PSD_FONT.latin,
+                  fontSize: psdFont(20),
+                  fontWeight: 300,
+                  color: PSD_INK,
+                  margin: 0,
+                  lineHeight: 1.35,
+                  background: "transparent",
+                }}
+              >
+                • {item}
+              </p>
+            </PsdReveal>
+          ))}
         </PsdBox>
         <PsdNotesCurtains />
       </PsdSection>

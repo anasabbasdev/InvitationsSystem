@@ -85,19 +85,17 @@ export default function GuestLookupSheet({
         }}
       >
         {showLookup && (
-          <button
-            type="button"
-            onClick={handleOpen}
-            className="inv-dock-btn"
-          >
-            <span aria-hidden>🔍</span>
-            <span>تحقق من حالة دعوتك</span>
+          <button type="button" onClick={handleOpen} className="inv-dock-btn">
+            <span aria-hidden className="inv-dock-search">
+              🔍
+            </span>
+            <span>حالة الدعوة</span>
           </button>
         )}
         {split && (
           <span
             className="inv-dock-divider"
-            style={{ backgroundColor: `${primaryColor}66` }}
+            style={{ backgroundColor: `${primaryColor}55` }}
             aria-hidden
           />
         )}
@@ -105,12 +103,11 @@ export default function GuestLookupSheet({
           <button
             type="button"
             onClick={music.toggleMusic}
-            className="inv-dock-btn"
+            className={`inv-dock-btn inv-dock-btn-music${showLookup ? "" : " inv-dock-btn-music-solo"}`}
             aria-pressed={music.isPlaying}
             aria-label={music.isPlaying ? "إيقاف الموسيقا" : "تشغيل الموسيقا"}
           >
-            <span aria-hidden>{music.isPlaying ? "⏸" : "♪"}</span>
-            <span>تشغيل/ايقاف تشغيل الموسيقا</span>
+            {music.isPlaying ? <PauseIcon /> : <PlayIcon />}
           </button>
         )}
       </div>
@@ -200,6 +197,22 @@ export default function GuestLookupSheet({
         </div>
       )}
     </>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
+      <path fill="currentColor" d="M8 5.5v13l11-6.5L8 5.5z" />
+    </svg>
+  );
+}
+
+function PauseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
+      <path fill="currentColor" d="M7 5h3.4v14H7V5zm6.6 0H17v14h-3.4V5z" />
+    </svg>
   );
 }
 

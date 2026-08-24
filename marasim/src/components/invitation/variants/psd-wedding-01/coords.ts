@@ -7,7 +7,7 @@ export const PSD_SCALE = 4;
 export const DESIGN_WIDTH = 385;
 
 export const ASSET_BASE = "/assets/invitations/psd-wedding-01";
-const DECOR_REV = "v10";
+const DECOR_REV = "v14";
 
 export type PsdSectionDef = {
   id: string;
@@ -38,7 +38,7 @@ export const PSD_SECTIONS = {
   },
   details: {
     id: "details",
-    plate: `${ASSET_BASE}/sections/05-details.webp`,
+    plate: `${ASSET_BASE}/sections/05-details.webp?${DECOR_REV}`,
     y: 8500,
     height: 969,
   },
@@ -82,6 +82,8 @@ export const PSD_SECTIONS = {
 } as const;
 
 export const PSD_DECOR = {
+  detailsColumnWall: `${ASSET_BASE}/decor/details-column-wall.webp?${DECOR_REV}`,
+  detailsTornPaper: `${ASSET_BASE}/decor/details-torn-paper.webp?${DECOR_REV}`,
   countdownTimer: `${ASSET_BASE}/decor/countdown-timer.webp?${DECOR_REV}`,
   countdownLeaves: `${ASSET_BASE}/decor/countdown-leaves.webm?${DECOR_REV}`,
   goldenRings: `${ASSET_BASE}/decor/golden-rings.webp`,

@@ -160,12 +160,13 @@ export default function InvitationRenderer({
         {/* Spacer prevents layout jump while opening gate is visible */}
         {!isOpened && <div style={{ minHeight: "100dvh" }} />}
 
-        {isOpened && (config.rsvp?.enabled || Boolean(config.music?.enabled && config.music.src)) && (
+        {(Boolean(config.music?.enabled && config.music.src) ||
+          (isOpened && config.rsvp?.enabled)) && (
           <GuestLookupSheet
             slug={config.slug}
             primaryColor={theme.primaryColor}
             textColor={theme.textColor ?? "#F5F0E8"}
-            showLookup={Boolean(config.rsvp?.enabled)}
+            showLookup={Boolean(isOpened && config.rsvp?.enabled)}
           />
         )}
       </div>

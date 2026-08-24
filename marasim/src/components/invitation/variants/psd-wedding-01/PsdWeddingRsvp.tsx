@@ -148,7 +148,19 @@ export default function PsdWeddingRsvp({
               />
             </PsdBox>
             <PsdBox x={450} y={16906} width={638} height={92} sectionY={Y} sectionH={H}>
-              <select name="guests" value={formApi.form.guests} onChange={formApi.handleChange} disabled={formApi.submitting} className="psd-rsvp-field" style={fieldStyle}>
+              <select
+                name="guests"
+                value={formApi.form.guests}
+                onChange={formApi.handleChange}
+                disabled={formApi.submitting}
+                className="psd-rsvp-field psd-rsvp-guests"
+                style={{
+                  ...fieldStyle,
+                  fontSize: psdFont(28),
+                  fontWeight: 300,
+                  letterSpacing: "0.01em",
+                }}
+              >
                 {formApi.seatOptions.map((n) => (
                   <option key={n} value={n}>
                     {n} {n === 1 ? "شخص" : "أشخاص"}
