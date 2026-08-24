@@ -7,6 +7,7 @@ import { buildInvitationCssVars } from "@/lib/theme-vars";
 import MusicGate from "./MusicGate";
 import OpeningScene from "./scenes/OpeningScene";
 import GuestLookupSheet from "@/components/rsvp/GuestLookupSheet";
+import { PsdGoldFall } from "@/components/invitation/variants/psd-wedding-01/PsdGoldFall";
 import type { InviteLinkContext } from "@/lib/rsvp-core";
 import { SCENE_COMPONENTS } from "./scene-registry";
 
@@ -113,6 +114,8 @@ export default function InvitationRenderer({
           )}
         </AnimatePresence>
 
+        {isOpened && config.theme.family === "psd-wedding-01" && <PsdGoldFall />}
+
         {/* Main content — rendered after opening tap */}
         <AnimatePresence>
           {isOpened && (
@@ -157,11 +160,12 @@ export default function InvitationRenderer({
         {/* Spacer prevents layout jump while opening gate is visible */}
         {!isOpened && <div style={{ minHeight: "100dvh" }} />}
 
-        {config.rsvp?.enabled && isOpened && (
+        {isOpened && (config.rsvp?.enabled || Boolean(config.music?.enabled && config.music.src)) && (
           <GuestLookupSheet
             slug={config.slug}
             primaryColor={theme.primaryColor}
             textColor={theme.textColor ?? "#F5F0E8"}
+            showLookup={Boolean(config.rsvp?.enabled)}
           />
         )}
       </div>

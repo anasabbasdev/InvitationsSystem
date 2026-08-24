@@ -17,8 +17,9 @@ export const mhmdLaraData: InvitationData = {
   direction: "rtl",
 
   music: {
-    enabled: false,
-    startMode: "disabled",
+    enabled: true,
+    src: "/assets/invitations/psd-wedding-01/music.mp3",
+    startMode: "after_first_tap",
   },
 
   rsvp: {

@@ -35,6 +35,8 @@ interface Props {
   required?: boolean;
   inputStyle?: React.CSSProperties;
   className?: string;
+  /** Narrower dial-code select so the national number gets more room. */
+  compact?: boolean;
 }
 
 export default function PhoneInput({
@@ -44,9 +46,10 @@ export default function PhoneInput({
   required = true,
   inputStyle,
   className,
+  compact = false,
 }: Props) {
   return (
-    <div className={className} style={{ display: "flex", gap: 8, direction: "ltr" }}>
+    <div className={className} style={{ display: "flex", gap: compact ? 3 : 6, direction: "ltr" }}>
       <select
         value={value.dialCode}
         onChange={(e) => onChange({ ...value, dialCode: e.target.value })}
@@ -54,14 +57,17 @@ export default function PhoneInput({
         required={required}
         style={{
           ...inputStyle,
-          flex: "0 0 108px",
-          padding: inputStyle?.padding ?? "12px 8px",
+          flex: compact ? "0 0 2.85rem" : "0 0 4.5rem",
+          width: compact ? "2.85rem" : "4.5rem",
+          minWidth: 0,
+          padding: compact ? "0 12px 0 2px" : "0 6px",
+          textAlign: "center",
         }}
         aria-label="رمز الدولة"
       >
         {COUNTRY_OPTIONS.map((c) => (
           <option key={c.code} value={c.dial}>
-            {c.label}
+            {compact ? c.dial : c.label}
           </option>
         ))}
       </select>
@@ -74,7 +80,7 @@ export default function PhoneInput({
         onChange={(e) => onChange({ ...value, national: e.target.value })}
         disabled={disabled}
         required={required}
-        style={{ ...inputStyle, flex: 1 }}
+        style={{ ...inputStyle, flex: "1 1 auto", minWidth: 0 }}
         aria-label="رقم الجوال"
       />
     </div>

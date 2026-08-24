@@ -6,6 +6,12 @@ export type AssetPathSet = {
 };
 
 export function getAssetPathSet(slug: ComposerDemoSlug): AssetPathSet {
+  if (slug === "mhmd_lara") {
+    return {
+      base: "public/assets/invitations/psd-wedding-01/",
+      files: ["opening.mp4", "opening-poster.webp", "music.mp3"],
+    };
+  }
   if (slug.includes("birth")) {
     return {
       base: "public/assets/demo/noor/media-birth/",
@@ -39,6 +45,13 @@ export function getAssetPathSet(slug: ComposerDemoSlug): AssetPathSet {
     base: "public/assets/demo/wedding/",
     files: ["opening-bg.webp", "hero-bg.webp", "gallery-01.webp"],
   };
+}
+
+export function suggestMusicPath(slug: ComposerDemoSlug): string {
+  if (slug === "mhmd_lara") {
+    return "/assets/invitations/psd-wedding-01/music.mp3";
+  }
+  return `${getAssetPublicPrefix(slug)}music.mp3`;
 }
 
 /** Suggested public path prefix for media src fields (starts with /). */
@@ -75,6 +88,7 @@ export function formatAssetChecklist(slug: ComposerDemoSlug): string {
     "",
     "Files to prepare:",
     ...set.files.map((f) => `  • ${f}`),
+    ...(set.files.includes("music.mp3") ? [] : ["  • music.mp3"]),
     "",
     "Public paths (composer src fields):",
     ...set.files.map((f) => `  ${prefix}${f}`),

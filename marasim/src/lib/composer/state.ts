@@ -4,6 +4,7 @@ import type {
   DesignTokens,
   InvitationConfig,
   InvitationData,
+  InvitationMusic,
   InvitationScene,
   InvitationTheme,
   LiveTextConfig,
@@ -70,6 +71,7 @@ export type ComposerState = {
   journey: ComposerJourney;
   sceneEdits: ComposerSceneEdits;
   themeEdit: ComposerThemeEdit;
+  music: InvitationMusic;
 };
 
 export type SeparatedExports = {
@@ -126,11 +128,20 @@ export function initEditsFromConfig(config: InvitationConfig): ComposerSceneEdit
   return initSceneEditsFromConfig(config);
 }
 
+export function initMusicFromConfig(config: InvitationConfig): InvitationMusic {
+  return {
+    enabled: config.music?.enabled ?? false,
+    src: config.music?.src,
+    startMode: config.music?.startMode ?? "disabled",
+  };
+}
+
 export function initComposerStateFromConfig(config: InvitationConfig): ComposerState {
   return {
     journey: initJourneyFromConfig(config),
     sceneEdits: initSceneEditsFromConfig(config),
     themeEdit: initThemeFromConfig(config),
+    music: initMusicFromConfig(config),
   };
 }
 
@@ -284,6 +295,12 @@ export function applyComposerState(
     design: { ...config.theme.design, ...state.themeEdit.design },
   };
 
+  config.music = {
+    enabled: state.music.enabled,
+    src: state.music.src,
+    startMode: state.music.startMode,
+  };
+
   config.scenes = state.journey.instances.map((inst) => {
     let scene =
       baseById.get(inst.id) ??
@@ -322,6 +339,7 @@ export function applyComposerEdits(
     journey: journey ?? initJourneyFromConfig(base),
     sceneEdits: edits,
     themeEdit: themeEdit ?? initThemeFromConfig(base),
+    music: base.music,
   });
 }
 
@@ -531,7 +549,7 @@ export function buildSeparatedExports(
     sequenceId: `${base.slug}-blueprint`,
     language: base.language,
     direction: base.direction,
-    music: base.music,
+    music: state.music,
     rsvp: base.rsvp,
     sceneOverrides:
       Object.keys(dataSceneOverrides).length > 0 ? dataSceneOverrides : undefined,

@@ -7,7 +7,7 @@ export const PSD_SCALE = 4;
 export const DESIGN_WIDTH = 385;
 
 export const ASSET_BASE = "/assets/invitations/psd-wedding-01";
-const DECOR_REV = "v8";
+const DECOR_REV = "v10";
 
 export type PsdSectionDef = {
   id: string;
@@ -32,7 +32,7 @@ export const PSD_SECTIONS = {
   },
   countdown: {
     id: "countdown",
-    plate: `${ASSET_BASE}/sections/04-countdown.webp`,
+    plate: `${ASSET_BASE}/sections/04-countdown.webp?${DECOR_REV}`,
     y: 6400,
     height: 2100,
   },
@@ -56,13 +56,13 @@ export const PSD_SECTIONS = {
   },
   notes: {
     id: "notes",
-    plate: `${ASSET_BASE}/sections/08-notes.webp`,
+    plate: `${ASSET_BASE}/sections/08-notes.webp?${DECOR_REV}`,
     y: 13250,
     height: 1351,
   },
   location: {
     id: "location",
-    plate: `${ASSET_BASE}/sections/09-location.webp`,
+    plate: `${ASSET_BASE}/sections/09-location.webp?${DECOR_REV}`,
     y: 14601,
     height: 1484,
   },
@@ -83,8 +83,11 @@ export const PSD_SECTIONS = {
 
 export const PSD_DECOR = {
   countdownTimer: `${ASSET_BASE}/decor/countdown-timer.webp?${DECOR_REV}`,
+  countdownLeaves: `${ASSET_BASE}/decor/countdown-leaves.webm?${DECOR_REV}`,
   goldenRings: `${ASSET_BASE}/decor/golden-rings.webp`,
   luxuryCurtains: `${ASSET_BASE}/decor/luxury-curtains.webp`,
+  notesCurtains: `${ASSET_BASE}/decor/notes-curtains.webm?${DECOR_REV}`,
+  notesCurtainsPoster: `${ASSET_BASE}/decor/notes-curtains-poster.webp?${DECOR_REV}`,
   closingBouquet: `${ASSET_BASE}/decor/closing-bouquet.webp`,
   closingThanks: `${ASSET_BASE}/decor/closing-thanks.png?${DECOR_REV}`,
   artBest: `${ASSET_BASE}/decor/art-best.webp?${DECOR_REV}`,

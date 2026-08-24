@@ -26,6 +26,7 @@ import { formatAssetChecklist } from "@/lib/composer/asset-paths";
 import SceneComposerControls from "./SceneComposerControls";
 import ThemeOverridesPanel from "./ThemeOverridesPanel";
 import JourneyPanel from "./JourneyPanel";
+import ComposerMusicPanel from "./ComposerMusicPanel";
 import PreviewFrame from "./PreviewFrame";
 import { getSceneComponent } from "@/components/invitation/scene-registry";
 import InvitationRenderer from "@/components/invitation/InvitationRenderer";
@@ -256,10 +257,19 @@ export default function ComposerApp() {
             </>
           )}
 
-          {composerTab === "content" && selectedSceneType && currentEdit && (
+          {composerTab === "content" && (
             <>
-              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">{selectedInstance?.label} — Content <span className="font-normal text-zinc-600" dir="ltr">({selectedSceneId})</span></h2>
-              <SceneComposerControls sceneType={selectedSceneType} slug={slug} edit={currentEdit} uiMode={uiMode} tab="content" onChange={(edit) => updateSceneEdit(selectedSceneId, edit)} />
+              <ComposerMusicPanel
+                music={composerState.music}
+                slug={slug}
+                onChange={(music) => setComposerState((prev) => ({ ...prev, music }))}
+              />
+              {selectedSceneType && currentEdit && (
+                <>
+                  <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">{selectedInstance?.label} — Content <span className="font-normal text-zinc-600" dir="ltr">({selectedSceneId})</span></h2>
+                  <SceneComposerControls sceneType={selectedSceneType} slug={slug} edit={currentEdit} uiMode={uiMode} tab="content" onChange={(edit) => updateSceneEdit(selectedSceneId, edit)} />
+                </>
+              )}
             </>
           )}
         </section>

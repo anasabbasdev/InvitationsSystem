@@ -5,6 +5,7 @@ import SceneFrame from "@/components/invitation/SceneFrame";
 import { useCountdown } from "@/lib/use-countdown";
 import { PsdBox, PsdSection } from "./PsdSection";
 import { PsdReveal } from "./PsdReveal";
+import { PsdCountdownLeaves } from "./PsdCountdownLeaves";
 import { PSD_DECOR, PSD_FONT, PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
 
 type Content = {
@@ -42,7 +43,8 @@ export default function PsdWeddingCountdown({
   return (
     <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
       <PsdSection plateSrc={PSD_SECTIONS.countdown.plate} heightPsd={H}>
-        <PsdBox x={480} y={7620} width={580} height={120} sectionY={Y} sectionH={H} className="flex items-center justify-center text-center">
+        <PsdCountdownLeaves />
+        <PsdBox x={480} y={7620} width={580} height={120} sectionY={Y} sectionH={H} className="relative z-[2] flex items-center justify-center text-center">
           <PsdReveal>
             <p
               className="whitespace-pre-line"
@@ -72,7 +74,7 @@ export default function PsdWeddingCountdown({
           </div>
         </PsdBox>
 
-        <PsdBox x={420} y={8284} width={700} height={200} sectionY={Y} sectionH={H} className="flex items-center justify-center text-center">
+        <PsdBox x={420} y={8284} width={700} height={200} sectionY={Y} sectionH={H} className="relative z-[2] flex items-center justify-center text-center">
           <PsdReveal delay={0.06}>
             <p
               className="whitespace-pre-line"

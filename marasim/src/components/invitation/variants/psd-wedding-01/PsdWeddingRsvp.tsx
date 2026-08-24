@@ -45,12 +45,14 @@ export default function PsdWeddingRsvp({
   const fieldStyle: CSSProperties = {
     width: "100%",
     height: "100%",
-    padding: "0 14px",
+    padding: "0 12px",
     backgroundColor: "transparent",
     border: "none",
     color: PSD_INK,
     fontFamily: PSD_FONT.arabic,
-    fontSize: "1.02rem",
+    fontSize: psdFont(48),
+    fontWeight: 400,
+    lineHeight: 1.25,
     outline: "none",
     direction: "rtl",
   };
@@ -140,8 +142,9 @@ export default function PsdWeddingRsvp({
                 onChange={formApi.setPhone}
                 disabled={formApi.submitting}
                 required={!formApi.isControlled}
-                className="h-full w-full"
-                inputStyle={{ ...fieldStyle, height: "100%", direction: "ltr" }}
+                className="psd-rsvp-phone h-full w-full"
+                compact
+                inputStyle={{ ...fieldStyle, height: "100%", direction: "ltr", fontSize: psdFont(40) }}
               />
             </PsdBox>
             <PsdBox x={450} y={16906} width={638} height={92} sectionY={Y} sectionH={H}>
@@ -210,7 +213,14 @@ export default function PsdWeddingRsvp({
                   onChange={formApi.handleChange}
                   disabled={formApi.submitting || Boolean(effectiveToken)}
                   className="psd-rsvp-field"
-                  style={{ ...fieldStyle, resize: "none", paddingTop: 16, display: effectiveToken ? "none" : undefined }}
+                  style={{
+                    ...fieldStyle,
+                    resize: "none",
+                    paddingTop: 8,
+                    paddingBottom: 8,
+                    lineHeight: 1.45,
+                    display: effectiveToken ? "none" : undefined,
+                  }}
                 />
               )}
             </PsdBox>

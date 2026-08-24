@@ -4,7 +4,8 @@ import type { InvitationConfig, InvitationScene } from "@/types/invitation";
 import SceneFrame from "@/components/invitation/SceneFrame";
 import { PsdBox, PsdSection } from "./PsdSection";
 import { PsdReveal } from "./PsdReveal";
-import { PSD_FONT, PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
+import { PsdNotesCurtains } from "./PsdNotesCurtains";
+import { PSD_FONT, PSD_INK, PSD_PAPER, PSD_SECTIONS, psdFont } from "./coords";
 
 type Content = {
   sectionLabel?: string;
@@ -31,14 +32,14 @@ export default function PsdWeddingNotes({
     <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
       <PsdSection plateSrc={PSD_SECTIONS.notes.plate} heightPsd={H}>
         <PsdBox
-          x={300}
-          y={13620}
-          width={940}
-          height={940}
+          x={200}
+          y={13430}
+          width={1140}
+          height={1040}
           sectionY={Y}
           sectionH={H}
-          className="flex flex-col items-center px-[6%] pt-[4%] text-center"
-          style={{ background: "transparent" }}
+          className="relative z-[2] flex flex-col items-center px-[7%] pt-[3%] text-center"
+          style={{ background: PSD_PAPER }}
         >
           <PsdReveal className="flex flex-col items-center">
             <p
@@ -92,6 +93,7 @@ export default function PsdWeddingNotes({
             ))}
           </div>
         </PsdBox>
+        <PsdNotesCurtains />
       </PsdSection>
     </SceneFrame>
   );

@@ -5,14 +5,22 @@ import type { GuestLookupResult } from "@/types/rsvp";
 import PhoneInput, { defaultPhoneValue, phoneValueToRaw } from "@/components/ui/PhoneInput";
 import GuestStatusCard from "@/components/rsvp/GuestStatusCard";
 import { normalizeGuestCodeInput } from "@/lib/guest-code";
+import { useMusicControl } from "@/components/invitation/MusicGate";
 
 interface Props {
   slug: string;
   primaryColor?: string;
   textColor?: string;
+  showLookup?: boolean;
 }
 
-export default function GuestLookupSheet({ slug, primaryColor = "#A67C2E", textColor = "#3D3229" }: Props) {
+export default function GuestLookupSheet({
+  slug,
+  primaryColor = "#A67C2E",
+  textColor = "#3D3229",
+  showLookup = true,
+}: Props) {
+  const music = useMusicControl();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"phone" | "code">("phone");
   const [phone, setPhone] = useState(defaultPhoneValue);
@@ -60,21 +68,52 @@ export default function GuestLookupSheet({ slug, primaryColor = "#A67C2E", textC
     setOpen(false);
   }
 
+  const showMusic = music.enabled;
+  if (!showLookup && !showMusic) return null;
+
+  const split = showLookup && showMusic;
+
   return (
     <>
-      <button
-        type="button"
-        onClick={handleOpen}
-        className="fixed bottom-0 left-0 right-0 z-40 mx-auto flex w-full max-w-[430px] items-center justify-center gap-2 border-t px-4 py-3 text-sm font-medium shadow-lg backdrop-blur-md"
+      <div
+        className="inv-bottom-dock"
+        dir="rtl"
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.94)",
-          borderColor: `${primaryColor}44`,
+          borderTopColor: primaryColor,
           color: textColor,
         }}
       >
-        <span aria-hidden>🔍</span>
-        تحقق من حالة دعوتك
-      </button>
+        {showLookup && (
+          <button
+            type="button"
+            onClick={handleOpen}
+            className="inv-dock-btn"
+          >
+            <span aria-hidden>🔍</span>
+            <span>تحقق من حالة دعوتك</span>
+          </button>
+        )}
+        {split && (
+          <span
+            className="inv-dock-divider"
+            style={{ backgroundColor: `${primaryColor}66` }}
+            aria-hidden
+          />
+        )}
+        {showMusic && (
+          <button
+            type="button"
+            onClick={music.toggleMusic}
+            className="inv-dock-btn"
+            aria-pressed={music.isPlaying}
+            aria-label={music.isPlaying ? "إيقاف الموسيقا" : "تشغيل الموسيقا"}
+          >
+            <span aria-hidden>{music.isPlaying ? "⏸" : "♪"}</span>
+            <span>تشغيل/ايقاف تشغيل الموسيقا</span>
+          </button>
+        )}
+      </div>
 
       {open && (
         <div
