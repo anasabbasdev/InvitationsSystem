@@ -2,9 +2,9 @@
 
 import type { InvitationConfig, InvitationScene } from "@/types/invitation";
 import SceneFrame from "@/components/invitation/SceneFrame";
-import { PsdArt, PsdBox, PsdSection } from "./PsdSection";
+import { PsdBox, PsdSection } from "./PsdSection";
 import { PsdReveal } from "./PsdReveal";
-import { OPEN_INVITE_ANCHOR, PSD_DECOR, PSD_FONT, PSD_INK, PSD_MUTED, PSD_SECTIONS, psdFont } from "./coords";
+import { OPEN_INVITE_ANCHOR, PSD_DECOR, PSD_FONT, PSD_INK, PSD_SECTIONS, psdFont } from "./coords";
 
 type Content = {
   header?: string;
@@ -17,7 +17,6 @@ type Content = {
   subtitle?: string;
 };
 
-const COVER_H = 3333;
 const INVITE_Y = 3333;
 const INVITE_H = 1475;
 
@@ -29,71 +28,18 @@ export default function PsdWeddingInvitationMessage({
   config: InvitationConfig;
 }) {
   const c = (scene.content ?? {}) as Content;
-  const names = (config.scenes.find((s) => s.type === "hero_names")?.content ?? {}) as {
-    eyebrow?: string;
-    subtitle?: string;
-  };
-
   return (
     <SceneFrame config={config} scene={scene} minHeight="auto" style={{ padding: 0 }}>
-      <PsdSection plateSrc={PSD_SECTIONS.invitation.plate} heightPsd={COVER_H}>
-        <PsdBox x={400} y={400} width={740} height={140} sectionY={0} sectionH={COVER_H} className="flex flex-col items-center justify-center text-center">
-          <PsdReveal className="flex flex-col items-center">
-            <p
-              style={{
-                fontFamily: PSD_FONT.latin,
-                fontSize: psdFont(42),
-                fontWeight: 600,
-                letterSpacing: "0.18em",
-                color: PSD_INK,
-                margin: 0,
-                background: "transparent",
-              }}
-            >
-              {c.eyebrow ?? "WRITTEN IN LOVE"}
-            </p>
-            <p
-              style={{
-                fontFamily: PSD_FONT.latin,
-                fontSize: psdFont(28),
-                fontWeight: 400,
-                letterSpacing: "0.12em",
-                color: PSD_MUTED,
-                margin: "0.45em 0 0",
-                background: "transparent",
-              }}
-            >
-              {c.subtitle ?? "A PROMISE FOR A LIFETIME."}
-            </p>
-          </PsdReveal>
-        </PsdBox>
-        <PsdBox x={400} y={2680} width={740} height={120} sectionY={0} sectionH={COVER_H} className="flex flex-col items-center justify-center text-center">
-          <PsdReveal className="flex flex-col items-center" delay={0.08}>
-            <p
-              style={{
-                fontFamily: PSD_FONT.latin,
-                fontSize: psdFont(36),
-                letterSpacing: "0.16em",
-                color: PSD_MUTED,
-                margin: 0,
-                background: "transparent",
-              }}
-            >
-              {names.eyebrow ?? "OUR FOREVER BEGINS"}
-            </p>
-          </PsdReveal>
-        </PsdBox>
-        <PsdArt
-          src={PSD_DECOR.artTogether}
-          x={542}
-          y={2814}
-          width={458}
-          height={207}
-          sectionY={0}
-          sectionH={COVER_H}
-          alt={names.subtitle ?? "Together"}
+      {/* Same crop as the opening video, so the last frame and this screen are one picture. */}
+      <div className="relative h-[100dvh] w-full overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={PSD_DECOR.openingSettled}
+          alt=""
+          className="inv-opening-settle pointer-events-none absolute inset-0"
+          draggable={false}
         />
-      </PsdSection>
+      </div>
 
       <PsdSection id={OPEN_INVITE_ANCHOR} plateSrc={PSD_SECTIONS.invitation.plateB} heightPsd={INVITE_H}>
         <PsdBox

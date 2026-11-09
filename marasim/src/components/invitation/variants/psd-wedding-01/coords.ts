@@ -106,6 +106,7 @@ export const PSD_DECOR = {
   tape3: `${ASSET_BASE}/decor/gallery-tape-3.webp`,
   openingVideo: `${ASSET_BASE}/opening.mp4`,
   openingPoster: `${ASSET_BASE}/opening-poster.webp`,
+  openingSettled: `${ASSET_BASE}/decor/opening-settled.webp?${DECOR_REV}`,
 };
 
 /** PSD typefaces → loaded web fonts (Alexandria is Montserrat Arabic on Google Fonts). */

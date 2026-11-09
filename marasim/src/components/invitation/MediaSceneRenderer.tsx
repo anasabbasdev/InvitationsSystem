@@ -305,8 +305,20 @@ export default function MediaSceneRenderer({
   }, [media.revealAfter, media.minDurationMs, primaryAsset?.type, triggerReveal]);
 
   const handleMediaEnd = useCallback(() => {
+    const video = videoRef.current;
+    if (video && Number.isFinite(video.duration) && video.duration > 0.1) {
+      video.pause();
+      const hold = Math.max(0, video.duration - 0.04);
+      if (video.currentTime < hold - 0.02) {
+        try {
+          video.currentTime = hold;
+        } catch {
+          /* keep the ended frame */
+        }
+      }
+    }
     if (media.revealAfter === "media_end" || (isOpening && media.revealAfter !== "tap")) {
-      const minMs = media.minDurationMs ?? 0;
+      const minMs = isOpening ? 0 : (media.minDurationMs ?? 0);
       setTimeout(triggerReveal, minMs);
     }
   }, [media.revealAfter, media.minDurationMs, isOpening, triggerReveal]);

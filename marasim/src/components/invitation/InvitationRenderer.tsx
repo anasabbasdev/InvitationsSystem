@@ -56,9 +56,10 @@ export default function InvitationRenderer({
   const hasOpening = Boolean(openingScene);
 
   const [isOpened, setIsOpened] = useState(!hasOpening);
+  const seamlessOpen = theme.family === "psd-wedding-01";
 
   useEffect(() => {
-    if (!isOpened || !hasOpening) return;
+    if (!isOpened || !hasOpening || seamlessOpen) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(() => {
       const target = document.getElementById(AFTER_OPEN_SCROLL_ID);
@@ -68,7 +69,7 @@ export default function InvitationRenderer({
       });
     }, 520);
     return () => window.clearTimeout(timer);
-  }, [isOpened, hasOpening]);
+  }, [isOpened, hasOpening, seamlessOpen]);
 
   // All non-opening scenes that are enabled — renderer is agnostic about count/order
   const contentScenes = scenes.filter(
@@ -78,6 +79,35 @@ export default function InvitationRenderer({
   const cssVars = buildInvitationCssVars(theme);
   const bgColor = theme.backgroundColor;
   const textColor = theme.textColor ?? "var(--inv-text, #F5F0E8)";
+
+  const renderScenes = () =>
+    contentScenes.map((scene) => {
+      const Component = SCENE_COMPONENTS[scene.type];
+      if (!Component) return null;
+      const rsvpProps =
+        scene.type === "rsvp"
+          ? {
+              inviteToken: inviteToken ?? undefined,
+              inviteLinkContext: inviteLinkContext ?? undefined,
+              controlledMaxSeats:
+                inviteLinkContext?.status === "active"
+                  ? inviteLinkContext.maxSeats
+                  : undefined,
+              controlledLabel:
+                inviteLinkContext?.status === "active"
+                  ? (inviteLinkContext.label ?? undefined)
+                  : undefined,
+            }
+          : {};
+      return (
+        <Component
+          key={scene.id}
+          scene={scene}
+          config={config}
+          {...rsvpProps}
+        />
+      );
+    });
 
   return (
     <MusicGate config={config}>
@@ -90,75 +120,70 @@ export default function InvitationRenderer({
           color: textColor,
           fontFamily: "var(--font-tajawal)",
           direction: config.direction,
+          ...(seamlessOpen && !isOpened ? { height: "100dvh", overflow: "hidden" } : {}),
           ...cssVars,
         }}
       >
-        {/* Opening gate — fixed overlay until tapped */}
-        <AnimatePresence>
-          {!isOpened && openingScene && (
-            <motion.div
-              key="opening-gate"
-              className="absolute left-0 right-0 top-0 z-50 h-[100dvh] w-full overflow-hidden"
-              style={{
-                backgroundColor: bgColor,
-              }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+        {/* Opening gate. PSD hands off on the last frame with no fade or scroll. */}
+        {seamlessOpen ? (
+          !isOpened && openingScene && (
+            <div
+              className="absolute inset-0 z-50 overflow-hidden"
+              style={{ backgroundColor: bgColor }}
             >
               <OpeningScene
                 scene={openingScene}
                 config={config}
                 onOpen={() => setIsOpened(true)}
               />
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          )
+        ) : (
+          <AnimatePresence>
+            {!isOpened && openingScene && (
+              <motion.div
+                key="opening-gate"
+                className="absolute left-0 right-0 top-0 z-50 h-[100dvh] w-full overflow-hidden"
+                style={{
+                  backgroundColor: bgColor,
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <OpeningScene
+                  scene={openingScene}
+                  config={config}
+                  onOpen={() => setIsOpened(true)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
 
         {isOpened && config.theme.family === "psd-wedding-01" && <PsdGoldFall />}
 
-        {/* Main content — rendered after opening tap */}
-        <AnimatePresence>
-          {isOpened && (
-            <motion.div
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.55, delay: 0.05, ease: "easeOut" }}
-              className="pb-20"
-            >
-              {contentScenes.map((scene) => {
-                const Component = SCENE_COMPONENTS[scene.type];
-                if (!Component) return null;
-                const rsvpProps =
-                  scene.type === "rsvp"
-                    ? {
-                        inviteToken: inviteToken ?? undefined,
-                        inviteLinkContext: inviteLinkContext ?? undefined,
-                        controlledMaxSeats:
-                          inviteLinkContext?.status === "active"
-                            ? inviteLinkContext.maxSeats
-                            : undefined,
-                        controlledLabel:
-                          inviteLinkContext?.status === "active"
-                            ? (inviteLinkContext.label ?? undefined)
-                            : undefined,
-                      }
-                    : {};
-                return (
-                  <Component
-                    key={scene.id}
-                    scene={scene}
-                    config={config}
-                    {...rsvpProps}
-                  />
-                );
-              })}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* PSD content sits under the video so the cut is the same picture. */}
+        {(seamlessOpen || isOpened) && (
+          seamlessOpen ? (
+            <div className="pb-20">{renderScenes()}</div>
+          ) : (
+            <AnimatePresence>
+              {isOpened && (
+                <motion.div
+                  key="content"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.55, delay: 0.05, ease: "easeOut" }}
+                  className="pb-20"
+                >
+                  {renderScenes()}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )
+        )}
 
-        {/* Spacer prevents layout jump while opening gate is visible */}
-        {!isOpened && <div style={{ minHeight: "100dvh" }} />}
+        {!isOpened && !seamlessOpen && <div style={{ minHeight: "100dvh" }} />}
 
         {(Boolean(config.music?.enabled && config.music.src) ||
           (isOpened && config.rsvp?.enabled)) && (
